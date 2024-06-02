@@ -1,9 +1,10 @@
-import { auth, googleProvider } from '../config/firebase.js';
+import { auth, googleProvider, db } from '../config/firebase.js';
 import { useState, useEffect } from 'react';
 import { Login } from './Login';
 import { Hero } from './Hero';
 import '../styles/App.css';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { doc, setDoc, collection } from 'firebase/firestore';
 
 function Register() {
   const [user, setUser] = useState('');
@@ -54,8 +55,26 @@ function Register() {
           case "auth/weak-password":
             setPasswordError(err.message);
             break;
-        }
-      });
+          }
+        })
+        .then(async (userCredential) => {
+          console.log('User signed up:', userCredential.user);
+  
+          // Add user data to Firestore
+          const userRef = doc(db, "users", userCredential.user.email);
+          await setDoc(userRef, {
+            email: email,
+            createdAt: new Date(),
+          });
+  
+          // Create a collection for the user
+          const userCollectionRef = collection(db, `users/${userCredential.user.uid}/userData`);
+          await setDoc(doc(userCollectionRef, "initDoc"), {
+            initialData: "This is an initial document."
+          });
+          
+          console.log("User data added to Firestore and collection created for user");
+        });
   };
 
   const handleLogout = async () => {
@@ -75,7 +94,25 @@ function Register() {
 
   const signInWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider)
+        .then(async (userCredential) => {
+          console.log('User signed up:', userCredential.user);
+
+          // Add user data to Firestore
+          const userRef = doc(db, "users", userCredential.user.email);
+          await setDoc(userRef, {
+            email: userCredential.user.email,
+            createdAt: new Date(),
+          });
+
+          // Create a collection for the user
+          const userCollectionRef = collection(db, `users/${userCredential.user.uid}/userData`);
+          await setDoc(doc(userCollectionRef, "initDoc"), {
+            initialData: "This is an initial document."
+          });
+          
+          console.log("User data added to Firestore and collection created for user");
+        });
     } catch (e) {
       console.error(e);
     }
