@@ -9,7 +9,7 @@ const firebaseConfig = {
   storageBucket: "flashforge-f292c.appspot.com",
   messagingSenderId: "463837186358",
   appId: "1:463837186358:web:aa4441776e480247c5cb97",
-  measurementId: "G-ZWM2ZSQVGC"
+  measurementId: "G-ZWM2ZSQVGC",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -17,4 +17,3 @@ export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 
 export const db = new getFirestore(app);
-
