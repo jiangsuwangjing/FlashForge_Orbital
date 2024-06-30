@@ -1,15 +1,30 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, setPersistence, browserSessionPersistence } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  setPersistence,
+  browserSessionPersistence,
+} from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+
+// const firebaseConfig = {
+//   apiKey: "AIzaSyAotbDh-yYGzxyNsFrmzrGMxgtjL8guNL8",
+//   authDomain: "flashforge-f292c.firebaseapp.com",
+//   projectId: "flashforge-f292c",
+//   storageBucket: "flashforge-f292c.appspot.com",
+//   messagingSenderId: "463837186358",
+//   appId: "1:463837186358:web:aa4441776e480247c5cb97",
+//   measurementId: "G-ZWM2ZSQVGC"
+// };
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAotbDh-yYGzxyNsFrmzrGMxgtjL8guNL8",
-  authDomain: "flashforge-f292c.firebaseapp.com",
-  projectId: "flashforge-f292c",
-  storageBucket: "flashforge-f292c.appspot.com",
-  messagingSenderId: "463837186358",
-  appId: "1:463837186358:web:aa4441776e480247c5cb97",
-  measurementId: "G-ZWM2ZSQVGC"
+  apiKey: "AIzaSyB2XtT4ES_ogBetNWBfFZnCOxEelQYyIXs",
+  authDomain: "flashforge-backup.firebaseapp.com",
+  projectId: "flashforge-backup",
+  storageBucket: "flashforge-backup.appspot.com",
+  messagingSenderId: "382491773198",
+  appId: "1:382491773198:web:3adab2b7143d55d10e2f5f",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -33,3 +48,4 @@ export const googleProvider = new GoogleAuthProvider();
 
 export const db = new getFirestore(app);
 
+export const storage = getStorage(app);
