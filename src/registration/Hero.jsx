@@ -1,28 +1,21 @@
-import React from 'react'
-import CreateCard from '../flashcards/CreateCard'
-import CreateDeck from '../flashcards/CreateDeck'
-import Library from '../flashcards/Library'
-import Deck from '../flashcards/Deck'
-import useShowToast from '../hooks/useShowToast'
+import React from "react";
+import CreateDeck from "../flashcards/CreateDeck";
+import CreateCard from "../flashcards/CreateCard";
+import Deck from "../flashcards/Deck";
 
-export const Hero = ({handleLogout}) => {
-  const showToast = useShowToast();
-  showToast("Welcome", "you are logged in", "success")
-
+export const Hero = ({ deckName, onClose }) => {
   return (
-    <div className="hero">
-      <nav>
-        <h2>Welcome</h2>
-        <button onClick={handleLogout}>Logout</button>
-        <div>
-          <CreateDeck />
-          {/* this is a demo: create cards into the deck called 'first deck' */}
-          <CreateCard deckName={'first deck'}/>
-          <Library />
-          {/* this is a demo: list all cards in the deck called 'first deck' */}
-          <Deck deckName={'first deck'}/>
-        </div>
-      </nav>
+    <div
+      style={{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.6)",
+      }}
+    >
+      <CreateCard deckName={deckName} onClose={onClose} />;
     </div>
-  )
-}
+  );
+};
