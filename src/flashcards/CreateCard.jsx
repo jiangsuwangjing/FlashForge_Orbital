@@ -1,51 +1,116 @@
-import React from 'react'
-import { useEffect, useState } from 'react';
-import { doc, setDoc, collection, addDoc, getDoc } from 'firebase/firestore';
-import { db, auth } from '../config/firebase'
-import useAuthStore from '../store/useAuthStore';
+import React from "react";
+import { useState } from "react";
+import { doc, collection, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { db, auth } from "../config/firebase";
+import useAuthStore from "../store/authStore";
+import useGetCardList from "../hooks/useGetCardList";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
-const CreateCard = ({deckName}) => {
+const CreateCard = ({ deckName, onClose }) => {
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
-
   // get referece to the deck
   const user = useAuthStore((state) => state.user);
   const userRef = doc(db, "users", user.uid);
   const libraryRef = collection(userRef, "library");
   const deckRef = doc(libraryRef, deckName);
-  const cardsRef = collection(deckRef, "cards")
-
+  const cardsRef = collection(deckRef, "cards");
+  
   const onSubmitCard = async () => {
     try {
-      await addDoc(cardsRef, {
+      const newCardRef = doc(cardsRef);
+
+      await setDoc(newCardRef, {
+        id: newCardRef.id, // Use the generated ID here
         front: front,
         back: back,
         mastery: 0,
-        userId: auth?.currentUser?.uid,
+        userId: user.uid,
         lastReviewed: Date.now()
-      })
-      
+      });
+
+      // Update the parent deck document to include the new card ID
+      await updateDoc(deckRef, {
+        cardIds: arrayUnion(newCardRef.id)
+      });
+    
       console.log('New card created successfully')
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   return (
-    <div>
-      <input 
-        placeholder='front:'
-        onChange={(e) => setFront(e.target.value)}
-      />
-      <input 
-        placeholder='back:'
-        onChange={(e) => setBack(e.target.value)}
-      />
-      <button onClick={onSubmitCard}>
-        Add
-      </button>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "80%",
+        width: "40%",
+        color: "black",
+        borderRadius: "10px",
+        backgroundColor: "white",
+        padding: "20px",
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <button style={ujin} onClick={onClose}>
+          Close
+        </button>
+        <button
+          style={ujin}
+          onClick={() => {
+            onClose();
+            onSubmitCard();
+          }}
+        >
+          Save
+        </button>
+      </div>
+      <div style={{ marginBottom: "15px", textAlign: "center" }}>New Card</div>
+      <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+        <div>Front</div>
+        {/* <textarea
+          placeholder="front:"
+          onChange={(e) => setFront(e.target.value)}
+          style={{ height: "100%", backgroundColor: "white", color: "black" }}
+        /> */}
+        <ReactQuill
+          value={front}
+          onChange={setFront}
+          theme="snow"
+          modules={{
+            clipboard: {
+              matchVisual: false,
+            },
+          }}
+        />
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+        <div>Back</div>
+        {/* <textarea
+          placeholder="back:"
+          onChange={(e) => setBack(e.target.value)}
+          style={{ height: "100%", backgroundColor: "white", color: "black" }}
+        /> */}
+        <ReactQuill
+          value={back}
+          onChange={setBack}
+          theme="snow"
+          modules={{
+            clipboard: {
+              matchVisual: false,
+            },
+          }}
+        />
+      </div>
     </div>
-  )
-}
-
-export default CreateCard
+  );
+};
+const ujin = {
+  color: "#38b6ff",
+  border: "none",
+  background: "white",
+};
+export default CreateCard;
