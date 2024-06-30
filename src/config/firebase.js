@@ -18,13 +18,22 @@ import { getStorage } from "firebase/storage";
 //   measurementId: "G-ZWM2ZSQVGC"
 // };
 
+// const firebaseConfig = {
+//   apiKey: "AIzaSyB2XtT4ES_ogBetNWBfFZnCOxEelQYyIXs",
+//   authDomain: "flashforge-backup.firebaseapp.com",
+//   projectId: "flashforge-backup",
+//   storageBucket: "flashforge-backup.appspot.com",
+//   messagingSenderId: "382491773198",
+//   appId: "1:382491773198:web:3adab2b7143d55d10e2f5f",
+// };
+
 const firebaseConfig = {
-  apiKey: "AIzaSyB2XtT4ES_ogBetNWBfFZnCOxEelQYyIXs",
-  authDomain: "flashforge-backup.firebaseapp.com",
-  projectId: "flashforge-backup",
-  storageBucket: "flashforge-backup.appspot.com",
-  messagingSenderId: "382491773198",
-  appId: "1:382491773198:web:3adab2b7143d55d10e2f5f",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
