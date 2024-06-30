@@ -1,27 +1,6 @@
-# Base image
-FROM node:14
+FROM webapp.io/node:16
 
-# Install dependencies
-RUN npm install -g npm@latest
-
-# Set working directory
-WORKDIR /app
-
-# Copy all files to the container
-COPY . .
-
-# Install project dependencies
+COPY / /root
 RUN npm install
-
-# Build the project
-RUN npm run build
-
-# Run tests
-RUN npm test
-
-# Set the entry point for the container
-ENTRYPOINT ["npm", "start"]
-
-# Expose the application port
-EXPOSE 3000
-
+RUN BACKGROUND npm run start
+EXPOSE WEBSITE localhost:3000
