@@ -2,6 +2,7 @@ import { auth, googleProvider, db } from '../config/firebase.js';
 import { useState, useEffect } from 'react';
 import { Login } from './Login';
 import { Hero } from './Hero';
+import { Navigate } from "react-router-dom";
 import '../styles/App.css';
 import { 
   createUserWithEmailAndPassword, 
@@ -10,7 +11,7 @@ import {
   signOut 
 } from "firebase/auth";
 import { doc, getDoc, setDoc, collection } from 'firebase/firestore';
-import useAuthStore from "../store/useAuthStore";
+import useAuthStore from "../store/authStore.js";
 
 function Register() {
   const [user, setUser] = useState('');
@@ -31,6 +32,8 @@ function Register() {
     setEmailError("");
     setPasswordError("");
   };
+
+  const loginUser = useAuthStore((state) => state.login);
 
   const handleLogin = async () => {
     clearErrors();
@@ -55,6 +58,7 @@ function Register() {
           const docRef = doc(db, "users", userCred.user.uid);
           const docSnap = await getDoc(docRef);
           localStorage.setItem("user-info", JSON.stringify(docSnap.data()));
+          loginUser(docSnap.data());
         } catch (err) {
           console.log(err.message)
         }
@@ -80,17 +84,19 @@ function Register() {
   
           // Add user data to Firestore
           const userRef = doc(db, "users", userCredential.user.uid);
+          const defaultProfilePicURL = "https://i.pinimg.com/736x/cb/45/72/cb4572f19ab7505d552206ed5dfb3739.jpg";
           const userDoc = {
             uid: userCredential.user.uid,
             email: email,
             username: username,
-            profilePicURL: "",
+            profilePicURL: defaultProfilePicURL,
             createdAt: Date.now(),
           }
           await setDoc(userRef, userDoc);
 
           // after every sign in, ther user info will be downloaded in the localStorage for easy reference
           localStorage.setItem("user-info", JSON.stringify(userDoc));
+          loginUser(userDoc);
           console.log("User data added to Firestore and collection created for user");
         }).catch((err) => {
           console.error('Error during signup:', err);
@@ -137,6 +143,7 @@ function Register() {
             initialData: "This is an initial document"
           })
           localStorage.setItem("user-info", JSON.stringify(userDoc));
+          loginUser(userDoc);
           console.log("User data added to Firestore and collection created for user");
         })
     } catch (e) {
@@ -153,7 +160,7 @@ function Register() {
       <div className="login">
         <div className="container">
           {user ? (
-            <Hero handleLogout={handleLogout} />
+            <Navigate to="/home" replace={true} />
           ) : (
             <Login
               email={email}
