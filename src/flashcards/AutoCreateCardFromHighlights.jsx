@@ -57,7 +57,15 @@ const AutoCreateCardFromHighlights = ({ deckName, onClose }) => {
     const div = document.createElement("div");
     div.innerHTML = html;
     const strongs = div.querySelectorAll('strong[style*="background-color"]');
+    const spans = div.querySelectorAll('span[style*="background-color"]');
     strongs.forEach((strong) => {
+      const underlineLength = strong.textContent.length;
+      const underlineText = "_".repeat(underlineLength);
+      strong.textContent = underlineText;
+      strong.style.textDecoration = "none"; // Ensure text decoration is none
+      strong.style.backgroundColor = ""; // Remove background color
+    });
+    spans.forEach((strong) => {
       const underlineLength = strong.textContent.length;
       const underlineText = "_".repeat(underlineLength);
       strong.textContent = underlineText;
@@ -149,7 +157,16 @@ const AutoCreateCardFromHighlights = ({ deckName, onClose }) => {
         <div
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
         >
-          <div>Back</div>
+          <div>Preview</div>
+          {savedHtml &&
+            <ReactQuill
+              value={savedHtml}
+              readOnly={true}
+              theme="bubble"
+            />
+          }
+          
+
           {/* <textarea
           placeholder="back:"
           onChange={(e) => setBack(e.target.value)}
