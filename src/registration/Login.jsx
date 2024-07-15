@@ -16,7 +16,7 @@ export const Login = (props) => {
     passwordError,
     signInWithGoogle,
     username,
-    setUsername
+    setUsername,
   } = props;
   return (
     <div className="base-container">
@@ -25,19 +25,30 @@ export const Login = (props) => {
           <img src={logo} />
         </div>
         <div className="form">
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="text"
-            placeholder="email"
-            autoFocus
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          { emailError && <p className="errorMsg">{emailError}</p> }
-        </div>
-          { !hasAccount &&
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="text"
+              placeholder="email"
+              autoFocus
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {emailError && (
+              <p
+                style={{
+                  position: "absolute",
+                  marginTop: "78px",
+                  marginLeft: "24px",
+                }}
+                className="errorMsg"
+              >
+                {emailError}
+              </p>
+            )}
+          </div>
+          {!hasAccount && (
             <div className="form-group">
               <label htmlFor="username">Username</label>
               <input
@@ -49,7 +60,7 @@ export const Login = (props) => {
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
-          }
+          )}
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
@@ -59,8 +70,18 @@ export const Login = (props) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            { passwordError && 
-              <p className="errorMsg">{passwordError}</p> }
+            {passwordError && (
+              <p
+                style={{
+                  position: "absolute",
+                  marginTop: "78px",
+                  marginLeft: "24px",
+                }}
+                className="errorMsg"
+              >
+                {passwordError}
+              </p>
+            )}
           </div>
         </div>
       </div>

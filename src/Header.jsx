@@ -22,6 +22,11 @@ function Header() {
     const subMenu = document.getElementById("subMenu");
     subMenu.classList.toggle("open-menu");
   };
+  const handleLogoutClick = (e) => {
+    e.stopPropagation();
+    console.log("logging out");
+    handleLogout();
+  };
   return (
     <div className="navbar">
       <div className="search-container">
@@ -35,7 +40,7 @@ function Header() {
         <nav>
           <ul>
             <li>
-              <a href="#">Home</a>
+              <a href="/home">Home</a>
             </li>
             <li>
               <a href="/library">Library</a>
@@ -44,17 +49,16 @@ function Header() {
               <a href="#">Community</a>
             </li>
           </ul>
-          <img src={profilePicURL} class="user-pic" onClick={toggleMenu} />
+          <img src={profilePicURL} className="user-pic" onClick={toggleMenu} />
           <div className="sub-menu-wrap" id="subMenu">
             <div className="sub-menu">
               <a href="/profile" className="sub-menu-link">
-                { user &&
+                {user && (
                   <div className="user-info">
                     <img src={profilePicURL} />
                     <h2>{username}</h2>
                   </div>
-                }
-                
+                )}
               </a>
               <hr />
               <a href="/profile" className="sub-menu-link">
@@ -68,7 +72,7 @@ function Header() {
               </a>
 
               <a href="/" className="sub-menu-link">
-                <button onClick={handleLogout}>Sign Out</button>
+                <button onClick={(e) => handleLogoutClick(e)}>Sign Out</button>
                 <span> </span>
               </a>
             </div>

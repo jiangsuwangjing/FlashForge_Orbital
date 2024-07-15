@@ -22,10 +22,10 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
   const [cardIds, setCardIds] = useState([]);
   const [cardIndex, setCardIndex] = useState(0);
   const [showBack, setShowBack] = useState(false);
+  const [totalMastery, setTotalMastery] = useState(0);
   const user = useAuthStore((state) => state.user);
   const deckRef = doc(db, "users", user.uid, "library", deckName);
-  console.log(deckRef);
-
+  
   const getCardIds = async (deckRef) => {
     try {
       const deckDoc = await getDoc(deckRef);
@@ -44,7 +44,7 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
 
   const updateMasteryLevel = async (cardId, newMastery) => {
     try {
-      const cardDocRef = doc(deckRef, "cards", cardId);
+      const cardDocRef = doc(deckRef, "cards", cardId);  
       await updateDoc(cardDocRef, { mastery: newMastery });
       console.log("Mastery level updated successfully.");
     } catch (error) {
@@ -68,10 +68,17 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
 
   const handleMasteryLevel = async (level) => {
     const currentCardId = cardIds[cardIndex];
-    console.log(currentCardId);
+    const newTotalMastery = totalMastery + level;
+    setTotalMastery(newTotalMastery);     
     await updateMasteryLevel(currentCardId, level);
+    console.log("new total" + newTotalMastery)
     setShowBack(false);
-    setCardIndex((prevIndex) => (prevIndex + 1) % cards.length);
+    if (cardIndex == cards.length - 1) {
+      console.log(newTotalMastery / cards.length)
+      await popOff(Math.ceil(newTotalMastery / cards.length));
+    } else {
+      setCardIndex((prevIndex) => (prevIndex + 1));
+    }
   };
 
   if (cards.length === 0) {
@@ -112,7 +119,7 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
           </div>
         )}
       </div>
-      <button
+      {/* <button
         onClick={popOff}
         style={{
           position: "absolute",
@@ -123,7 +130,7 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
         }}
       >
         End Revision
-      </button>
+      </button> */}
     </div>
   );
 };

@@ -1,11 +1,17 @@
 import React from "react";
 import { useState } from "react";
-import { doc, collection, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import {
+  doc,
+  collection,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import { db, auth } from "../config/firebase";
 import useAuthStore from "../store/authStore";
 import useGetCardList from "../hooks/useGetCardList";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const CreateCard = ({ deckName, onClose }) => {
   const [front, setFront] = useState("");
@@ -16,7 +22,7 @@ const CreateCard = ({ deckName, onClose }) => {
   const libraryRef = collection(userRef, "library");
   const deckRef = doc(libraryRef, deckName);
   const cardsRef = collection(deckRef, "cards");
-  
+
   const onSubmitCard = async () => {
     try {
       const newCardRef = doc(cardsRef);
@@ -27,15 +33,15 @@ const CreateCard = ({ deckName, onClose }) => {
         back: back,
         mastery: 0,
         userId: user.uid,
-        lastReviewed: Date.now()
+        lastReviewed: Date.now(),
       });
 
       // Update the parent deck document to include the new card ID
       await updateDoc(deckRef, {
-        cardIds: arrayUnion(newCardRef.id)
+        cardIds: arrayUnion(newCardRef.id),
       });
-    
-      console.log('New card created successfully')
+
+      console.log("New card created successfully");
     } catch (err) {
       console.error(err);
     }
@@ -71,11 +77,6 @@ const CreateCard = ({ deckName, onClose }) => {
       <div style={{ marginBottom: "15px", textAlign: "center" }}>New Card</div>
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <div>Front</div>
-        {/* <textarea
-          placeholder="front:"
-          onChange={(e) => setFront(e.target.value)}
-          style={{ height: "100%", backgroundColor: "white", color: "black" }}
-        /> */}
         <ReactQuill
           value={front}
           onChange={setFront}
@@ -89,11 +90,6 @@ const CreateCard = ({ deckName, onClose }) => {
       </div>
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <div>Back</div>
-        {/* <textarea
-          placeholder="back:"
-          onChange={(e) => setBack(e.target.value)}
-          style={{ height: "100%", backgroundColor: "white", color: "black" }}
-        /> */}
         <ReactQuill
           value={back}
           onChange={setBack}

@@ -19,10 +19,11 @@ const LibrarySideBar = () => {
               textAlign: "center",
               backgroundColor: deck.color,
               color: "#fff",
-              width: "200px",
-              padding: "24px",
+              width: "180px",
+              padding: "22px",
               borderRadius: "10px",
               marginLeft: "20px",
+              marginTop: "8px",
             }}
           >
             {deck.deckName}
