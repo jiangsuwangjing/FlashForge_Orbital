@@ -31,7 +31,7 @@ export default function Library() {
       <Header />
       <div style={{ display: "flex" }}>
         <div>
-          <h1>Library</h1>
+          <h1 style={{ margin: "20px" }}>Library</h1>
           <LibrarySideBar />
           <CreateDeck />
         </div>
