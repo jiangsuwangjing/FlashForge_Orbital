@@ -25,7 +25,7 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
   const [totalMastery, setTotalMastery] = useState(0);
   const user = useAuthStore((state) => state.user);
   const deckRef = doc(db, "users", user.uid, "library", deckName);
-  
+
   const getCardIds = async (deckRef) => {
     try {
       const deckDoc = await getDoc(deckRef);
@@ -44,7 +44,7 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
 
   const updateMasteryLevel = async (cardId, newMastery) => {
     try {
-      const cardDocRef = doc(deckRef, "cards", cardId);  
+      const cardDocRef = doc(deckRef, "cards", cardId);
       await updateDoc(cardDocRef, { mastery: newMastery });
       console.log("Mastery level updated successfully.");
     } catch (error) {
@@ -69,15 +69,15 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
   const handleMasteryLevel = async (level) => {
     const currentCardId = cardIds[cardIndex];
     const newTotalMastery = totalMastery + level;
-    setTotalMastery(newTotalMastery);     
+    setTotalMastery(newTotalMastery);
     await updateMasteryLevel(currentCardId, level);
-    console.log("new total" + newTotalMastery)
+    console.log("new total" + newTotalMastery);
     setShowBack(false);
     if (cardIndex == cards.length - 1) {
-      console.log(newTotalMastery / cards.length)
+      console.log(newTotalMastery / cards.length);
       await popOff(Math.ceil(newTotalMastery / cards.length));
     } else {
-      setCardIndex((prevIndex) => (prevIndex + 1));
+      setCardIndex((prevIndex) => prevIndex + 1);
     }
   };
 
@@ -111,7 +111,7 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
           />
         </div>
         {showBack && (
-          <div>
+          <div style={{ position: "absolute", bottom: "38%", left: "41.7%" }}>
             <button onClick={() => handleMasteryLevel(25)}>Fail</button>
             <button onClick={() => handleMasteryLevel(50)}>Hard</button>
             <button onClick={() => handleMasteryLevel(75)}>Good</button>
@@ -141,9 +141,10 @@ const Card = ({ text }) => {
         height: "250px",
         minWidth: "250px",
         backgroundColor: "white",
+        position: "absolute",
         color: "black",
-        padding: "10px",
-        margin: "10px",
+        left: "43%",
+        top: "30%",
         borderRadius: "10px",
         boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
         cursor: "pointer",
