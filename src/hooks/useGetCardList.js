@@ -5,7 +5,7 @@ import { db } from "../config/firebase";
 import { onSnapshot, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import useAuthStore from "../store/authStore";
 
-const useGetCardList = (deckName) => {
+const useGetCardList = (deckName, deckRef) => {
   const [cardList, setCardList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,18 +13,18 @@ const useGetCardList = (deckName) => {
 
   const user = useAuthStore((state) => state.user);
 
-  const userRef = useMemo(
-    () => (user ? doc(db, "users", user.uid) : null),
-    [user]
-  );
-  const libraryRef = useMemo(
-    () => (userRef ? collection(userRef, "library") : null),
-    [userRef]
-  );
-  const deckRef = useMemo(
-    () => (libraryRef ? doc(libraryRef, deckName) : null),
-    [libraryRef, deckName]
-  );
+  // const userRef = useMemo(
+  //   () => (user ? doc(db, "users", user.uid) : null),
+  //   [user]
+  // );
+  // const libraryRef = useMemo(
+  //   () => (userRef ? collection(userRef, "library") : null),
+  //   [userRef]
+  // );
+  // const deckRef = useMemo(
+  //   () => (libraryRef ? doc(libraryRef, deckName) : null),
+  //   [libraryRef, deckName]
+  // );
   const cardsRef = useMemo(
     () => (deckRef ? collection(deckRef, "cards") : null),
     [deckRef]

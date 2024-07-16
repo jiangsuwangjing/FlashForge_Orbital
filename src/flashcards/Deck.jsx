@@ -24,16 +24,20 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-
+import { arrayRemove } from "firebase/firestore";
 import "react-quill/dist/quill.snow.css";
 
-const FlipCard = ({ card, isFlipped, onFlip }) => {
+const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
+  const cardId = card[2];
+  const cardRef = doc(deckRef, "cards", cardId);
+
   const [popUp, setPopUp] = useState(false);
   const [contextMenu, setContextMenu] = useState({
     visible: false,
     x: 0,
     y: 0,
   });
+
   const handleContextMenu = (event) => {
     console.log("right click");
     event.preventDefault();
@@ -43,6 +47,7 @@ const FlipCard = ({ card, isFlipped, onFlip }) => {
       y: event.clientY,
     });
   };
+
   const handleClick = () => {
     setContextMenu({ visible: false, x: 0, y: 0 });
   };
@@ -54,12 +59,27 @@ const FlipCard = ({ card, isFlipped, onFlip }) => {
     console.log("edit");
     setPopUp(true);
   };
+
+  const deleteOption = async () => {
+    try {
+      await deleteDoc(cardRef);
+      await updateDoc(deckRef, {
+        cardIds: arrayRemove(cardId)
+      });
+      
+      console.log(`Card with ID ${cardId} deleted successfully`);
+    } catch (error) {
+      console.error("Delete error" + error.message);
+    }
+  }
+
   useEffect(() => {
     document.addEventListener("click", handleClick);
     return () => {
       document.removeEventListener("click", handleClick);
     };
   }, []);
+
   return (
     <>
       {popUp && (
@@ -83,7 +103,7 @@ const FlipCard = ({ card, isFlipped, onFlip }) => {
               backgroundColor: "rgba(0, 0, 0, 0.6)",
             }}
           >
-            <EditCardPreview card={card} onClose={handleClosePopup} />
+            <EditCardPreview card={card} cardRef={cardRef} onClose={handleClosePopup} />
           </div>
         </div>
       )}
@@ -124,7 +144,7 @@ const FlipCard = ({ card, isFlipped, onFlip }) => {
             <ul
               style={{
                 listStyle: "none",
-                padding: "6px",
+                padding: "10px",
                 margin: "0",
                 boxSizing: "border-box",
               }}
@@ -132,7 +152,7 @@ const FlipCard = ({ card, isFlipped, onFlip }) => {
               <li onClick={(e) => editOption(e)} style={styles.li}>
                 Edit
               </li>
-              <li style={styles.li}>Delete</li>
+              <li onClick={deleteOption}  style={styles.li}>Delete</li>
             </ul>
           </div>
         )}
@@ -143,8 +163,7 @@ const FlipCard = ({ card, isFlipped, onFlip }) => {
 const styles = {
   li: {
     color: "white",
-    padding: "12px 8px",
-    fontSize: "14px",
+    padding: "18px 12px",
     ":hover": {
       backgroundColor: "black", // Example hover effect
       cursor: "pointer",
@@ -152,8 +171,10 @@ const styles = {
   },
 };
 const Deck = ({ deckName }) => {
-  const { cardList, averageDecayedMastery } = useGetCardList(deckName);
   const user = useAuthStore((state) => state.user);
+  const deckRef = doc(db, "users", user.uid, "library", deckName);
+
+  const { cardList, averageDecayedMastery } = useGetCardList(deckName, deckRef);
 
   // const totalMastery = cardList.reduce((acc, card) => acc + card.mastery, 0);
   // const averageMastery = cardList.length > 0 ? Math.ceil(totalMastery / cardList.length) : 0;
@@ -179,9 +200,9 @@ const Deck = ({ deckName }) => {
   const popOff = async (overallMastery) => {
     setPop(false);
     try {
-      const userRef = doc(db, "users", user.uid);
-      const libraryRef = collection(userRef, "library");
-      const deckRef = doc(libraryRef, deckName);
+      // const userRef = doc(db, "users", user.uid);
+      // const libraryRef = collection(userRef, "library");
+      // const deckRef = doc(libraryRef, deckName);
       await updateDoc(deckRef, {
         lastReviewed: Date.now(),
       });
@@ -220,11 +241,12 @@ const Deck = ({ deckName }) => {
         <div style={{ overflowY: "auto", flexGrow: 1, padding: "10px" }}>
           <SimpleGrid columns={5} spacing="10px" padding="10px">
             {cardList
-              .map(({ front, back }) => [front, back])
+              .map(({ front, back, id, frontImageUrl, backImageUrl }) => [front, back, id, frontImageUrl, backImageUrl])
               .map((card, index) => (
                 <>
                   <FlipCard
                     card={card}
+                    deckRef={deckRef}
                     key={index}
                     isFlipped={!!flippedCards[index]}
                     onFlip={() => handleFlip(index)}

@@ -1,47 +1,78 @@
 import React from "react";
 import { useState } from "react";
-import {
-  doc,
-  collection,
-  setDoc,
-  updateDoc,
-  arrayUnion,
-} from "firebase/firestore";
+import { doc, collection, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { db, auth } from "../config/firebase";
 import useAuthStore from "../store/authStore";
 import useGetCardList from "../hooks/useGetCardList";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../config/firebase";
+import { v4 as uuidv4 } from 'uuid';
 
 const CreateCard = ({ deckName, onClose }) => {
+  const user = useAuthStore((state) => state.user);
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
+  const [frontImage, setFrontImage] = useState(null); // State to store the selected image
+  const [backImage, setBackImage] = useState(null); // State to store the selected image
   // get referece to the deck
-  const user = useAuthStore((state) => state.user);
   const userRef = doc(db, "users", user.uid);
   const libraryRef = collection(userRef, "library");
   const deckRef = doc(libraryRef, deckName);
   const cardsRef = collection(deckRef, "cards");
+  
+  const uploadImage = async (imageFile) => {
+    const storageRef = ref(storage, `cardPics/${user.uid}`);	// the path to the store
+    const imageRef = ref(storageRef, `${uuidv4()}`);
+    await uploadBytes(imageRef, imageFile);
+    const imageUrl = await getDownloadURL(imageRef);
+    return imageUrl;
+  };
+
+  const handleFrontImageChange = (e) => {
+    if (e.target.files[0]) {
+      setFrontImage(e.target.files[0]);
+    }
+  };
+  const handleBackImageChange = (e) => {
+    if (e.target.files[0]) {
+      setBackImage(e.target.files[0]);
+    }
+  };
 
   const onSubmitCard = async () => {
     try {
+      let frontImageUrl = '';
+      let backImageUrl = '';
+
+      if (frontImage) {
+        frontImageUrl = await uploadImage(frontImage); // Upload image and get the URL
+      }
+      if (backImage) {
+        backImageUrl = await uploadImage(backImage); // Upload image and get the URL
+      }
+
       const newCardRef = doc(cardsRef);
 
       await setDoc(newCardRef, {
         id: newCardRef.id, // Use the generated ID here
         front: front,
         back: back,
+        frontImageUrl: frontImageUrl, // Store the image URL
+        backImageUrl: backImageUrl,
         mastery: 0,
         userId: user.uid,
-        lastReviewed: Date.now(),
+        lastReviewed: Date.now()
       });
 
       // Update the parent deck document to include the new card ID
       await updateDoc(deckRef, {
-        cardIds: arrayUnion(newCardRef.id),
+        cardIds: arrayUnion(newCardRef.id)
       });
-
-      console.log("New card created successfully");
+    
+      console.log('New card created successfully')
     } catch (err) {
       console.error(err);
     }
@@ -77,6 +108,11 @@ const CreateCard = ({ deckName, onClose }) => {
       <div style={{ marginBottom: "15px", textAlign: "center" }}>New Card</div>
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <div>Front</div>
+        {/* <textarea
+          placeholder="front:"
+          onChange={(e) => setFront(e.target.value)}
+          style={{ height: "100%", backgroundColor: "white", color: "black" }}
+        /> */}
         <ReactQuill
           value={front}
           onChange={setFront}
@@ -87,9 +123,15 @@ const CreateCard = ({ deckName, onClose }) => {
             },
           }}
         />
+        <input type="file" onChange={handleFrontImageChange} />
       </div>
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <div>Back</div>
+        {/* <textarea
+          placeholder="back:"
+          onChange={(e) => setBack(e.target.value)}
+          style={{ height: "100%", backgroundColor: "white", color: "black" }}
+        /> */}
         <ReactQuill
           value={back}
           onChange={setBack}
@@ -100,6 +142,7 @@ const CreateCard = ({ deckName, onClose }) => {
             },
           }}
         />
+        <input type="file" onChange={handleBackImageChange} />
       </div>
     </div>
   );
