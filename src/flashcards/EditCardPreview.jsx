@@ -1,28 +1,30 @@
-import React from "react";
-import { useState } from "react";
-import { doc, collection, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
-import { db, auth } from "../config/firebase";
+import { useState, react } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import useAuthStore from "../store/authStore";
-import useGetCardList from "../hooks/useGetCardList";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-
+import { collection, doc, updateDoc } from "firebase/firestore";
+import { db } from "../config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../config/firebase";
 import { v4 as uuidv4 } from 'uuid';
 
-const CreateCard = ({ deckName, onClose }) => {
-  const user = useAuthStore((state) => state.user);
-  const [front, setFront] = useState("");
-  const [back, setBack] = useState("");
-  const [frontImage, setFrontImage] = useState(null); // State to store the selected image
-  const [backImage, setBackImage] = useState(null); // State to store the selected image
-  // get referece to the deck
-  const userRef = doc(db, "users", user.uid);
-  const libraryRef = collection(userRef, "library");
-  const deckRef = doc(libraryRef, deckName);
-  const cardsRef = collection(deckRef, "cards");
+export default function EditCardPreview({ card, cardRef, onClose }) {
+  // const user = useAuthStore((state) => state.user);
+  // const userRef = doc(db, "users", user.uid);
+  // const libraryRef = collection(userRef, "library");
+  // const deckRef = doc(libraryRef, deckName);
+  // const cardsRef = collection(deckRef, "cards");
   
+  // const cardsRef = collection(deckRef, "cards");
+  // const cardId = card[2];
+  // const cardRef = doc(cardsRef, cardId)
+  // const [front, setFront] = useState(card[0]);
+  // const [back, setBack] = useState(card[1]);
+  const [front, setFront] = useState(card[0]);
+  const [back, setBack] = useState(card[1]);
+  const [frontImage, setFrontImage] = useState(card[3]);
+  const [backImage, setBackImage] = useState(card[4]); 
+
   const uploadImage = async (imageFile) => {
     const storageRef = ref(storage, `cardPics/${user.uid}`);	// the path to the store
     const imageRef = ref(storageRef, `${uuidv4()}`);
@@ -46,6 +48,7 @@ const CreateCard = ({ deckName, onClose }) => {
     try {
       let frontImageUrl = '';
       let backImageUrl = '';
+      console.log("clicked")
 
       if (frontImage) {
         frontImageUrl = await uploadImage(frontImage); // Upload image and get the URL
@@ -54,25 +57,18 @@ const CreateCard = ({ deckName, onClose }) => {
         backImageUrl = await uploadImage(backImage); // Upload image and get the URL
       }
 
-      const newCardRef = doc(cardsRef);
-
-      await setDoc(newCardRef, {
-        id: newCardRef.id, // Use the generated ID here
+      // Update the existing card document
+      await updateDoc(cardRef, {
         front: front,
         back: back,
-        frontImageUrl: frontImageUrl, // Store the image URL
-        backImageUrl: backImageUrl,
-        mastery: 0,
-        userId: user.uid,
-        lastReviewed: Date.now()
+        ...(frontImageUrl && { frontImageUrl }), // Conditionally include frontImageUrl
+        ...(backImageUrl && { backImageUrl }), // Conditionally include backImageUrl
+        lastReviewed: Date.now(),
+        mastery: 0
       });
 
-      // Update the parent deck document to include the new card ID
-      await updateDoc(deckRef, {
-        cardIds: arrayUnion(newCardRef.id)
-      });
-    
-      console.log('New card created successfully')
+      console.log('Card updated successfully');
+      onClose(); // Close the edit form
     } catch (err) {
       console.error(err);
     }
@@ -98,21 +94,16 @@ const CreateCard = ({ deckName, onClose }) => {
         <button
           style={ujin}
           onClick={() => {
-            onClose();
             onSubmitCard();
+            onClose();
           }}
         >
           Save
         </button>
       </div>
-      <div style={{ marginBottom: "15px", textAlign: "center" }}>New Card</div>
+      <div style={{ marginBottom: "15px", textAlign: "center" }}>Edit Card</div>
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <div>Front</div>
-        {/* <textarea
-          placeholder="front:"
-          onChange={(e) => setFront(e.target.value)}
-          style={{ height: "100%", backgroundColor: "white", color: "black" }}
-        /> */}
         <ReactQuill
           value={front}
           onChange={setFront}
@@ -127,11 +118,6 @@ const CreateCard = ({ deckName, onClose }) => {
       </div>
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <div>Back</div>
-        {/* <textarea
-          placeholder="back:"
-          onChange={(e) => setBack(e.target.value)}
-          style={{ height: "100%", backgroundColor: "white", color: "black" }}
-        /> */}
         <ReactQuill
           value={back}
           onChange={setBack}
@@ -146,10 +132,9 @@ const CreateCard = ({ deckName, onClose }) => {
       </div>
     </div>
   );
-};
+}
 const ujin = {
   color: "#38b6ff",
   border: "none",
   background: "white",
 };
-export default CreateCard;
