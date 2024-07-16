@@ -124,7 +124,7 @@ const FlipCard = ({ card, isFlipped, onFlip }) => {
             <ul
               style={{
                 listStyle: "none",
-                padding: "10px",
+                padding: "6px",
                 margin: "0",
                 boxSizing: "border-box",
               }}
@@ -143,7 +143,8 @@ const FlipCard = ({ card, isFlipped, onFlip }) => {
 const styles = {
   li: {
     color: "white",
-    padding: "18px 12px",
+    padding: "12px 8px",
+    fontSize: "14px",
     ":hover": {
       backgroundColor: "black", // Example hover effect
       cursor: "pointer",
