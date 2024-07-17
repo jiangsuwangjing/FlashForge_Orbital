@@ -10,6 +10,7 @@ import 'react-quill/dist/quill.snow.css';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../config/firebase";
 import { v4 as uuidv4 } from 'uuid';
+import { AudioRecorder } from "react-audio-voice-recorder";
 
 const CreateCard = ({ deckName, onClose }) => {
   const user = useAuthStore((state) => state.user);
@@ -17,12 +18,15 @@ const CreateCard = ({ deckName, onClose }) => {
   const [back, setBack] = useState("");
   const [frontImage, setFrontImage] = useState(null); // State to store the selected image
   const [backImage, setBackImage] = useState(null); // State to store the selected image
+  const [frontAudioUrl, setFrontAudioUrl] = useState('');
+  const [backAudioUrl, setBackAudioUrl] = useState('');
   // get referece to the deck
   const userRef = doc(db, "users", user.uid);
   const libraryRef = collection(userRef, "library");
   const deckRef = doc(libraryRef, deckName);
   const cardsRef = collection(deckRef, "cards");
   
+  // Image Handling
   const uploadImage = async (imageFile) => {
     const storageRef = ref(storage, `cardPics/${user.uid}`);	// the path to the store
     const imageRef = ref(storageRef, `${uuidv4()}`);
@@ -41,6 +45,28 @@ const CreateCard = ({ deckName, onClose }) => {
       setBackImage(e.target.files[0]);
     }
   };
+
+  // Audio Handling
+  const uploadAudio = async (audioBlob) => {
+    const storageRef = ref(storage, `cardAudios/${user.uid}`);
+    const audioRef = ref(storageRef, `${uuidv4()}`);
+    await uploadBytes(audioRef, audioBlob);
+    const audioUrl = await getDownloadURL(audioRef);
+    console.log(audioUrl);
+    return audioUrl;
+  };
+
+  const addFrontAudioElement = async (blob) => {
+    console.log("clicked")
+    const audioUrl = await uploadAudio(blob);
+    setFrontAudioUrl(audioUrl);
+  };
+
+  const addBackAudioElement = async (blob) => {
+    const audioUrl = await uploadAudio(blob);
+    setBackAudioUrl(audioUrl);
+  };
+
 
   const onSubmitCard = async () => {
     try {
@@ -62,6 +88,8 @@ const CreateCard = ({ deckName, onClose }) => {
         back: back,
         frontImageUrl: frontImageUrl, // Store the image URL
         backImageUrl: backImageUrl,
+        frontAudioUrl: frontAudioUrl, 
+        backAudioUrl: backAudioUrl,
         mastery: 0,
         userId: user.uid,
         lastReviewed: Date.now()
@@ -124,6 +152,10 @@ const CreateCard = ({ deckName, onClose }) => {
           }}
         />
         <input type="file" onChange={handleFrontImageChange} />
+        <div>
+          <div>Front Audio</div>
+          <AudioRecorder onRecordingComplete={addFrontAudioElement} />
+        </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <div>Back</div>
@@ -143,6 +175,10 @@ const CreateCard = ({ deckName, onClose }) => {
           }}
         />
         <input type="file" onChange={handleBackImageChange} />
+        <div>
+          <div>Back Audio</div>
+          <AudioRecorder onRecordingComplete={addBackAudioElement} />
+        </div>
       </div>
     </div>
   );
