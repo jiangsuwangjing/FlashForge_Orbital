@@ -7,9 +7,10 @@ import { db } from "../config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../config/firebase";
 import { v4 as uuidv4 } from 'uuid';
+import { AudioRecorder } from "react-audio-voice-recorder";
 
 export default function EditCardPreview({ card, cardRef, onClose }) {
-  // const user = useAuthStore((state) => state.user);
+  const user = useAuthStore((state) => state.user);
   // const userRef = doc(db, "users", user.uid);
   // const libraryRef = collection(userRef, "library");
   // const deckRef = doc(libraryRef, deckName);
@@ -24,6 +25,8 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
   const [back, setBack] = useState(card[1]);
   const [frontImage, setFrontImage] = useState(card[3]);
   const [backImage, setBackImage] = useState(card[4]); 
+  const [frontAudioUrl, setFrontAudioUrl] = useState(card[5]);
+  const [backAudioUrl, setBackAudioUrl] = useState(card[6]);
 
   const uploadImage = async (imageFile) => {
     const storageRef = ref(storage, `cardPics/${user.uid}`);	// the path to the store
@@ -33,6 +36,7 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
     return imageUrl;
   };
 
+  // Image Handling
   const handleFrontImageChange = (e) => {
     if (e.target.files[0]) {
       setFrontImage(e.target.files[0]);
@@ -44,10 +48,32 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
     }
   };
 
+  // Audio Handling
+  const uploadAudio = async (audioBlob) => {
+    const storageRef = ref(storage, `cardAudios/${user.uid}`);
+    const audioRef = ref(storageRef, `${uuidv4()}`);
+    await uploadBytes(audioRef, audioBlob);
+    const audioUrl = await getDownloadURL(audioRef);
+    console.log("audio uploaded");
+    return audioUrl;
+  };
+
+  const addFrontAudioElement = async (blob) => {
+    console.log("clicked")
+    const audioUrl = await uploadAudio(blob);
+    setFrontAudioUrl(audioUrl);
+  };
+
+  const addBackAudioElement = async (blob) => {
+    const audioUrl = await uploadAudio(blob);
+    setBackAudioUrl(audioUrl);
+  };
+
   const onSubmitCard = async () => {
     try {
       let frontImageUrl = '';
       let backImageUrl = '';
+      
       console.log("clicked")
 
       if (frontImage) {
@@ -63,6 +89,9 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
         back: back,
         ...(frontImageUrl && { frontImageUrl }), // Conditionally include frontImageUrl
         ...(backImageUrl && { backImageUrl }), // Conditionally include backImageUrl
+        ...(frontAudioUrl && { frontAudioUrl }), 
+        ...(backAudioUrl && { backAudioUrl }), 
+        backAudioUrl: backAudioUrl,
         lastReviewed: Date.now(),
         mastery: 0
       });
@@ -115,6 +144,10 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
           }}
         />
         <input type="file" onChange={handleFrontImageChange} />
+        <div>
+          <div>Front Audio</div>
+          <AudioRecorder onRecordingComplete={addFrontAudioElement} />
+        </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <div>Back</div>
@@ -129,6 +162,10 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
           }}
         />
         <input type="file" onChange={handleBackImageChange} />
+        <div>
+          <div>Back Audio</div>
+          <AudioRecorder onRecordingComplete={addBackAudioElement} />
+        </div>
       </div>
     </div>
   );
