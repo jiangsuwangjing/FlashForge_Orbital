@@ -205,6 +205,7 @@ const Deck = ({ deckName }) => {
       // const deckRef = doc(libraryRef, deckName);
       await updateDoc(deckRef, {
         lastReviewed: Date.now(),
+        overallMastery: overallMastery
       });
       setAverageMastery(overallMastery);
       console.log(averageMastery);
@@ -241,7 +242,7 @@ const Deck = ({ deckName }) => {
         <div style={{ overflowY: "auto", flexGrow: 1, padding: "10px" }}>
           <SimpleGrid columns={5} spacing="10px" padding="10px">
             {cardList
-              .map(({ front, back, id, frontImageUrl, backImageUrl }) => [front, back, id, frontImageUrl, backImageUrl])
+              .map(({ front, back, id, frontImageUrl, backImageUrl, frontAudioUrl, backAudioUrl }) => [front, back, id, frontImageUrl, backImageUrl, frontAudioUrl, backAudioUrl])
               .map((card, index) => (
                 <>
                   <FlipCard
