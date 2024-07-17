@@ -109,6 +109,7 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
               />
             }
             imageUrl={showBack ? currentCard.backImageUrl : currentCard.frontImageUrl} 
+            audioUrl={showBack ? currentCard.backAudioUrl : currentCard.frontAudioUrl}
           />
         </div>
         {showBack && (
@@ -136,7 +137,7 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
   );
 };
 
-const Card = ({ text, imageUrl }) => {
+const Card = ({ text, imageUrl, audioUrl }) => {
   return (
     <div
       style={{
@@ -164,6 +165,9 @@ const Card = ({ text, imageUrl }) => {
         {text}
       </div>
       {imageUrl && <img src={imageUrl} alt="Card visual" style={{ maxHeight: "200px", margin: "10px" }} />}
+      <audio controls>
+        <source src={audioUrl} type="audio/mpeg" />
+      </audio>
     </div>
   );
 };
