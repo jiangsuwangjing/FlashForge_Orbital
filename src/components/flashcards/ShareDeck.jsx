@@ -10,12 +10,12 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db, auth } from "../config/firebase";
-import useAuthStore from "../store/authStore";
-import useGetCardList from "../hooks/useGetCardList";
-import { Await } from "react-router-dom";
+import { db } from "../../config/firebase";
+import useAuthStore from "../../store/authStore";
+import useGetCardList from "../../hooks/useGetCardList";
 import UnshareDeck from "./UnshareDeck";
-import "../styles/ShareDeck.css";
+import "../../styles/ShareDeck.css";
+
 const getUserProfileByEmail = async (email) => {
   try {
     const q = query(collection(db, "users"), where("email", "==", email));

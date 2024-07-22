@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import useAuthStore from "../store/authStore";
+import useAuthStore from "../../store/authStore";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../config/firebase";
+import { db } from "../../config/firebase";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import CardInReview from "./CardInReview";
 
 /**
  * Passing the current deck name and the list of cards to enter the review mode.
@@ -100,7 +101,7 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
     >
       <div>
         <div onClick={handleFlip}>
-          <Card
+          <CardInReview
             text={
               <ReactQuill
                 value={showBack ? currentCard.back : currentCard.front}
@@ -141,47 +142,47 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
   );
 };
 
-const Card = ({ text, imageUrl, audioUrl }) => {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100%",
-      }}
-    >
-      <audio controls style={{ position: "absolute", top: "22%" }}>
-        <source src={audioUrl} type="audio/mpeg" />
-      </audio>
-      <div
-        style={{
-          height: "250px",
-          minWidth: "250px",
-          backgroundColor: "white",
-          color: "black",
-          padding: "10px",
-          margin: "10px",
-          borderRadius: "10px",
-          boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
-          cursor: "pointer",
-          userSelect: "none",
-          position: "absolute",
-          top: "28%",
-          left: "41.4%",
-        }}
-      >
-        {text}
-      </div>
-      {imageUrl && (
-        <img
-          src={imageUrl}
-          alt="Card visual"
-          style={{ maxHeight: "200px", margin: "10px" }}
-        />
-      )}
-    </div>
-  );
-};
+// const Card = ({ text, imageUrl, audioUrl }) => {
+//   return (
+//     <div
+//       style={{
+//         display: "flex",
+//         flexDirection: "column",
+//         alignItems: "center",
+//         justifyContent: "center",
+//         height: "100%",
+//       }}
+//     >
+//       <audio controls style={{ position: "absolute", top: "22%" }}>
+//         <source src={audioUrl} type="audio/mpeg" />
+//       </audio>
+//       <div
+//         style={{
+//           height: "250px",
+//           minWidth: "250px",
+//           backgroundColor: "white",
+//           color: "black",
+//           padding: "10px",
+//           margin: "10px",
+//           borderRadius: "10px",
+//           boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
+//           cursor: "pointer",
+//           userSelect: "none",
+//           position: "absolute",
+//           top: "28%",
+//           left: "41.4%",
+//         }}
+//       >
+//         {text}
+//       </div>
+//       {imageUrl && (
+//         <img
+//           src={imageUrl}
+//           alt="Card visual"
+//           style={{ maxHeight: "200px", margin: "10px" }}
+//         />
+//       )}
+//     </div>
+//   );
+// };
 export default ReviewMode;

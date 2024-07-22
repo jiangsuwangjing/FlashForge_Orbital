@@ -1,10 +1,11 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { doc, addDoc, collection, setDoc } from "firebase/firestore";
-import { db, auth } from "../config/firebase";
-import useAuthStore from "../store/authStore";
-import useLibraryStore from "../store/libraryStore";
-import Popup from "../Popup";
+import { db } from "../../config/firebase";
+import useAuthStore from "../../store/authStore";
+import useLibraryStore from "../../store/libraryStore";
+import Popup from "./Popup";
+
 const colors = ["#ffbd59", "#38b6ff", "#ff3131", "#ff914d", "#35b81a"];
 function getRandomColor() {
   const randomIndex = Math.floor(Math.random() * colors.length);
