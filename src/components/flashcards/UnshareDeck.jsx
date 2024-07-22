@@ -1,6 +1,6 @@
 import { arrayRemove, deleteDoc, doc, updateDoc, getDoc } from 'firebase/firestore'
 import React from 'react'
-import { db } from '../config/firebase'
+import { db } from '../../config/firebase'
 import { useState, useEffect } from 'react'
 
 const UnshareDeck = ({deckName, deckRef, destUid }) => {

@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
 import { React, useEffect, useState } from "react";
-import Deck from "./flashcards/Deck";
-import { Hero } from "./registration/Hero";
-import AutoCreateCardFromHighlights from "./flashcards/AutoCreateCardFromHighlights";
+import Deck from "../components/flashcards/Deck";
+import { Hero } from "../registration/Hero";
+import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCardFromHighlights";
+
 export default function DeckPage() {
   const { deckName } = useParams();
   const [showPopup, setShowPopup] = useState(false);

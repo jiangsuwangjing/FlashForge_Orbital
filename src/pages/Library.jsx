@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import Header from "./Header";
-import Popup from "./Popup";
-// import { Hero } from "./registration/Hero";
-import LibrarySideBar from "./flashcards/LibrarySideBar";
-import CreateDeck from "./flashcards/CreateDeck";
-import "./styles/Library.css";
+import Header from "../components/profile/Header";
+import Popup from "../components/flashcards/Popup";
+import LibrarySideBar from "../components/flashcards/LibrarySideBar";
+import CreateDeck from "../components/flashcards/CreateDeck";
+import "../styles/Library.css";
 import { Outlet } from "react-router-dom";
-import { Hero } from "./registration/Hero";
+import { Hero } from "../registration/Hero";
+
 export default function Library() {
   const [decks, setDecks] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
