@@ -60,10 +60,11 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
 
   const rephraseOption = async (event) => {
     event.stopPropagation();
-    const input = card[0];
+    const frontContent = card[0];
+    const backContent = card[1];
     try {
       const apiUrl = "https://api.openai.com/v1/chat/completions";
-      const apiKey = "rubbish";
+      const apiKey = import.meta.env.VITE_CHATGPT_API_KEY;
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
@@ -72,13 +73,16 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
       const requestBody = {
         model: "gpt-4o-mini",
         messages: [
-          { role: "user", content: `Rephrase this sentence: ${input}` },
+          { role: "user", content: `This is front (question) of a flashcard: ${frontContent} this is back (answer): ${backContent}. Only return rephrased front that leads to the same back.`},
         ],
       };
 
       const { data } = await axios.post(apiUrl, requestBody, { headers });
 
       const response = data.choices[0].message.content;
+      await updateDoc(cardRef, {
+        front: response,
+      });
       console.log(response);
     } catch (error) {
       console.error("Error sending message:", error);

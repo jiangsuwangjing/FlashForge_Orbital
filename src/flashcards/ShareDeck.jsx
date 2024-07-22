@@ -67,7 +67,7 @@ const ShareDeck = ({ deckName }) => {
         sharedTo: arrayUnion(destUser.uid),
       });
 
-      setDestUserList((prevList) => [...prevList, destUser.uid]);
+      setDestUserList([...destUserList, destUser.uid]);
       // Copy the deck to the destination user's library
       const destDeckRef = doc(db, "users", destUser.uid, "shared", deckName);
       await setDoc(destDeckRef, srcDeckData);
@@ -158,10 +158,22 @@ const ShareDeck = ({ deckName }) => {
                   <div className="access-item">
                     <div className="access-avatar"></div>
                     <div className="access-info">
-                      <span className="access-email">hb9327@gmail.com</span>
+                      <span className="access-email">{srcUser.email}</span>
                       <span className="access-role">Owner</span>
                     </div>
                   </div>
+                  <ul>
+                    {destUserList &&
+                      destUserList.length > 0 &&
+                      destUserList.map((uid) => (
+                        <UnshareDeck
+                          key={uid}
+                          deckName={deckName}
+                          deckRef={srcDeckRef}
+                          destUid={uid}
+                        />
+                      ))}
+                  </ul>
                 </div>
               </div>
               <div className="dialog-footer">
@@ -176,7 +188,7 @@ const ShareDeck = ({ deckName }) => {
       <button ref={buttonRef} onClick={handlePop}>
         Share Deck
       </button>
-      <ul>
+      {/* <ul>
         {destUserList &&
           destUserList.length > 0 &&
           destUserList.map((uid) => (
@@ -187,7 +199,7 @@ const ShareDeck = ({ deckName }) => {
               destUid={uid}
             />
           ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };
