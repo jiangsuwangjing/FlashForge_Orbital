@@ -1,10 +1,8 @@
-//npm install draft-js draft-js-import-html
-
 import React, { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { db } from "../config/firebase";
-import useAuthStore from "../store/authStore";
+import { db } from "../../config/firebase";
+import useAuthStore from "../../store/authStore";
 import {
   doc,
   collection,
