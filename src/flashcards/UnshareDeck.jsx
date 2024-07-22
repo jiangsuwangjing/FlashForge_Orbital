@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 
 const UnshareDeck = ({deckName, deckRef, destUid }) => {
   const [destEmail, setDestEmail] = useState('');
+  const [destProfilePic, setDestProfilePic] = useState('')
   const destUserRef = doc(db, "users", destUid);
 
   useEffect(() => {
@@ -14,6 +15,7 @@ const UnshareDeck = ({deckName, deckRef, destUid }) => {
         if (destUserDoc.exists()) {
           const destData = destUserDoc.data();
           setDestEmail(destData.email);
+          setDestProfilePic(destData.profilePicUrl);
         } else {
           console.log("Destination user does not exist");
         }
@@ -33,7 +35,7 @@ const UnshareDeck = ({deckName, deckRef, destUid }) => {
       await updateDoc(deckRef, {
         sharedTo: arrayRemove(destUid),
       })
-      console.log("unshared successfully");
+      alert("unshared successfully");
     } catch (error) {
       console.log(error.message);
     }
@@ -42,12 +44,22 @@ const UnshareDeck = ({deckName, deckRef, destUid }) => {
   console.log(destEmail);
   return (
     <div>
-      <li>
+      {/* <li>
         {destEmail}
       </li>
       <button onClick={onUnshareDeck}>
         Unshare
-      </button>
+      </button> */}
+      <div className="access-item">
+        <div className="access-avatar"></div>
+        <div className="access-info">
+          <span className="access-email">{destEmail}</span>
+          <span className="access-role">Viewer</span>
+        </div>
+        <button onClick={onUnshareDeck}>
+          Unshare
+        </button>
+      </div>
     </div>
   )
 }
