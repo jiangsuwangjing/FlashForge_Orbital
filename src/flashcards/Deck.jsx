@@ -9,6 +9,7 @@ import {
   doc,
   updateDoc,
   setDoc,
+  getDoc,
 } from "firebase/firestore";
 import useAuthStore from "../store/authStore";
 import useGetCardList from "../hooks/useGetCardList";
@@ -26,7 +27,9 @@ import {
 } from "@chakra-ui/react";
 import { arrayRemove } from "firebase/firestore";
 import "react-quill/dist/quill.snow.css";
-
+import axios from "axios";
+import { left } from "@popperjs/core";
+import ShareDeck from "./ShareDeck";
 const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
   const cardId = card[2];
   const cardRef = doc(deckRef, "cards", cardId);
@@ -43,8 +46,8 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
     event.preventDefault();
     setContextMenu({
       visible: true,
-      x: event.clientX,
-      y: event.clientY,
+      x: event.pageX,
+      y: event.pageY,
     });
   };
 
@@ -53,6 +56,33 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
   };
   const handleClosePopup = () => {
     setPopUp(false);
+  };
+
+  const rephraseOption = async (event) => {
+    event.stopPropagation();
+    const input = card[0];
+    try {
+      const apiUrl = "https://api.openai.com/v1/chat/completions";
+      const apiKey = "rubbish";
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      };
+
+      const requestBody = {
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "user", content: `Rephrase this sentence: ${input}` },
+        ],
+      };
+
+      const { data } = await axios.post(apiUrl, requestBody, { headers });
+
+      const response = data.choices[0].message.content;
+      console.log(response);
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
   };
   const editOption = (event) => {
     event.stopPropagation();
@@ -64,21 +94,23 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
     try {
       await deleteDoc(cardRef);
       await updateDoc(deckRef, {
-        cardIds: arrayRemove(cardId)
+        cardIds: arrayRemove(cardId),
       });
-      
+
       console.log(`Card with ID ${cardId} deleted successfully`);
     } catch (error) {
       console.error("Delete error" + error.message);
     }
-  }
+  };
 
   useEffect(() => {
     document.addEventListener("click", handleClick);
+    document.addEventListener("scroll", handleClick);
     return () => {
       document.removeEventListener("click", handleClick);
+      document.removeEventListener("scroll", handleClick);
     };
-  }, []);
+  }, [contextMenu]);
 
   return (
     <>
@@ -103,7 +135,11 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
               backgroundColor: "rgba(0, 0, 0, 0.6)",
             }}
           >
-            <EditCardPreview card={card} cardRef={cardRef} onClose={handleClosePopup} />
+            <EditCardPreview
+              card={card}
+              cardRef={cardRef}
+              onClose={handleClosePopup}
+            />
           </div>
         </div>
       )}
@@ -136,9 +172,9 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
               backgroundColor: "#383838",
               borderRadius: "10px",
               boxSizing: "border-box",
+              top: contextMenu.y,
+              left: contextMenu.x - 70,
             }}
-            top={contextMenu.y}
-            left={contextMenu.x}
             zindex={10}
           >
             <ul
@@ -149,10 +185,15 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
                 boxSizing: "border-box",
               }}
             >
+              <li style={styles.li} onClick={(e) => rephraseOption(e)}>
+                Rephrase
+              </li>
               <li onClick={(e) => editOption(e)} style={styles.li}>
                 Edit
               </li>
-              <li onClick={deleteOption}  style={styles.li}>Delete</li>
+              <li onClick={deleteOption} style={styles.li}>
+                Delete
+              </li>
             </ul>
           </div>
         )}
@@ -162,8 +203,10 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
 };
 const styles = {
   li: {
+    position: "sticky",
+    fontSize: "14px",
     color: "white",
-    padding: "18px 12px",
+    padding: "12px 8px",
     ":hover": {
       backgroundColor: "black", // Example hover effect
       cursor: "pointer",
@@ -173,6 +216,18 @@ const styles = {
 const Deck = ({ deckName }) => {
   const user = useAuthStore((state) => state.user);
   const deckRef = doc(db, "users", user.uid, "library", deckName);
+
+  // const deckDoc = getDoc(deckRef);
+  // // if (!deckDoc.exists()) {
+  // //   alert('Deck not found');
+  // //   return;
+  // // }
+  // const deckData = deckDoc.data();
+  // let sharedTo = [];
+  // if (deckData.sharedTo) {
+  //   sharedTo = deckData.sharedTo;
+  // }
+  // const ownsThisDeck = !sharedTo.includes(user.uid);
 
   const { cardList, averageDecayedMastery } = useGetCardList(deckName, deckRef);
 
@@ -205,7 +260,7 @@ const Deck = ({ deckName }) => {
       // const deckRef = doc(libraryRef, deckName);
       await updateDoc(deckRef, {
         lastReviewed: Date.now(),
-        overallMastery: overallMastery
+        overallMastery: overallMastery,
       });
       setAverageMastery(overallMastery);
       console.log(averageMastery);
@@ -240,9 +295,15 @@ const Deck = ({ deckName }) => {
       <h2> Overall Mastery: {Math.round(averageMastery * 100) / 100}%</h2>
       <div style={{ display: "flex", flexDirection: "column", height: "50vh" }}>
         <div style={{ overflowY: "auto", flexGrow: 1, padding: "10px" }}>
-          <SimpleGrid columns={5} spacing="10px" padding="10px">
+          <SimpleGrid columns={5}>
             {cardList
-              .map(({ front, back, id, frontImageUrl, backImageUrl, frontAudioUrl, backAudioUrl }) => [front, back, id, frontImageUrl, backImageUrl, frontAudioUrl, backAudioUrl])
+              .map(({ front, back, id, frontImageUrl, backImageUrl }) => [
+                front,
+                back,
+                id,
+                frontImageUrl,
+                backImageUrl,
+              ])
               .map((card, index) => (
                 <>
                   <FlipCard
@@ -269,6 +330,7 @@ const Deck = ({ deckName }) => {
           Start Revision
         </button>
       </div>
+      <ShareDeck deckName={deckName} />
     </>
   );
 };

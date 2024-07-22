@@ -1,5 +1,3 @@
-//UPDATING
-
 import { useEffect, useState, useMemo } from "react";
 import { db } from "../config/firebase";
 import { onSnapshot, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
@@ -10,6 +8,7 @@ const useGetCardList = (deckName, deckRef) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalMastery, setTotalMastery] = useState(0);
+  const [sharedTo, setSharedTo] = useState([]);
 
   const user = useAuthStore((state) => state.user);
 
@@ -29,6 +28,7 @@ const useGetCardList = (deckName, deckRef) => {
     () => (deckRef ? collection(deckRef, "cards") : null),
     [deckRef]
   );
+  // const cardsRef = collection(deckRef, "cards")
 
   useEffect(() => {
     if (!cardsRef) return;
@@ -39,6 +39,8 @@ const useGetCardList = (deckName, deckRef) => {
         const deckData = deckDoc.data();
         const lastReviewed = deckData.lastReviewed;
         let accumulatedMastery = 0;
+
+        setSharedTo(deckData.sharedTo);
 
         const currentTime = Date.now();
         const timeDifferenceInMin = (currentTime - lastReviewed) / (1000 * 60);
@@ -63,6 +65,7 @@ const useGetCardList = (deckName, deckRef) => {
             setCardList(cards);
             setLoading(false);
             setTotalMastery(accumulatedMastery);
+            console.log("successfully fetched");
           },
           (error) => {
             console.error(error);
@@ -80,10 +83,10 @@ const useGetCardList = (deckName, deckRef) => {
     };
 
     fetchDeckAndCards();
-  }, [cardsRef]);
+  }, []);
 
   const averageDecayedMastery = Math.ceil(totalMastery / cardList.length);
-  return { cardList, loading, error, averageDecayedMastery };
+  return { cardList, loading, error, averageDecayedMastery, sharedTo };
 };
 
 const getNewDecayedMastery = (prevMastery, t) => {
