@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./styles/Library.css";
+import "../../styles/Library.css";
 export default function Popup(props) {
   const [localInputValue, setLocalInputValue] = useState("");
   const handleClose = () => {

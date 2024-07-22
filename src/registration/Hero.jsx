@@ -1,7 +1,5 @@
 import React from "react";
-import CreateDeck from "../flashcards/CreateDeck";
-import CreateCard from "../flashcards/CreateCard";
-import Deck from "../flashcards/Deck";
+import CreateCard from "../components/flashcards/CreateCard";
 
 export const Hero = ({ deckName, onClose }) => {
   return (
