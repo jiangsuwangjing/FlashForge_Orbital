@@ -15,28 +15,7 @@ import useAuthStore from "../store/authStore";
 import useGetCardList from "../hooks/useGetCardList";
 import { Await } from "react-router-dom";
 import UnshareDeck from "./UnshareDeck";
-import "../styles/ShareDeck.css";
-const getUserProfileByEmail = async (email) => {
-  try {
-    const q = query(collection(db, "users"), where("email", "==", email));
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.empty) {
-      console.log("User does not exist");
-      return null;
-    }
-
-    let userDoc;
-    querySnapshot.forEach((doc) => {
-      userDoc = doc.data();
-    });
-
-    return userDoc;
-  } catch (error) {
-    console.error("Error fetching user profile:", error);
-    throw error;
-  }
-};
+import "../../styles/ShareDeck.css";
 
 const ShareDeck = ({ deckName }) => {
   const srcUser = useAuthStore((state) => state.user);
@@ -46,10 +25,33 @@ const ShareDeck = ({ deckName }) => {
   const [destUserEmail, setDestUserEmail] = useState("");
   const [destUserList, setDestUserList] = useState([]);
   const [popShareDeck, setPopShareDeck] = useState(false);
+
   useEffect(() => {
     setDestUserList(sharedTo);
+    console.log(destUserList);
   }, [sharedTo]);
-  console.log(destUserList);
+
+  const getUserProfileByEmail = async (email) => {
+    try {
+      const q = query(collection(db, "users"), where("email", "==", email));
+      const querySnapshot = await getDocs(q);
+  
+      if (querySnapshot.empty) {
+        console.log("User does not exist");
+        return null;
+      }
+  
+      let userDoc;
+      querySnapshot.forEach((doc) => {
+        userDoc = doc.data();
+      });
+  
+      return userDoc;
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      throw error;
+    }
+  };
 
   const onShareDeck = async () => {
     try {
@@ -62,13 +64,11 @@ const ShareDeck = ({ deckName }) => {
         return;
       }
 
-      // Add the destination user to the sharedTo array in the source deck
       await updateDoc(srcDeckRef, {
         sharedTo: arrayUnion(destUser.uid),
       });
 
       setDestUserList([...destUserList, destUser.uid]);
-      // Copy the deck to the destination user's library
       const destDeckRef = doc(db, "users", destUser.uid, "shared", deckName);
       await setDoc(destDeckRef, srcDeckData);
 
@@ -85,6 +85,7 @@ const ShareDeck = ({ deckName }) => {
       alert("An error occurred while sharing the deck.");
     }
   };
+
   const buttonRef = useRef(null);
   const popupRef = useRef(null);
   const handleDocumentClick = (event) => {
@@ -97,15 +98,18 @@ const ShareDeck = ({ deckName }) => {
       setPopShareDeck(false);
     }
   };
+
   useEffect(() => {
     document.addEventListener("click", handleDocumentClick);
     return () => {
       document.removeEventListener("click", handleDocumentClick);
     };
   }, []);
+
   const handlePop = () => {
     setPopShareDeck(!popShareDeck);
   };
+
   return (
     <div>
       {popShareDeck && (
