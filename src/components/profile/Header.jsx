@@ -60,15 +60,6 @@ function Header() {
                 )}
               </a>
               <hr />
-              <a href="/profile" className="sub-menu-link">
-                <p>My Profile</p>
-                <span> </span>
-              </a>
-
-              <a href="#" className="sub-menu-link">
-                <p>Settings</p>
-                <span> </span>
-              </a>
 
               <a href="/" className="sub-menu-link">
                 <button onClick={(e) => handleLogoutClick(e)}>Sign Out</button>

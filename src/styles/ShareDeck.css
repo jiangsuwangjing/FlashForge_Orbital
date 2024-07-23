@@ -5,6 +5,9 @@
   border-radius: 20px;
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .dialog-header {
@@ -37,16 +40,18 @@
 }
 
 .dialog-input {
+  height: 25px;
   width: 100%;
   padding: 8px;
   margin-bottom: 16px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 10px;
   background-color: white;
   outline-color: #523009;
 }
 
 .access-section {
+  width: 100%;
   margin-bottom: 16px;
   display: flex;
   align-items: flex-start;
@@ -60,8 +65,9 @@
 }
 
 .access-item {
+  width: 100%;
   display: flex;
-  align-items: center;
+  /* align-items: space-between; */
   margin-bottom: 8px;
 }
 
@@ -89,11 +95,16 @@
 }
 
 .access-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: #4caf50;
-  margin-right: 8px;
+  background-color: #ff4b5c;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .access-description {
@@ -124,13 +135,17 @@
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
+  margin-top: auto;
 }
 
 .dialog-done-button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
   background-color: #4caf50;
-  color: white;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: bold;
   cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

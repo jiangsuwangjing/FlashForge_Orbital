@@ -162,18 +162,17 @@ const ShareDeck = ({ deckName }) => {
                       <span className="access-role">Owner</span>
                     </div>
                   </div>
-                  <ul>
-                    {destUserList &&
-                      destUserList.length > 0 &&
-                      destUserList.map((uid) => (
-                        <UnshareDeck
-                          key={uid}
-                          deckName={deckName}
-                          deckRef={srcDeckRef}
-                          destUid={uid}
-                        />
-                      ))}
-                  </ul>
+
+                  {destUserList &&
+                    destUserList.length > 0 &&
+                    destUserList.map((uid) => (
+                      <UnshareDeck
+                        key={uid}
+                        deckName={deckName}
+                        deckRef={srcDeckRef}
+                        destUid={uid}
+                      />
+                    ))}
                 </div>
               </div>
               <div className="dialog-footer">

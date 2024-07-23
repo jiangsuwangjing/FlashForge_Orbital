@@ -9,7 +9,7 @@ const LibrarySideBar = () => {
   return (
     <div style={{ width: "300px", maxHeight: "500px", overflowY: "scroll" }}>
       {deckList.map((deck, index) => (
-        <a key={index} href={`/library/${deck.deckName}`}>
+        <a key={index} href={`/library/owned/${deck.deckName}`}>
           <div
             key={deck.deckName}
             style={{
@@ -28,7 +28,7 @@ const LibrarySideBar = () => {
         </a>
       ))}
       {sharedDeckList.map((deck, index) => (
-        <a key={index} href={`/library/${deck.deckName}`}>
+        <a key={index} href={`/library/shared/${deck.deckName}`}>
           <div
             key={deck.deckName}
             style={{
