@@ -6,6 +6,7 @@ import Home from "./pages/Home.jsx";
 import Library from "./pages/Library.jsx";
 import DeckPage from "./pages/DeckPage.jsx";
 import ProfilePage from "./pages/ProfilePage";
+import SharedDeckPage from "./pages/SharedDeckPage";
 import "./styles/index.css";
 
 const router = createBrowserRouter([
@@ -22,8 +23,12 @@ const router = createBrowserRouter([
     element: <Library />,
     children: [
       {
-        path: ":deckName",
+        path: "/library/owned/:deckName",
         element: <DeckPage />,
+      },
+      {
+        path: "/library/shared/:deckName",
+        element: <SharedDeckPage />,
       },
     ],
   },

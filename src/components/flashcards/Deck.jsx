@@ -144,7 +144,6 @@ const Deck = ({ deckName }) => {
           Start Revision
         </button>
       </div>
-      <ShareDeck deckName={deckName} />
     </>
   );
 };
