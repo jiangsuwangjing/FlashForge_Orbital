@@ -4,6 +4,7 @@ import Deck from "../components/flashcards/Deck";
 import { Hero } from "../registration/Hero";
 import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCardFromHighlights";
 import ShareDeck from "../components/flashcards/ShareDeck";
+
 export default function DeckPage() {
   const { deckName } = useParams();
   console.log(deckName);
