@@ -12,12 +12,11 @@ export const Login = (props) => {
     handleSignup,
     hasAccount,
     setHasAccount,
-    emailError,
-    passwordError,
     signInWithGoogle,
     username,
     setUsername,
   } = props;
+
   return (
     <div className="base-container">
       <div className="content">
@@ -35,7 +34,7 @@ export const Login = (props) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            {emailError && (
+            {/* {emailError && (
               <p
                 style={{
                   position: "absolute",
@@ -46,7 +45,7 @@ export const Login = (props) => {
               >
                 {emailError}
               </p>
-            )}
+            )} */}
           </div>
           {!hasAccount && (
             <div className="form-group">
@@ -70,7 +69,7 @@ export const Login = (props) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            {passwordError && (
+            {/* {passwordError && (
               <p
                 style={{
                   position: "absolute",
@@ -81,7 +80,7 @@ export const Login = (props) => {
               >
                 {passwordError}
               </p>
-            )}
+            )} */}
           </div>
         </div>
       </div>
