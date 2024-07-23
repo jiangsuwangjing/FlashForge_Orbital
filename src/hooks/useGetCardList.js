@@ -72,7 +72,7 @@ const useGetCardList = (deckName, deckRef) => {
     );
 
     return () => unsubscribeDeck();
-  }, [deckRef, cardsRef]);
+  }, []);
 
 
   const averageDecayedMastery = Math.ceil(totalMastery / cardList.length);
