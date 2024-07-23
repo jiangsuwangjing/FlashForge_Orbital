@@ -26,6 +26,7 @@ import {
 import "react-quill/dist/quill.snow.css";
 import ShareDeck from "./ShareDeck";
 import FlipCard from "./FlipCard";
+import { Spinner } from "@chakra-ui/react";
 
 const Deck = ({ deckName }) => {
   const user = useAuthStore((state) => state.user);
@@ -43,7 +44,7 @@ const Deck = ({ deckName }) => {
   // }
   // const ownsThisDeck = !sharedTo.includes(user.uid);
 
-  const { cardList, averageDecayedMastery } = useGetCardList(deckName, deckRef);
+  const { cardList, loading, averageDecayedMastery } = useGetCardList(deckName, deckRef);
 
   // const totalMastery = cardList.reduce((acc, card) => acc + card.mastery, 0);
   // const averageMastery = cardList.length > 0 ? Math.ceil(totalMastery / cardList.length) : 0;
