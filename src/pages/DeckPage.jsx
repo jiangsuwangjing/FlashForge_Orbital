@@ -62,7 +62,7 @@ export default function DeckPage() {
           flex: 1,
           display: "flex",
           justifyContent: "space-between",
-          width: "100%",
+          width: "131.3vh",
           alignItems: "center",
         }}
       >
