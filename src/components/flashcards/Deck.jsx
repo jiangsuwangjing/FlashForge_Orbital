@@ -27,7 +27,7 @@ import "react-quill/dist/quill.snow.css";
 import ShareDeck from "./ShareDeck";
 import FlipCard from "./FlipCard";
 import { Spinner } from "@chakra-ui/react";
-
+import "../../styles/Deck.css";
 const Deck = ({ deckName }) => {
   const user = useAuthStore((state) => state.user);
   const deckRef = doc(db, "users", user.uid, "library", deckName);
@@ -44,7 +44,10 @@ const Deck = ({ deckName }) => {
   // }
   // const ownsThisDeck = !sharedTo.includes(user.uid);
 
-  const { cardList, loading, averageDecayedMastery } = useGetCardList(deckName, deckRef);
+  const { cardList, loading, averageDecayedMastery } = useGetCardList(
+    deckName,
+    deckRef
+  );
 
   // const totalMastery = cardList.reduce((acc, card) => acc + card.mastery, 0);
   // const averageMastery = cardList.length > 0 ? Math.ceil(totalMastery / cardList.length) : 0;
@@ -134,6 +137,7 @@ const Deck = ({ deckName }) => {
         </div>
         <button
           onClick={popOn}
+          className="button"
           style={{
             position: "absolute",
             bottom: "30px",

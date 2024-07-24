@@ -22,8 +22,15 @@ export default function SharedDeckPage() {
     setAutoPopup(false);
   };
   return (
-    <div>
-      <div style={{ color: "white", marginLeft: "20px" }}>
+    <div style={{ paddingLeft: "20px", paddingRight: "20px" }}>
+      <div
+        style={{
+          color: "white",
+          marginLeft: "20px",
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
         <h1>{deckName}</h1>
       </div>
       <div
@@ -35,7 +42,7 @@ export default function SharedDeckPage() {
           alignItems: "center",
         }}
       >
-        <div style={{ fontSize: "18px" }}>Cards</div>
+        {/* <div style={{ fontSize: "18px" }}>Cards</div> */}
       </div>
       <Deck deckName={deckName} />
     </div>

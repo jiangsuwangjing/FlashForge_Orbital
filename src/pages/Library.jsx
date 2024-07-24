@@ -29,9 +29,19 @@ export default function Library() {
   return (
     <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
       <Header />
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", justifyContent: "flex-start" }}>
         <div>
-          <h1 style={{ margin: "20px" }}>Library</h1>
+          <h1
+            style={{
+              margin: "20px",
+              display: "flex",
+              justifyContent: "center",
+              fontSize: "50px",
+            }}
+          >
+            Library
+          </h1>
+          {/* <CreateDeck /> */}
           <LibrarySideBar />
           <CreateDeck />
         </div>

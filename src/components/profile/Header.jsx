@@ -3,6 +3,7 @@ import "../../styles/Header.css";
 import { auth, googleProvider } from "../../config/firebase.js";
 import { signOut } from "firebase/auth";
 import useAuthStore from "../../store/authStore.js";
+import { Avatar } from "@chakra-ui/react";
 
 const handleLogout = async () => {
   await signOut(auth, googleProvider);
@@ -28,14 +29,7 @@ function Header() {
   };
   return (
     <div className="navbar">
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search for cards in your library"
-          className="search-input"
-        />
-      </div>
-      <div>
+      <div style={{ marginLeft: "auto" }}>
         <nav>
           <ul>
             <li>
@@ -44,28 +38,26 @@ function Header() {
             <li>
               <a href="/library">Library</a>
             </li>
-            <li>
-              <a href="#">Community</a>
-            </li>
           </ul>
-          <img src={profilePicURL} className="user-pic" onClick={toggleMenu} />
-          <div className="sub-menu-wrap" id="subMenu">
-            <div className="sub-menu">
-              <a href="/profile" className="sub-menu-link">
-                {user && (
-                  <div className="user-info">
-                    <img src={profilePicURL} />
-                    <h2>{username}</h2>
-                  </div>
-                )}
-              </a>
-              <hr />
+          <div style={{ display: "flex", alignItems: "center", gap: "45px" }}>
+            <a href="/profile">
+              <Avatar
+                size={"md"}
+                src={profilePicURL}
+                className="user-pic"
+                onClick={toggleMenu}
+                borderRadius={"50%"}
+              />
+            </a>
 
-              <a href="/" className="sub-menu-link">
-                <button onClick={(e) => handleLogoutClick(e)}>Sign Out</button>
-                <span> </span>
-              </a>
-            </div>
+            <a href="/" className="sub-menu-link">
+              <button
+                style={{ border: "none", width: "104px" }}
+                onClick={(e) => handleLogoutClick(e)}
+              >
+                Sign Out
+              </button>
+            </a>
           </div>
         </nav>
 
