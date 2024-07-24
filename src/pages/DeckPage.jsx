@@ -4,7 +4,7 @@ import Deck from "../components/flashcards/Deck";
 import { Hero } from "../registration/Hero";
 import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCardFromHighlights";
 import ShareDeck from "../components/flashcards/ShareDeck";
-
+import "../styles/Deck.css";
 export default function DeckPage() {
   const { deckName } = useParams();
   console.log(deckName);
@@ -23,7 +23,7 @@ export default function DeckPage() {
     setAutoPopup(false);
   };
   return (
-    <div>
+    <div style={{ paddingLeft: "20px", paddingRight: "20px" }}>
       {showPopup && (
         <div
           style={{
@@ -55,26 +55,59 @@ export default function DeckPage() {
           />
         </div>
       )}
-      <div style={{ color: "white", marginLeft: "20px" }}>
+      <div
+        style={{
+          color: "white",
+          marginLeft: "20px",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <h1>{deckName}</h1>
       </div>
       <div
         style={{
           flex: 1,
           display: "flex",
-          justifyContent: "space-between",
+
+          justifyContent: "flex-end",
           width: "131.3vh",
           alignItems: "center",
         }}
       >
-        <div style={{ fontSize: "18px" }}>Cards</div>
-        <div>
-          <button onClick={handleShowPopup}>Create Card</button>
-          <button onClick={handleShowAutoPopup}>Automatic Create</button>
+        {/* <div style={{ fontSize: "18px" }}>Cards</div> */}
+        <div style={{ display: "flex", width: "100%" }}>
+          <ShareDeck deckName={deckName} />
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "flex-end",
+            }}
+          >
+            <div style={{ width: "100%" }}>
+              <button onClick={handleShowPopup} className="button">
+                Create Card
+              </button>
+              <button onClick={handleShowAutoPopup} className="button">
+                Automatic Create
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <Deck deckName={deckName} />
-      <ShareDeck deckName={deckName} />
     </div>
   );
 }
+// const buttonStyle = {
+//   padding: "10px 20px",
+//   fontSize: "16px",
+//   color: "white",
+//   backgroundColor: isHovered ? "darkgray" : "black",
+//   border: "none",
+//   borderRadius: "5px",
+//   cursor: "pointer",
+//   transition: "background-color 0.3s ease, transform 0.3s ease",
+//   transform: isHovered ? "scale(1.05)" : "scale(1)",
+// };

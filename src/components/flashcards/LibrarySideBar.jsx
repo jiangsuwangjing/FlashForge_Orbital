@@ -2,12 +2,20 @@ import React from "react";
 import useGetDeckList from "../../hooks/useGetDeckList";
 import "../../styles/Library.css";
 import useGetSharedDeckList from "../../hooks/useGetSharedDeckList";
+import CreateDeck from "./CreateDeck";
 //Library is a collection containing the docs of decks
 const LibrarySideBar = () => {
   const deckList = useGetDeckList();
   const sharedDeckList = useGetSharedDeckList();
   return (
-    <div style={{ width: "300px", maxHeight: "500px", overflowY: "scroll" }}>
+    <div
+      style={{
+        width: "270px",
+        maxHeight: "620px",
+        overflowY: "scroll",
+        backgroundColor: "lightgray",
+      }}
+    >
       {deckList.map((deck, index) => (
         <a key={index} href={`/library/owned/${deck.deckName}`}>
           <div
@@ -46,6 +54,7 @@ const LibrarySideBar = () => {
           </div>
         </a>
       ))}
+      {/* <CreateDeck style={{ display: "flex", justifyContent: "center" }} /> */}
     </div>
   );
 };

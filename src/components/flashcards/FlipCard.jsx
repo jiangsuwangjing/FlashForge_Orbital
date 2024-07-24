@@ -160,6 +160,8 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
                 padding: "10px",
                 margin: "0",
                 boxSizing: "border-box",
+                backgroundColor: "lightgray",
+                borderRadius: "10px",
               }}
             >
               <li style={styles.li} onClick={(e) => rephraseOption(e)}>
@@ -182,7 +184,7 @@ const styles = {
   li: {
     position: "sticky",
     fontSize: "14px",
-    color: "white",
+    color: "black",
     padding: "12px 8px",
     ":hover": {
       backgroundColor: "black", // Example hover effect
@@ -191,4 +193,4 @@ const styles = {
   },
 };
 
-export default FlipCard
+export default FlipCard;
