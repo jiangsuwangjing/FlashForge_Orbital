@@ -3,6 +3,7 @@ import { React, useEffect, useState } from "react";
 import Deck from "../components/flashcards/Deck";
 import { Hero } from "../registration/Hero";
 import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCardFromHighlights";
+import SharedDeck from "../components/flashcards/SharedDeck";
 
 export default function SharedDeckPage() {
   const { deckName } = useParams();
@@ -37,7 +38,7 @@ export default function SharedDeckPage() {
       >
         <div style={{ fontSize: "18px" }}>Cards</div>
       </div>
-      <Deck deckName={deckName} />
+      <SharedDeck deckName={deckName} />
     </div>
   );
 }
