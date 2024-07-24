@@ -1,9 +1,8 @@
 import React from "react";
-import "./Header.css";
-import profile from "./assets/profile.png";
-import { auth, googleProvider } from "./config/firebase.js";
+import "../../styles/Header.css";
+import { auth, googleProvider } from "../../config/firebase.js";
 import { signOut } from "firebase/auth";
-import useAuthStore from "./store/authStore.js";
+import useAuthStore from "../../store/authStore.js";
 
 const handleLogout = async () => {
   await signOut(auth, googleProvider);
@@ -61,15 +60,6 @@ function Header() {
                 )}
               </a>
               <hr />
-              <a href="/profile" className="sub-menu-link">
-                <p>My Profile</p>
-                <span> </span>
-              </a>
-
-              <a href="#" className="sub-menu-link">
-                <p>Settings</p>
-                <span> </span>
-              </a>
 
               <a href="/" className="sub-menu-link">
                 <button onClick={(e) => handleLogoutClick(e)}>Sign Out</button>

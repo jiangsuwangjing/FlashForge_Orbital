@@ -12,42 +12,40 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc, collection } from 'firebase/firestore';
 import useAuthStore from "../store/authStore.js";
+import useShowToast from '../hooks/useShowToast.js';
 
 function Register() {
   const [user, setUser] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [emailError, setEmailError] = useState('');
   const [hasAccount, setHasAccount] = useState(false);
   const [username, setUsername] = useState('');
 
+  const showToast = useShowToast();
+  
   const clearInputs = () => {
     setEmail("");
     setPassword("");
     setUsername("");
   };
 
-  const clearErrors = () => {
-    setEmailError("");
-    setPasswordError("");
-  };
-
   const loginUser = useAuthStore((state) => state.login);
 
   const handleLogin = async () => {
-    clearErrors();
-
     const userCred = await signInWithEmailAndPassword(auth, email, password)
       .catch(err => {
         switch (err.code) {
           case "auth/invalid-email":
+            showToast("Error", "Invalid email format!", "error");
+            break;
           case "auth/user-disabled":
+            showToast("Error", "User has been disabled!", "error");
+            break;
           case "auth/user-not-found":
-            setEmailError(err.message);
+            showToast("Error", "User not found!", "error");
             break;
           case "auth/invalid-credential":
-            setPasswordError('incorrect password or username');
+            showToast("Error", "Incorrect password or email!", "error");
             break;
           default: console.log(err.message);
         }
@@ -66,23 +64,23 @@ function Register() {
   };  
 
   const handleSignup = async () => {
-    clearErrors();
     await createUserWithEmailAndPassword(auth, email, password)
       .catch(err => {
         switch (err.code) {
           case "auth/email-already-in-use":
+            showToast("Error", "Email has been taken!", "error");
+            break;
           case "auth/invalid-email":
-            setEmailError(err.message);
+            showToast("Error", "Invalid email format!", "error");
             break;
           case "auth/weak-password":
-            setPasswordError(err.message);
+            showToast("Error", "Password is too weak!", "error");
             break;
           }
         })
         .then(async (userCredential) => {
           console.log('User signed up:', userCredential.user);
   
-          // Add user data to Firestore
           const userRef = doc(db, "users", userCredential.user.uid);
           const defaultProfilePicURL = "https://i.pinimg.com/736x/cb/45/72/cb4572f19ab7505d552206ed5dfb3739.jpg";
           const userDoc = {
@@ -94,7 +92,6 @@ function Register() {
           }
           await setDoc(userRef, userDoc);
 
-          // after every sign in, ther user info will be downloaded in the localStorage for easy reference
           localStorage.setItem("user-info", JSON.stringify(userDoc));
           loginUser(userDoc);
           console.log("User data added to Firestore and collection created for user");
@@ -127,7 +124,6 @@ function Register() {
         .then(async (userCredential) => {
           console.log('User signed up:', userCredential.user);
 
-          // Add user data to Firestore
           const userRef = doc(db, "users", userCredential.user.uid);
           const userDoc = {
             uid: userCredential.user.uid,
@@ -171,8 +167,6 @@ function Register() {
               handleSignup={handleSignup}
               hasAccount={hasAccount}
               setHasAccount={setHasAccount}
-              emailError={emailError}
-              passwordError={passwordError}
               signInWithGoogle={signInWithGoogle}
               username={username}
               setUsername={setUsername}

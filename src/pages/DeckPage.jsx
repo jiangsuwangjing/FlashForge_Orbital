@@ -1,10 +1,13 @@
 import { useParams } from "react-router-dom";
 import { React, useEffect, useState } from "react";
-import Deck from "./flashcards/Deck";
-import { Hero } from "./registration/Hero";
-import AutoCreateCardFromHighlights from "./flashcards/AutoCreateCardFromHighlights";
+import Deck from "../components/flashcards/Deck";
+import { Hero } from "../registration/Hero";
+import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCardFromHighlights";
+import ShareDeck from "../components/flashcards/ShareDeck";
+
 export default function DeckPage() {
   const { deckName } = useParams();
+  console.log(deckName);
   const [showPopup, setShowPopup] = useState(false);
   const [autoPopup, setAutoPopup] = useState(false);
   const handleShowPopup = () => {
@@ -60,7 +63,7 @@ export default function DeckPage() {
           flex: 1,
           display: "flex",
           justifyContent: "space-between",
-          width: "100%",
+          width: "131.3vh",
           alignItems: "center",
         }}
       >
@@ -71,6 +74,7 @@ export default function DeckPage() {
         </div>
       </div>
       <Deck deckName={deckName} />
+      <ShareDeck deckName={deckName} />
     </div>
   );
 }

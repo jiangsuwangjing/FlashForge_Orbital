@@ -12,78 +12,11 @@ const useGetCardList = (deckName, deckRef) => {
 
   const user = useAuthStore((state) => state.user);
 
-  // const userRef = useMemo(
-  //   () => (user ? doc(db, "users", user.uid) : null),
-  //   [user]
-  // );
-  // const libraryRef = useMemo(
-  //   () => (userRef ? collection(userRef, "library") : null),
-  //   [userRef]
-  // );
-  // const deckRef = useMemo(
-  //   () => (libraryRef ? doc(libraryRef, deckName) : null),
-  //   [libraryRef, deckName]
-  // );
   const cardsRef = useMemo(
     () => (deckRef ? collection(deckRef, "cards") : null),
     [deckRef]
   );
-  // const cardsRef = collection(deckRef, "cards")
 
-  // useEffect(() => {
-  //   if (!cardsRef) return;
-
-  //   const fetchDeckAndCards = async () => {
-  //     try {
-  //       const deckDoc = await getDoc(deckRef);
-  //       const deckData = deckDoc.data();
-  //       const lastReviewed = deckData.lastReviewed;
-  //       let accumulatedMastery = 0;
-
-  //       setSharedTo(deckData.sharedTo);
-
-  //       const currentTime = Date.now();
-  //       const timeDifferenceInMin = (currentTime - lastReviewed) / (1000 * 60);
-
-  //       const unsubscribe = onSnapshot(
-  //         cardsRef,
-  //         (snapshot) => {
-  //           const cards = snapshot.docs.map((doc) => {
-  //             const cardData = doc.data();
-  //             const decayedMastery = getNewDecayedMastery(cardData.mastery, timeDifferenceInMin);
-  //             // console.log(cardData.mastery);
-  //             // console.log(timeDifferenceInMin);
-  //             cardData.mastery = decayedMastery;
-  //             accumulatedMastery += decayedMastery;
-
-  //             return {
-  //               ...cardData,
-  //               id: doc.id,
-  //             };
-  //           });
-
-  //           setCardList(cards);
-  //           setLoading(false);
-  //           setTotalMastery(accumulatedMastery);
-  //           console.log("successfully fetched");
-  //         },
-  //         (error) => {
-  //           console.error(error);
-  //           setError("Failed to fetch card list");
-  //           setLoading(false);
-  //         }
-  //       );
-
-  //       return () => unsubscribe();
-  //     } catch (err) {
-  //       console.error(err);
-  //       setError("Failed to fetch deck or cards");
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchDeckAndCards();
-  // }, []);
   useEffect(() => {
     if (!deckRef || !cardsRef) return;
 
@@ -139,7 +72,7 @@ const useGetCardList = (deckName, deckRef) => {
     );
 
     return () => unsubscribeDeck();
-  }, [deckRef, cardsRef]);
+  }, []);
 
 
   const averageDecayedMastery = Math.ceil(totalMastery / cardList.length);

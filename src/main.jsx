@@ -2,10 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
-import Home from "./Home";
-import Library from "./Library";
-import DeckPage from "./DeckPage";
+import Home from "./pages/Home.jsx";
+import Library from "./pages/Library.jsx";
+import DeckPage from "./pages/DeckPage.jsx";
 import ProfilePage from "./pages/ProfilePage";
+import SharedDeckPage from "./pages/SharedDeckPage";
 import "./styles/index.css";
 
 const router = createBrowserRouter([
@@ -22,8 +23,12 @@ const router = createBrowserRouter([
     element: <Library />,
     children: [
       {
-        path: ":deckName",
+        path: "/library/owned/:deckName",
         element: <DeckPage />,
+      },
+      {
+        path: "/library/shared/:deckName",
+        element: <SharedDeckPage />,
       },
     ],
   },
