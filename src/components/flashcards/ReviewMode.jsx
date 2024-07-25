@@ -19,13 +19,13 @@ import CardInReview from "./CardInReview";
  * @param {deckName, cards} param0
  * @returns
  */
-const ReviewMode = ({ deckName, cards, popOff }) => {
+const ReviewMode = ({ deckId, cards, popOff }) => {
   const [cardIds, setCardIds] = useState([]);
   const [cardIndex, setCardIndex] = useState(0);
   const [showBack, setShowBack] = useState(false);
   const [totalMastery, setTotalMastery] = useState(0);
   const user = useAuthStore((state) => state.user);
-  const deckRef = doc(db, "users", user.uid, "library", deckName);
+  const deckRef = doc(db, "users", user.uid, "library", deckId);
 
   const getCardIds = async (deckRef) => {
     try {
@@ -61,7 +61,7 @@ const ReviewMode = ({ deckName, cards, popOff }) => {
     };
 
     fetchCardIds();
-  }, [deckName]);
+  }, [deckId]);
 
   const handleFlip = () => {
     setShowBack(!showBack);

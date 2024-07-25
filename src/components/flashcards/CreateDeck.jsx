@@ -19,20 +19,26 @@ const CreateDeck = () => {
   const user = useAuthStore((state) => state.user);
   const userRef = doc(db, "users", user.uid);
   const libraryRef = collection(userRef, "library");
+
+  const newDeckRef = doc(libraryRef);
+  const newDeckId = newDeckRef.id;
+
   const deckDoc = {
+    id: newDeckId,
     color: getRandomColor(),
     deckName: newDeckName,
     createdAt: Date.now(),
     lastReviewed: Date.now(),
     overallMastery: 0,
     numberOfCards: 0,
+    deckRef: newDeckRef
   };
   const { deckList, setDeckList, addDeck } = useLibraryStore();
 
   const createNewDeck = async () => {
     try {
       // create a new document for the deck, which contains its information
-      await setDoc(doc(libraryRef, newDeckName), deckDoc);
+      await setDoc(newDeckRef, deckDoc);
 
       // add the deck to local library store
       addDeck({ ...deckDoc });

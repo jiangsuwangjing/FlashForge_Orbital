@@ -6,8 +6,8 @@ import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCar
 import SharedDeck from "../components/flashcards/SharedDeck";
 
 export default function SharedDeckPage() {
-  const { deckName } = useParams();
-  console.log(deckName);
+  const { deckId } = useParams();
+  console.log(deckId);
   const [showPopup, setShowPopup] = useState(false);
   const [autoPopup, setAutoPopup] = useState(false);
   const handleShowPopup = () => {
@@ -25,7 +25,7 @@ export default function SharedDeckPage() {
   return (
     <div>
       <div style={{ color: "white", marginLeft: "20px" }}>
-        <h1>{deckName}</h1>
+        <h1>{id}</h1>
       </div>
       <div
         style={{
@@ -38,7 +38,7 @@ export default function SharedDeckPage() {
       >
         <div style={{ fontSize: "18px" }}>Cards</div>
       </div>
-      <SharedDeck deckName={deckName} />
+      <SharedDeck deckId={deckId} />
     </div>
   );
 }
