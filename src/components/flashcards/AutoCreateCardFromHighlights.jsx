@@ -11,7 +11,7 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 
-const AutoCreateCardFromHighlights = ({ deckName, onClose }) => {
+const AutoCreateCardFromHighlights = ({ deckId, onClose }) => {
   const [editorHtml, setEditorHtml] = useState("");
   const [savedHtml, setSavedHtml] = useState("");
 
@@ -19,7 +19,7 @@ const AutoCreateCardFromHighlights = ({ deckName, onClose }) => {
   const user = useAuthStore((state) => state.user);
   const userRef = doc(db, "users", user.uid);
   const libraryRef = collection(userRef, "library");
-  const deckRef = doc(libraryRef, deckName);
+  const deckRef = doc(libraryRef, deckId);
   const cardsRef = collection(deckRef, "cards");
 
   const onSubmitCard = async () => {
