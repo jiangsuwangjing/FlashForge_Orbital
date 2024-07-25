@@ -22,7 +22,7 @@ const Library = () => {
       // turn into array
       const filteredData = data.docs.map((doc) => ({
         ...doc.data(),
-        id: doc.id
+        // id: doc.id
       }));
       setDeckList(filteredData);
     } catch (err) {

@@ -6,12 +6,16 @@
 
 import { create } from 'zustand';
 
-const useLibraryStore = create((set) => ({
+const useLibraryStore = create((set, get) => ({
   deckList: [],
   setDeckList: (newDeckList) => set({ deckList: newDeckList }),
   addDeck: (newDeck) => set((state) => ({
     deckList: [...state.deckList, newDeck],
   })),
+  // Selector function to get the deckName by deckId
+  getDeckNameById: (deckId) => {
+    return get().deckList.find((deck) => deck.deckId === deckId)?.deckName;
+  },
 }));
 
 export default useLibraryStore;
