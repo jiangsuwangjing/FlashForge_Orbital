@@ -4,12 +4,19 @@ import Deck from "../components/flashcards/Deck";
 import { Hero } from "../registration/Hero";
 import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCardFromHighlights";
 import ShareDeck from "../components/flashcards/ShareDeck";
+import useLibraryStore from "../store/useLibraryStore";
 
 export default function DeckPage() {
-  const { deckName } = useParams();
-  console.log(deckName);
+  const { deckId } = useParams();
+  console.log(deckId);
+
   const [showPopup, setShowPopup] = useState(false);
   const [autoPopup, setAutoPopup] = useState(false);
+
+  const getDeckNameById = useLibraryStore((state) => state.getDeckNameById);
+  const deckName = getDeckNameById(deckId);
+  console.log(deckName);
+
   const handleShowPopup = () => {
     setShowPopup(true);
   };
@@ -35,7 +42,7 @@ export default function DeckPage() {
             zIndex: "1",
           }}
         >
-          <Hero deckName={deckName} onClose={handleClosePopup} />
+          <Hero deckId={deckId} onClose={handleClosePopup} />
         </div>
       )}
       {autoPopup && (
@@ -50,7 +57,7 @@ export default function DeckPage() {
           }}
         >
           <AutoCreateCardFromHighlights
-            deckName={deckName}
+            deckId={deckId}
             onClose={handleCloseAutoPopup}
           />
         </div>
@@ -73,8 +80,8 @@ export default function DeckPage() {
           <button onClick={handleShowAutoPopup}>Automatic Create</button>
         </div>
       </div>
-      <Deck deckName={deckName} />
-      <ShareDeck deckName={deckName} />
+      <Deck deckId={deckId} />
+      <ShareDeck deckId={deckId} />
     </div>
   );
 }

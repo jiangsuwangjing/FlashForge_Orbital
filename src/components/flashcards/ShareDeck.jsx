@@ -38,10 +38,10 @@ const getUserProfileByEmail = async (email) => {
   }
 };
 
-const ShareDeck = ({ deckName }) => {
+const ShareDeck = ({ deckId }) => {
   const srcUser = useAuthStore((state) => state.user);
-  const srcDeckRef = doc(db, "users", srcUser.uid, "library", deckName);
-  const { cardList, sharedTo } = useGetCardList(deckName, srcDeckRef);
+  const srcDeckRef = doc(db, "users", srcUser.uid, "library", deckId);
+  const { cardList, sharedTo } = useGetCardList(srcDeckRef);
 
   const [destUserEmail, setDestUserEmail] = useState("");
   const [destUserList, setDestUserList] = useState([]);

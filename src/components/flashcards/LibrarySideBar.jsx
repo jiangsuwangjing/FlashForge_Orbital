@@ -6,12 +6,13 @@ import useGetSharedDeckList from "../../hooks/useGetSharedDeckList";
 const LibrarySideBar = () => {
   const deckList = useGetDeckList();
   const sharedDeckList = useGetSharedDeckList();
+  console.log(deckList);
   return (
     <div style={{ width: "300px", maxHeight: "500px", overflowY: "scroll" }}>
       {deckList.map((deck, index) => (
-        <a key={index} href={`/library/owned/${deck.deckName}`}>
+        <a key={index} href={`/library/owned/${deck.id}`}>
           <div
-            key={deck.deckName}
+            key={deck.id}
             style={{
               textAlign: "center",
               backgroundColor: deck.color,
@@ -28,9 +29,9 @@ const LibrarySideBar = () => {
         </a>
       ))}
       {sharedDeckList.map((deck, index) => (
-        <a key={index} href={`/library/shared/${deck.deckName}`}>
+        <a key={index} href={`/library/shared/${deck.id}`}>
           <div
-            key={deck.deckName}
+            key={deck.id}
             style={{
               textAlign: "center",
               backgroundColor: deck.color,
