@@ -25,7 +25,7 @@ export default function SharedDeckPage() {
   return (
     <div>
       <div style={{ color: "white", marginLeft: "20px" }}>
-        <h1>{deckId}</h1>
+        <h1>{id}</h1>
       </div>
       <div
         style={{
@@ -38,7 +38,7 @@ export default function SharedDeckPage() {
       >
         <div style={{ fontSize: "18px" }}>Cards</div>
       </div>
-      <SharedDeck deckName={deckId} />
+      <SharedDeck deckId={deckId} />
     </div>
   );
 }

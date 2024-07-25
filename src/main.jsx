@@ -23,11 +23,11 @@ const router = createBrowserRouter([
     element: <Library />,
     children: [
       {
-        path: "/library/owned/:deckName",
+        path: "/library/owned/:deckId",
         element: <DeckPage />,
       },
       {
-        path: "/library/shared/:deckName",
+        path: "/library/shared/:deckId",
         element: <SharedDeckPage />,
       },
     ],

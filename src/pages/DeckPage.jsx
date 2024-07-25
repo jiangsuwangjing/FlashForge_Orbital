@@ -4,18 +4,22 @@ import Deck from "../components/flashcards/Deck";
 import { Hero } from "../registration/Hero";
 import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCardFromHighlights";
 import ShareDeck from "../components/flashcards/ShareDeck";
-import useLibraryStore from "../store/useLibraryStore";
+import useGetDeckList from "../hooks/useGetDeckList";
+import useLibraryStore from "../store/libraryStore";
 
 export default function DeckPage() {
   const { deckId } = useParams();
-  console.log(deckId);
 
   const [showPopup, setShowPopup] = useState(false);
   const [autoPopup, setAutoPopup] = useState(false);
 
-  const getDeckNameById = useLibraryStore((state) => state.getDeckNameById);
-  const deckName = getDeckNameById(deckId);
-  console.log(deckName);
+  const { deckList } = useLibraryStore();
+  console.log(deckList)
+  const currentDeck = deckList.find((deck) => deck.id === deckId);
+
+  // Make sure to check if currentDeck is found
+  const deckName = currentDeck ? currentDeck.deckName : "Loading";
+
 
   const handleShowPopup = () => {
     setShowPopup(true);
