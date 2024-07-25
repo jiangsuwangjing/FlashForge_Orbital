@@ -61,7 +61,7 @@ const ReviewMode = ({ deckId, cards, popOff }) => {
     };
 
     fetchCardIds();
-  }, [deckName]);
+  }, [deckId]);
 
   const handleFlip = () => {
     setShowBack(!showBack);
