@@ -28,9 +28,9 @@ import ShareDeck from "./ShareDeck";
 import FlipCard from "./FlipCard";
 import { Spinner } from "@chakra-ui/react";
 
-const Deck = ({ deckName }) => {
+const SharedDeck = ({ deckName }) => {
   const user = useAuthStore((state) => state.user);
-  const deckRef = doc(db, "users", user.uid, "library", deckName);
+  const deckRef = doc(db, "users", user.uid, "shared", deckName);
 
   // const deckDoc = getDoc(deckRef);
   // // if (!deckDoc.exists()) {
@@ -44,10 +44,7 @@ const Deck = ({ deckName }) => {
   // }
   // const ownsThisDeck = !sharedTo.includes(user.uid);
 
-  const { cardList, loading, averageDecayedMastery } = useGetCardList(
-    deckName,
-    deckRef
-  );
+  const { cardList, loading, averageDecayedMastery } = useGetCardList(deckName, deckRef);
 
   // const totalMastery = cardList.reduce((acc, card) => acc + card.mastery, 0);
   // const averageMastery = cardList.length > 0 ? Math.ceil(totalMastery / cardList.length) : 0;
@@ -111,32 +108,29 @@ const Deck = ({ deckName }) => {
         </div>
       )}
       <h2> Overall Mastery: {Math.round(averageMastery * 100) / 100}%</h2>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div
-          style={{ overflowY: "auto", flexGrow: 1, padding: "10px" }}
-          className="flex flex-row flex-wrap"
-        >
-          {/* <SimpleGrid columns={5}> */}
-          {cardList
-            .map(({ front, back, id, frontImageUrl, backImageUrl }) => [
-              front,
-              back,
-              id,
-              frontImageUrl,
-              backImageUrl,
-            ])
-            .map((card, index) => (
-              <>
-                <FlipCard
-                  card={card}
-                  deckRef={deckRef}
-                  key={index}
-                  isFlipped={!!flippedCards[index]}
-                  onFlip={() => handleFlip(index)}
-                />
-              </>
-            ))}
-          {/* </SimpleGrid> */}
+      <div style={{ display: "flex", flexDirection: "column", height: "50vh" }}>
+        <div style={{ overflowY: "auto", flexGrow: 1, padding: "10px" }}>
+          <SimpleGrid columns={5}>
+            {cardList
+              .map(({ front, back, id, frontImageUrl, backImageUrl }) => [
+                front,
+                back,
+                id,
+                frontImageUrl,
+                backImageUrl,
+              ])
+              .map((card, index) => (
+                <>
+                  <FlipCard
+                    card={card}
+                    deckRef={deckRef}
+                    key={index}
+                    isFlipped={!!flippedCards[index]}
+                    onFlip={() => handleFlip(index)}
+                  />
+                </>
+              ))}
+          </SimpleGrid>
         </div>
         <button
           onClick={popOn}
@@ -155,4 +149,4 @@ const Deck = ({ deckName }) => {
   );
 };
 
-export default Deck;
+export default SharedDeck;

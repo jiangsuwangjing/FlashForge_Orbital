@@ -2,19 +2,16 @@ import React from "react";
 import useGetDeckList from "../../hooks/useGetDeckList";
 import "../../styles/Library.css";
 import useGetSharedDeckList from "../../hooks/useGetSharedDeckList";
-import CreateDeck from "./CreateDeck";
+import { useParams } from "react-router-dom";
 //Library is a collection containing the docs of decks
 const LibrarySideBar = () => {
   const deckList = useGetDeckList();
   const sharedDeckList = useGetSharedDeckList();
+  const { deckName } = useParams();
   return (
     <div
-      style={{
-        width: "270px",
-        maxHeight: "620px",
-        overflowY: "scroll",
-        backgroundColor: "lightgray",
-      }}
+      style={{ width: "200px", maxHeight: "500px", overflowY: "scroll" }}
+      className="flex flex-col gap-4"
     >
       {deckList.map((deck, index) => (
         <a key={index} href={`/library/owned/${deck.deckName}`}>
@@ -22,16 +19,23 @@ const LibrarySideBar = () => {
             key={deck.deckName}
             style={{
               textAlign: "center",
-              backgroundColor: deck.color,
+              border: "1px solid " + deck.color,
               color: "#fff",
               width: "180px",
               padding: "22px",
               borderRadius: "10px",
-              marginLeft: "20px",
-              marginTop: "8px",
             }}
+            className="relative overflow-hidden"
           >
             {deck.deckName}
+            <div
+              className={`w-full h-full absolute left-0 top-0 -z-10 ${
+                deckName == deck.deckName ? "opacity-100" : "opacity-5"
+              }`}
+              style={{
+                background: deck.color,
+              }}
+            ></div>
           </div>
         </a>
       ))}
@@ -41,20 +45,26 @@ const LibrarySideBar = () => {
             key={deck.deckName}
             style={{
               textAlign: "center",
-              backgroundColor: deck.color,
+              border: "1px solid " + deck.color,
               color: "#fff",
               width: "180px",
               padding: "22px",
               borderRadius: "10px",
-              marginLeft: "20px",
-              marginTop: "8px",
             }}
+            className="relative overflow-hidden"
           >
             {deck.deckName}
+            <div
+              className={`w-full h-full absolute left-0 top-0 -z-10 ${
+                deckName == deck.deckName ? "opacity-100" : "opacity-5"
+              }`}
+              style={{
+                background: deck.color,
+              }}
+            ></div>
           </div>
         </a>
       ))}
-      {/* <CreateDeck style={{ display: "flex", justifyContent: "center" }} /> */}
     </div>
   );
 };

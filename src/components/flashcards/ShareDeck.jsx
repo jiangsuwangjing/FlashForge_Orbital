@@ -15,7 +15,7 @@ import useAuthStore from "../../store/authStore";
 import useGetCardList from "../../hooks/useGetCardList";
 import UnshareDeck from "./UnshareDeck";
 import "../../styles/ShareDeck.css";
-import "../../styles/Deck.css";
+
 const getUserProfileByEmail = async (email) => {
   try {
     const q = query(collection(db, "users"), where("email", "==", email));
@@ -107,7 +107,7 @@ const ShareDeck = ({ deckName }) => {
     setPopShareDeck(!popShareDeck);
   };
   return (
-    <div style={{ marginLeft: "0" }}>
+    <div>
       {popShareDeck && (
         <div
           style={{
@@ -184,7 +184,7 @@ const ShareDeck = ({ deckName }) => {
           </div>
         </div>
       )}
-      <button ref={buttonRef} onClick={handlePop} className="button">
+      <button ref={buttonRef} onClick={handlePop}>
         Share Deck
       </button>
       {/* <ul>
