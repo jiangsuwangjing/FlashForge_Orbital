@@ -1,19 +1,19 @@
 .Header {
   position: absolute;
   top: 0;
-  max-height: 40px;
+  max-height: 70px;
   width: 100px;
   display: grid;
   background-color: #2e0249;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
-.navbar {
+/* .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-image: linear-gradient(90deg, #5de0e6 0%, #004aad 100%);
-  padding: 12px 7%;
-}
+  background: rgba(0, 0, 0, 0.5);
+  padding: 15px 7%;
+} */
 .search-container {
   display: flex;
   align-items: right;
@@ -36,14 +36,14 @@
   opacity: 0.7;
 }
 
-.user-pic {
+/* .user-pic {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
   margin-left: 30px;
   margin-right: 0px;
-}
+} */
 nav {
   justify-content: space-between;
   display: flex;

@@ -3,6 +3,7 @@ import { React, useEffect, useState } from "react";
 import Deck from "../components/flashcards/Deck";
 import { Hero } from "../registration/Hero";
 import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCardFromHighlights";
+import SharedDeck from "../components/flashcards/SharedDeck";
 
 export default function SharedDeckPage() {
   const { deckName } = useParams();
@@ -22,15 +23,8 @@ export default function SharedDeckPage() {
     setAutoPopup(false);
   };
   return (
-    <div style={{ paddingLeft: "20px", paddingRight: "20px" }}>
-      <div
-        style={{
-          color: "white",
-          marginLeft: "20px",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-      >
+    <div>
+      <div style={{ color: "white", marginLeft: "20px" }}>
         <h1>{deckName}</h1>
       </div>
       <div
@@ -42,9 +36,9 @@ export default function SharedDeckPage() {
           alignItems: "center",
         }}
       >
-        {/* <div style={{ fontSize: "18px" }}>Cards</div> */}
+        <div style={{ fontSize: "18px" }}>Cards</div>
       </div>
-      <Deck deckName={deckName} />
+      <SharedDeck deckName={deckName} />
     </div>
   );
 }
