@@ -1,14 +1,16 @@
 import React from "react";
 import useGetDeckList from "../../hooks/useGetDeckList";
 import "../../styles/Library.css";
-import useGetSharedDeckList from "../../hooks/useGetSharedDeckList";
+import useGetViewOnlySharedDeckList from "../../hooks/useGetViewOnlySharedDecks";
+import useGetEditableSharedDeckList from "../../hooks/useGetEditableSharedDeckList";
 import { useParams } from "react-router-dom";
-import { Trash } from "../../icons";
 //Library is a collection containing the docs of decks
 const LibrarySideBar = () => {
   const { deckId } = useParams();
   const deckList = useGetDeckList();
-  const sharedDeckList = useGetSharedDeckList();
+  const viewOnlySharedDeckList = useGetViewOnlySharedDeckList();
+  const editableSharedDeckList = useGetEditableSharedDeckList();
+
   console.log(deckList);
   return (
     <div
@@ -41,10 +43,29 @@ const LibrarySideBar = () => {
           </div>
         </a>
       ))}
-      {sharedDeckList.map((deck, index) => (
-        <a key={index} href={`/library/shared/${deck.id}`}>
+      {viewOnlySharedDeckList.map((deck, index) => (
+        <a key={index} href={`/library/viewonly/${deck.deckId}`}>
           <div
             key={deck.id}
+            style={{
+              textAlign: "center",
+              backgroundColor: deck.color,
+              color: "#fff",
+              width: "180px",
+              padding: "22px",
+              borderRadius: "10px",
+              marginLeft: "20px",
+              marginTop: "8px",
+            }}
+          >
+            {deck.deckName}
+          </div>
+        </a>
+      ))}
+      {editableSharedDeckList.map((deck, index) => (
+        <a key={index} href={`/library/editable/${deck.deckId}`}>
+          <div
+            key={deck.deckId}
             style={{
               textAlign: "center",
               border: "1px solid " + deck.color,

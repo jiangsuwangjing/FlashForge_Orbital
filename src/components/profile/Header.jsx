@@ -5,7 +5,6 @@ import { signOut } from "firebase/auth";
 import useAuthStore from "../../store/authStore.js";
 import { Logout } from "../../icons/logout.jsx";
 import { flatMap } from "draft-js/lib/DefaultDraftBlockRenderMap.js";
-
 const handleLogout = async () => {
   await signOut(auth, googleProvider);
 };

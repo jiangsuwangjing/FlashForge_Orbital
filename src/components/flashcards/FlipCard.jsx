@@ -133,7 +133,7 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
               className="w-1/2 h-1/2"
             >
               <div className="bg-red-500 w-full h-5 mt-0 text-sm pl-2 font-semibold">
-                Mastery: {card.averageMastery}
+                Mastery: {card.mastery}
               </div>
               <ReactQuill
                 // className="w-full h-full text-center"

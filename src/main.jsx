@@ -27,8 +27,12 @@ const router = createBrowserRouter([
         element: <DeckPage />,
       },
       {
-        path: "/library/shared/:deckId",
-        element: <SharedDeckPage />,
+        path: "/library/viewonly/:deckId",
+        element: <SharedDeckPage viewOnly={true} />,
+      },
+      {
+        path: "/library/editable/:deckId",
+        element: <SharedDeckPage viewOnly={false} />,
       },
     ],
   },

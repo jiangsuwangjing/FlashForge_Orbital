@@ -115,7 +115,7 @@ const Deck = ({ deckId }) => {
           style={{
             overflowY: "auto",
             flexGrow: 1,
-            padding: "10px",
+            padding: "15px",
             height: "60vh",
             width: "100%",
           }}

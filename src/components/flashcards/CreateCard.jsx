@@ -1,33 +1,39 @@
 import React from "react";
 import { useState } from "react";
-import { doc, collection, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import {
+  doc,
+  collection,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import { db, auth } from "../../config/firebase";
 import useAuthStore from "../../store/authStore";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../config/firebase";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { AudioRecorder } from "react-audio-voice-recorder";
 
-const CreateCard = ({ deckId, onClose }) => {
+const CreateCard = ({ deckRef, onClose }) => {
   const user = useAuthStore((state) => state.user);
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
   const [frontImage, setFrontImage] = useState(null); // State to store the selected image
   const [backImage, setBackImage] = useState(null); // State to store the selected image
-  const [frontAudioUrl, setFrontAudioUrl] = useState('');
-  const [backAudioUrl, setBackAudioUrl] = useState('');
+  const [frontAudioUrl, setFrontAudioUrl] = useState("");
+  const [backAudioUrl, setBackAudioUrl] = useState("");
   // get referece to the deck
-  const userRef = doc(db, "users", user.uid);
-  const libraryRef = collection(userRef, "library");
-  const deckRef = doc(libraryRef, deckId);
+  // const userRef = doc(db, "users", user.uid);
+  // const libraryRef = collection(userRef, "library");
+  // const deckRef = doc(libraryRef, deckId);
   const cardsRef = collection(deckRef, "cards");
-  
+
   // Image Handling
   const uploadImage = async (imageFile) => {
-    const storageRef = ref(storage, `cardPics/${user.uid}`);	// the path to the store
+    const storageRef = ref(storage, `cardPics/${user.uid}`); // the path to the store
     const imageRef = ref(storageRef, `${uuidv4()}`);
     await uploadBytes(imageRef, imageFile);
     const imageUrl = await getDownloadURL(imageRef);
@@ -56,7 +62,7 @@ const CreateCard = ({ deckId, onClose }) => {
   };
 
   const addFrontAudioElement = async (blob) => {
-    console.log("clicked")
+    console.log("clicked");
     const audioUrl = await uploadAudio(blob);
     setFrontAudioUrl(audioUrl);
   };
@@ -66,11 +72,10 @@ const CreateCard = ({ deckId, onClose }) => {
     setBackAudioUrl(audioUrl);
   };
 
-
   const onSubmitCard = async () => {
     try {
-      let frontImageUrl = '';
-      let backImageUrl = '';
+      let frontImageUrl = "";
+      let backImageUrl = "";
 
       if (frontImage) {
         frontImageUrl = await uploadImage(frontImage); // Upload image and get the URL
@@ -87,19 +92,19 @@ const CreateCard = ({ deckId, onClose }) => {
         back: back,
         frontImageUrl: frontImageUrl, // Store the image URL
         backImageUrl: backImageUrl,
-        frontAudioUrl: frontAudioUrl, 
+        frontAudioUrl: frontAudioUrl,
         backAudioUrl: backAudioUrl,
         mastery: 0,
         userId: user.uid,
-        lastReviewed: Date.now()
+        lastReviewed: Date.now(),
       });
 
       // Update the parent deck document to include the new card ID
       await updateDoc(deckRef, {
-        cardIds: arrayUnion(newCardRef.id)
+        cardIds: arrayUnion(newCardRef.id),
       });
-    
-      console.log('New card created successfully')
+
+      console.log("New card created successfully");
     } catch (err) {
       console.error(err);
     }
