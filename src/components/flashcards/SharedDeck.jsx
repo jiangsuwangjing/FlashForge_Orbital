@@ -28,9 +28,9 @@ import ShareDeck from "./ShareDeck";
 import FlipCard from "./FlipCard";
 import { Spinner } from "@chakra-ui/react";
 
-const SharedDeck = ({ deckName }) => {
+const SharedDeck = ({ deckId }) => {
   const user = useAuthStore((state) => state.user);
-  const deckRef = doc(db, "users", user.uid, "shared", deckName);
+  const deckRef = doc(db, "users", user.uid, "shared", deckId);
 
   // const deckDoc = getDoc(deckRef);
   // // if (!deckDoc.exists()) {
@@ -44,7 +44,7 @@ const SharedDeck = ({ deckName }) => {
   // }
   // const ownsThisDeck = !sharedTo.includes(user.uid);
 
-  const { cardList, loading, averageDecayedMastery } = useGetCardList(deckName, deckRef);
+  const { cardList, loading, averageDecayedMastery } = useGetCardList(deckRef);
 
   // const totalMastery = cardList.reduce((acc, card) => acc + card.mastery, 0);
   // const averageMastery = cardList.length > 0 ? Math.ceil(totalMastery / cardList.length) : 0;

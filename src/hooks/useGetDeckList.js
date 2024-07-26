@@ -12,7 +12,6 @@ const useGetDeckList = () => {
   const { deckList, setDeckList } = useLibraryStore();
 
   useEffect(() => {
-    //console.log("i am come");
     if (deckList.length === 0 && user) {
       const getDeckList = async () => {
         try {

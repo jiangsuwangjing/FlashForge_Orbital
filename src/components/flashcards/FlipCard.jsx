@@ -6,12 +6,13 @@ import EditCardPreview from "./EditCardPreview";
 import { arrayRemove } from "firebase/firestore";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-
+import truncate from "html-truncate";
 const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
   const cardId = card[2];
   const cardRef = doc(deckRef, "cards", cardId);
-
+  const front = card[0];
   const [popUp, setPopUp] = useState(false);
+  const [expand, setExpand] = useState(false);
   const [contextMenu, setContextMenu] = useState({
     visible: false,
     x: 0,
@@ -34,7 +35,9 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
   const handleClosePopup = () => {
     setPopUp(false);
   };
-
+  const handleExpand = () => {
+    setExpand(!expand);
+  };
   const rephraseOption = async (event) => {
     event.stopPropagation();
     const input = card[0];
@@ -89,8 +92,68 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
     };
   }, [contextMenu]);
 
+  const content = card[isFlipped ? 1 : 0];
+  const truncatedContent = truncate(front, 240, { ellipsis: "..." });
   return (
     <>
+      {expand && (
+        <div
+          style={{
+            position: "absolute",
+            left: "0",
+            top: "0",
+            bottom: "0",
+            right: "0",
+            zIndex: "1",
+          }}
+        >
+          <div
+            style={{
+              height: "100%",
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "rgba(0, 0, 0, 0.85)",
+              flexDirection: "column",
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: "rgba(0,0,0)",
+                border: "1px solid rgba(255, 255, 255, 0.5)",
+                color: "white",
+                margin: "10px",
+                borderRadius: "10px",
+                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
+                cursor: "pointer",
+                userSelect: "none",
+                overflow: "hidden",
+              }}
+              className="w-1/2 h-1/2"
+            >
+              <div className="bg-red-500 w-full h-5 mt-0 text-sm pl-2 font-semibold">
+                Mastery: {card.averageMastery}
+              </div>
+              <ReactQuill
+                // className="w-full h-full text-center"
+                theme="bubble"
+                value={content}
+                readOnly={true}
+                modules={{ toolbar: false }}
+              />
+            </div>
+            <div className="w-1/2 flex justify-evenly py-4">
+              <button className="w-1/4 border-white" onClick={handleExpand}>
+                Close
+              </button>
+              <button className="w-1/4 border-white" onClick={onFlip}>
+                Flip
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {popUp && (
         <div
           style={{
@@ -122,25 +185,38 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
       )}
       <div
         onContextMenu={handleContextMenu}
-        onClick={onFlip}
+        onClick={handleExpand}
         style={{
           height: "250px",
           width: "200px",
-          backgroundColor: "white",
-          color: "black",
-          padding: "10px",
+          backgroundColor: "rgba(0,0,0,0.5)",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
+          color: "white",
           margin: "10px",
           borderRadius: "10px",
           boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
           cursor: "pointer",
           userSelect: "none",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
         }}
       >
-        <ReactQuill
-          value={card[isFlipped ? 1 : 0]}
-          readOnly={true}
-          theme="bubble"
-        />
+        <div className="bg-red-500 w-full h-5 mt-0 text-sm pl-2 font-semibold">
+          Mastery: {card.averageMastery}
+        </div>
+        {
+          <ReactQuill
+            value={truncatedContent}
+            readOnly={true}
+            theme="bubble"
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          />
+        }
         {contextMenu.visible && (
           <div
             style={{
@@ -191,4 +267,4 @@ const styles = {
   },
 };
 
-export default FlipCard
+export default FlipCard;

@@ -28,9 +28,9 @@ import ShareDeck from "./ShareDeck";
 import FlipCard from "./FlipCard";
 import { Spinner } from "@chakra-ui/react";
 
-const Deck = ({ deckName }) => {
+const Deck = ({ deckId }) => {
   const user = useAuthStore((state) => state.user);
-  const deckRef = doc(db, "users", user.uid, "library", deckName);
+  const deckRef = doc(db, "users", user.uid, "library", deckId);
 
   // const deckDoc = getDoc(deckRef);
   // // if (!deckDoc.exists()) {
@@ -44,7 +44,7 @@ const Deck = ({ deckName }) => {
   // }
   // const ownsThisDeck = !sharedTo.includes(user.uid);
 
-  const { cardList, loading, averageDecayedMastery } = useGetCardList(deckName, deckRef);
+  const { cardList, loading, averageDecayedMastery } = useGetCardList(deckRef);
 
   // const totalMastery = cardList.reduce((acc, card) => acc + card.mastery, 0);
   // const averageMastery = cardList.length > 0 ? Math.ceil(totalMastery / cardList.length) : 0;
@@ -65,7 +65,9 @@ const Deck = ({ deckName }) => {
   const [flippedCards, setFlippedCards] = useState({});
   const [pop, setPop] = useState(false);
   const popOn = () => {
-    setPop(true);
+    if (cardList.length > 0) {
+      setPop(true);
+    }
   };
   const popOff = async (overallMastery) => {
     setPop(false);
@@ -104,33 +106,57 @@ const Deck = ({ deckName }) => {
             zIndex: "1",
           }}
         >
-          <ReviewMode deckName={deckName} cards={cardList} popOff={popOff} />
+          <ReviewMode deckId={deckId} cards={cardList} popOff={popOff} />
         </div>
       )}
       <h2> Overall Mastery: {Math.round(averageMastery * 100) / 100}%</h2>
-      <div style={{ display: "flex", flexDirection: "column", height: "50vh" }}>
-        <div style={{ overflowY: "auto", flexGrow: 1, padding: "10px" }}>
-          <SimpleGrid columns={5}>
-            {cardList
-              .map(({ front, back, id, frontImageUrl, backImageUrl }) => [
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div
+          style={{
+            overflowY: "auto",
+            flexGrow: 1,
+            padding: "10px",
+            height: "60vh",
+            width: "100%",
+          }}
+          className="flex flex-row flex-wrap"
+        >
+          {cardList.length == 0 && (
+            <div className="flex items-start justify-start w-full">
+              <h2 className="text-2xl font-bold text-white-800 mb-4 text-center algin-middle">
+                Create Your First Card!
+              </h2>
+            </div>
+          )}
+          {cardList
+            .map(
+              ({
                 front,
                 back,
                 id,
                 frontImageUrl,
                 backImageUrl,
-              ])
-              .map((card, index) => (
-                <>
-                  <FlipCard
-                    card={card}
-                    deckRef={deckRef}
-                    key={index}
-                    isFlipped={!!flippedCards[index]}
-                    onFlip={() => handleFlip(index)}
-                  />
-                </>
-              ))}
-          </SimpleGrid>
+                averageMastery,
+              }) => [
+                front,
+                back,
+                id,
+                frontImageUrl,
+                backImageUrl,
+                averageMastery,
+              ]
+            )
+            .map((card, index) => (
+              <>
+                <FlipCard
+                  card={card}
+                  deckRef={deckRef}
+                  key={index}
+                  isFlipped={!!flippedCards[index]}
+                  onFlip={() => handleFlip(index)}
+                />
+              </>
+            ))}
         </div>
         <button
           onClick={popOn}

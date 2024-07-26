@@ -3,7 +3,7 @@ import { db } from "../config/firebase";
 import { onSnapshot, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import useAuthStore from "../store/authStore";
 
-const useGetCardList = (deckName, deckRef) => {
+const useGetCardList = (deckRef) => {
   const [cardList, setCardList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

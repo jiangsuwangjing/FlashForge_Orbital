@@ -6,7 +6,19 @@ import useAuthStore from "../../store/authStore";
 import useLibraryStore from "../../store/libraryStore";
 import Popup from "./Popup";
 
-const colors = ["#ffbd59", "#38b6ff", "#ff3131", "#ff914d", "#35b81a"];
+const colors = [
+  "#ffbd59",
+  "#38b6ff",
+  "#ff3131",
+  "#ff914d",
+  "#35b81a",
+  "#ffe066",
+  "#80d8ff",
+  "#ff6f61",
+  "#98ff98",
+  "#ffd1a9",
+  "#c9b3ff",
+];
 function getRandomColor() {
   const randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex];
@@ -19,20 +31,26 @@ const CreateDeck = () => {
   const user = useAuthStore((state) => state.user);
   const userRef = doc(db, "users", user.uid);
   const libraryRef = collection(userRef, "library");
+
+  const newDeckRef = doc(libraryRef);
+  const newDeckId = newDeckRef.id;
+
   const deckDoc = {
+    id: newDeckId,
     color: getRandomColor(),
     deckName: newDeckName,
     createdAt: Date.now(),
     lastReviewed: Date.now(),
     overallMastery: 0,
     numberOfCards: 0,
+    deckRef: newDeckRef,
   };
   const { deckList, setDeckList, addDeck } = useLibraryStore();
 
   const createNewDeck = async () => {
     try {
       // create a new document for the deck, which contains its information
-      await setDoc(doc(libraryRef, newDeckName), deckDoc);
+      await setDoc(newDeckRef, deckDoc);
 
       // add the deck to local library store
       addDeck({ ...deckDoc });
@@ -61,10 +79,7 @@ const CreateDeck = () => {
           setNewDeckName={(text) => setNewDeckName(text)}
         />
       )}
-      <button
-        onClick={handleShowPopup}
-        style={{ position: "absolute", bottom: "10px", left: "10px" }}
-      >
+      <button onClick={handleShowPopup} className="w-[180px]">
         Create New Deck
       </button>
     </>
