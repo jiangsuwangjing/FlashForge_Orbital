@@ -1,7 +1,6 @@
 import React from "react";
 import "../styles/Login.css";
 import logo from "../assets/logo.png";
-import { Center } from "@chakra-ui/react";
 
 export const Login = (props) => {
   const {
@@ -86,11 +85,7 @@ export const Login = (props) => {
         </div>
       </div>
 
-      <Center
-        sx={{
-          flexDirection: "column",
-        }}
-      >
+      <div>
         <div className="footer">
           {hasAccount ? (
             <>
@@ -125,7 +120,7 @@ export const Login = (props) => {
           )}
         </div>
         <button onClick={signInWithGoogle}>Sign In With Google</button>
-      </Center>
+      </div>
     </div>
   );
 };

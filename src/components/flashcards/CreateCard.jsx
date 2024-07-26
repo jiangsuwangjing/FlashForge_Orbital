@@ -11,7 +11,7 @@ import { storage } from "../../config/firebase";
 import { v4 as uuidv4 } from 'uuid';
 import { AudioRecorder } from "react-audio-voice-recorder";
 
-const CreateCard = ({ deckId, onClose }) => {
+const CreateCard = ({ deckRef, onClose }) => {
   const user = useAuthStore((state) => state.user);
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
@@ -20,9 +20,9 @@ const CreateCard = ({ deckId, onClose }) => {
   const [frontAudioUrl, setFrontAudioUrl] = useState('');
   const [backAudioUrl, setBackAudioUrl] = useState('');
   // get referece to the deck
-  const userRef = doc(db, "users", user.uid);
-  const libraryRef = collection(userRef, "library");
-  const deckRef = doc(libraryRef, deckId);
+  // const userRef = doc(db, "users", user.uid);
+  // const libraryRef = collection(userRef, "library");
+  // const deckRef = doc(libraryRef, deckId);
   const cardsRef = collection(deckRef, "cards");
   
   // Image Handling

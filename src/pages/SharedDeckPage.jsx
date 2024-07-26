@@ -4,10 +4,17 @@ import Deck from "../components/flashcards/Deck";
 import { Hero } from "../registration/Hero";
 import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCardFromHighlights";
 import SharedDeck from "../components/flashcards/SharedDeck";
+import useSharedDeckStore from "../store/sharedDeckStore";
+import { doc, collection } from "firebase/firestore";
 
-export default function SharedDeckPage() {
+export default function SharedDeckPage({ viewOnly }) {
   const { deckId } = useParams();
-  console.log(deckId);
+  const { viewOnlyDecksList, editableDecksList } = useSharedDeckStore();
+  const deckList = viewOnly ? viewOnlyDecksList : editableDecksList;
+  const deckDoc = deckList.find(deck => deck.deckId === deckId);
+  const deckName = deckDoc ? deckDoc.deckName : "loading"
+  const deckRef = deckDoc ? deckDoc.deckRef : "";
+
   const [showPopup, setShowPopup] = useState(false);
   const [autoPopup, setAutoPopup] = useState(false);
   const handleShowPopup = () => {
@@ -24,25 +31,58 @@ export default function SharedDeckPage() {
   };
   return (
     <div>
+      { showPopup && !viewOnly && deckDoc && (
+        <div
+          style={{
+            position: "absolute",
+            left: "0",
+            top: "0",
+            bottom: "0",
+            right: "0",
+            zIndex: "1",
+          }}
+        >
+          <Hero deckRef={deckRef} onClose={handleClosePopup} />
+        </div>
+      )}
+      { autoPopup && !viewOnly && deckDoc && (
+        <div
+          style={{
+            position: "absolute",
+            left: "0",
+            top: "0",
+            bottom: "0",
+            right: "0",
+            zIndex: "1",
+          }}
+        >
+          <AutoCreateCardFromHighlights
+            deckRef={deckRef}
+            onClose={handleCloseAutoPopup}
+          />
+        </div>
+      )}
       <div style={{ color: "white", marginLeft: "20px" }}>
-        <h1>{id}</h1>
+        <h1>{deckName}</h1>
       </div>
       <div
         style={{
           flex: 1,
           display: "flex",
           justifyContent: "space-between",
-          width: "100%",
+          width: "131.3vh",
           alignItems: "center",
         }}
       >
         <div style={{ fontSize: "18px" }}>Cards</div>
+        { !viewOnly && 
+          <div>
+            <button onClick={handleShowPopup}>Create Card</button>
+            <button onClick={handleShowAutoPopup}>Automatic Create</button>
+          </div>
+        }
       </div>
-<<<<<<< HEAD
-      <SharedDeck deckName={deckName} />
-=======
-      <SharedDeck deckId={deckId} />
->>>>>>> b018cae946b39c6994877dfc4ce6cfc90916aa47
+      { deckDoc && <SharedDeck deckDoc={deckDoc} viewOnly={viewOnly}/> }
     </div>
   );
 }
