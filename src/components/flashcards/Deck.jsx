@@ -112,12 +112,13 @@ const Deck = ({ deckId }) => {
         <div style={{ overflowY: "auto", flexGrow: 1, padding: "10px" }}>
           <SimpleGrid columns={5}>
             {cardList
-              .map(({ front, back, id, frontImageUrl, backImageUrl }) => [
+              .map(({ front, back, id, frontImageUrl, backImageUrl, mastery }) => [
                 front,
                 back,
                 id,
                 frontImageUrl,
                 backImageUrl,
+                mastery
               ])
               .map((card, index) => (
                 <>

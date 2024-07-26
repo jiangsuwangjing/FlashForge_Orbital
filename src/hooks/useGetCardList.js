@@ -9,6 +9,8 @@ const useGetCardList = (deckRef) => {
   const [error, setError] = useState(null);
   const [totalMastery, setTotalMastery] = useState(0);
   const [sharedTo, setSharedTo] = useState([]);
+  const [viewerList, setViewerList] = useState([]);
+  const [editorList, setEditorList] = useState([]);
 
   const user = useAuthStore((state) => state.user);
 
@@ -25,7 +27,9 @@ const useGetCardList = (deckRef) => {
       (deckDoc) => {
         const deckData = deckDoc.data();
         const lastReviewed = deckData.lastReviewed;
-        setSharedTo(deckData.sharedTo);
+        // setSharedTo(deckData.sharedTo);
+        setViewerList(deckData.viewers);
+        setEditorList(deckData.editors);
 
         let accumulatedMastery = 0;
         const currentTime = Date.now();
@@ -76,7 +80,7 @@ const useGetCardList = (deckRef) => {
 
 
   const averageDecayedMastery = Math.ceil(totalMastery / cardList.length);
-  return { cardList, loading, error, averageDecayedMastery, sharedTo };
+  return { cardList, loading, error, averageDecayedMastery, viewerList, editorList };
 };
 
 const getNewDecayedMastery = (prevMastery, t) => {

@@ -10,11 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
     "axios": "^1.7.2",
     "draft-js": "^0.11.7",
     "draft-js-import-html": "^1.4.1",
     "firebase": "^10.12.2",
+    "framer-motion": "^11.3.17",
     "quill": "^2.0.2",
     "react": "^18.2.0",
     "react-audio-voice-recorder": "^2.2.0",
