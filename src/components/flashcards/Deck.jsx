@@ -28,9 +28,9 @@ import ShareDeck from "./ShareDeck";
 import FlipCard from "./FlipCard";
 import { Spinner } from "@chakra-ui/react";
 
-const Deck = ({ deckName }) => {
+const Deck = ({ deckId }) => {
   const user = useAuthStore((state) => state.user);
-  const deckRef = doc(db, "users", user.uid, "library", deckName);
+  const deckRef = doc(db, "users", user.uid, "library", deckId);
 
   // const deckDoc = getDoc(deckRef);
   // // if (!deckDoc.exists()) {
@@ -44,10 +44,14 @@ const Deck = ({ deckName }) => {
   // }
   // const ownsThisDeck = !sharedTo.includes(user.uid);
 
+<<<<<<< HEAD
   const { cardList, loading, averageDecayedMastery } = useGetCardList(
     deckName,
     deckRef
   );
+=======
+  const { cardList, loading, averageDecayedMastery } = useGetCardList(deckRef);
+>>>>>>> b018cae946b39c6994877dfc4ce6cfc90916aa47
 
   // const totalMastery = cardList.reduce((acc, card) => acc + card.mastery, 0);
   // const averageMastery = cardList.length > 0 ? Math.ceil(totalMastery / cardList.length) : 0;
@@ -107,7 +111,7 @@ const Deck = ({ deckName }) => {
             zIndex: "1",
           }}
         >
-          <ReviewMode deckName={deckName} cards={cardList} popOff={popOff} />
+          <ReviewMode deckId={deckId} cards={cardList} popOff={popOff} />
         </div>
       )}
       <h2> Overall Mastery: {Math.round(averageMastery * 100) / 100}%</h2>

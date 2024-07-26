@@ -7,16 +7,20 @@ import { useParams } from "react-router-dom";
 const LibrarySideBar = () => {
   const deckList = useGetDeckList();
   const sharedDeckList = useGetSharedDeckList();
+<<<<<<< HEAD
   const { deckName } = useParams();
+=======
+  console.log(deckList);
+>>>>>>> b018cae946b39c6994877dfc4ce6cfc90916aa47
   return (
     <div
       style={{ width: "200px", maxHeight: "500px", overflowY: "scroll" }}
       className="flex flex-col gap-4"
     >
       {deckList.map((deck, index) => (
-        <a key={index} href={`/library/owned/${deck.deckName}`}>
+        <a key={index} href={`/library/owned/${deck.id}`}>
           <div
-            key={deck.deckName}
+            key={deck.id}
             style={{
               textAlign: "center",
               border: "1px solid " + deck.color,
@@ -40,9 +44,9 @@ const LibrarySideBar = () => {
         </a>
       ))}
       {sharedDeckList.map((deck, index) => (
-        <a key={index} href={`/library/shared/${deck.deckName}`}>
+        <a key={index} href={`/library/shared/${deck.id}`}>
           <div
-            key={deck.deckName}
+            key={deck.id}
             style={{
               textAlign: "center",
               border: "1px solid " + deck.color,

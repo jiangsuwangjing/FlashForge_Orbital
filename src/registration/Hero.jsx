@@ -1,7 +1,7 @@
 import React from "react";
 import CreateCard from "../components/flashcards/CreateCard";
 
-export const Hero = ({ deckName, onClose }) => {
+export const Hero = ({ deckId, onClose }) => {
   return (
     <div
       style={{
@@ -13,7 +13,7 @@ export const Hero = ({ deckName, onClose }) => {
         backgroundColor: "rgba(0, 0, 0, 0.6)",
       }}
     >
-      <CreateCard deckName={deckName} onClose={onClose} />;
+      <CreateCard deckId={deckId} onClose={onClose} />;
     </div>
   );
 };
