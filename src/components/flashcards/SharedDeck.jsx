@@ -1,64 +1,22 @@
 import { useEffect, useState } from "react";
 import "../../styles/App.css";
-import { db, auth } from "../../config/firebase";
-import {
-  getDocs,
-  collection,
-  addDoc,
-  deleteDoc,
-  doc,
-  updateDoc,
-  setDoc,
-  getDoc,
-} from "firebase/firestore";
+import { updateDoc, getDoc, arrayRemove, arrayUnion } from "firebase/firestore";
 import useAuthStore from "../../store/authStore";
-import useGetCardList from "../../hooks/useGetCardList";
-import ReviewMode from "./ReviewMode";
-import {
-  SimpleGrid,
-  Box,
-  Button,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
+import { SimpleGrid } from "@chakra-ui/react";
 import "react-quill/dist/quill.snow.css";
-import ShareDeck from "./ShareDeck";
 import FlipCard from "./FlipCard";
-import { Spinner } from "@chakra-ui/react";
+import useGetSharedCardList from "../../hooks/useGetSharedCardList";
+import ReviewModeShared from "./ReviewModeShared";
 
-<<<<<<< HEAD
-const SharedDeck = ({ deckName }) => {
+const SharedDeck = ({ deckDoc, viewOnly }) => {
   const user = useAuthStore((state) => state.user);
-  const deckRef = doc(db, "users", user.uid, "shared", deckName);
-=======
-const SharedDeck = ({ deckId }) => {
-  const user = useAuthStore((state) => state.user);
-  const deckRef = doc(db, "users", user.uid, "shared", deckId);
->>>>>>> b018cae946b39c6994877dfc4ce6cfc90916aa47
+  // const deckRef = doc(db, "users", user.uid, "shared", deckId);
+  const deckRef = deckDoc.deckRef;
+  const lastReviewed = deckDoc.lastReviewed;
+  const uid = user.uid;
 
-  // const deckDoc = getDoc(deckRef);
-  // // if (!deckDoc.exists()) {
-  // //   alert('Deck not found');
-  // //   return;
-  // // }
-  // const deckData = deckDoc.data();
-  // let sharedTo = [];
-  // if (deckData.sharedTo) {
-  //   sharedTo = deckData.sharedTo;
-  // }
-  // const ownsThisDeck = !sharedTo.includes(user.uid);
-
-<<<<<<< HEAD
-  const { cardList, loading, averageDecayedMastery } = useGetCardList(deckName, deckRef);
-=======
-  const { cardList, loading, averageDecayedMastery } = useGetCardList(deckRef);
->>>>>>> b018cae946b39c6994877dfc4ce6cfc90916aa47
-
-  // const totalMastery = cardList.reduce((acc, card) => acc + card.mastery, 0);
-  // const averageMastery = cardList.length > 0 ? Math.ceil(totalMastery / cardList.length) : 0;
-  // console.log(averageDecayedMastery);
+  const { cardList, loading, averageDecayedMastery } = useGetSharedCardList(deckRef, lastReviewed, uid)
+  
   const [averageMastery, setAverageMastery] = useState(
     isNaN(averageDecayedMastery) ? 0 : averageDecayedMastery
   );
@@ -68,9 +26,68 @@ const SharedDeck = ({ deckId }) => {
     }
   }, [averageDecayedMastery]);
 
-  // const initialAverageMastery = averageDecayedMastery == NaN ? 0 : averageDecayedMastery;
-
-  // await updateDoc(deckRef, { overallMastery: averageMastery });
+  const updateSharedUserMap = async (newOverallMastery) => {
+    try {
+      const deckDoc = await getDoc(deckRef);
+      if (!deckDoc.exists()) {
+        console.error("Document not found");
+        return;
+      }
+      const deckData = deckDoc.data();
+      console.log(deckData);
+      const sharedList = viewOnly ? deckData.viewers : deckData.editors;
+  
+      // Find the index of the map that contains the email key
+      const userInfo = sharedList.find((user) => user.uid === uid);
+      
+      if (viewOnly) {
+        await updateDoc(deckRef, {
+          viewers: arrayRemove(userInfo)
+        });
+  
+        userInfo.lastReviewed = Date.now();
+        userInfo.overallMastery = newOverallMastery;
+  
+        await updateDoc(deckRef, {
+          viewers: arrayUnion(userInfo)
+        });
+      } else {
+        await updateDoc(deckRef, {
+          editors: arrayRemove(userInfo)
+        });
+  
+        userInfo.lastReviewed = Date.now();
+        userInfo.overallMastery = newOverallMastery;
+  
+        await updateDoc(deckRef, {
+          editors: arrayUnion(userInfo)
+        });
+      }
+      
+  
+      // if (mapIndex === -1) {
+      //   console.error("Email not found in shared user array");
+      //   return;
+      // }
+  
+      // Construct the field path for the map to be updated
+      // const mapPath = viewOnly ? `viewers.${mapIndex}` : `editors.${mapIndex}`;
+      // const lastReviewedPath = `${mapPath}.lastReviewed`
+      // const overallMasteryPath = `${mapPath}.overallMastery`
+      // console.log(lastReviewedPath);
+      // console.log(overallMasteryPath);
+  
+      // // Update the document with new values for the specific map
+      // await updateDoc(deckRef, {
+      //   [lastReviewedPath]: Date.now(),
+      //   [overallMasteryPath]: newOverallMastery,
+      // });
+  
+      console.log("Document updated successfully");
+    } catch (error) {
+      console.error("Error updating document:", error);
+    }
+  };
 
   const [flippedCards, setFlippedCards] = useState({});
   const [pop, setPop] = useState(false);
@@ -80,13 +97,7 @@ const SharedDeck = ({ deckId }) => {
   const popOff = async (overallMastery) => {
     setPop(false);
     try {
-      // const userRef = doc(db, "users", user.uid);
-      // const libraryRef = collection(userRef, "library");
-      // const deckRef = doc(libraryRef, deckName);
-      await updateDoc(deckRef, {
-        lastReviewed: Date.now(),
-        overallMastery: overallMastery,
-      });
+      await updateSharedUserMap(overallMastery);
       setAverageMastery(overallMastery);
       console.log(averageMastery);
       console.log("Review date updated");
@@ -114,7 +125,7 @@ const SharedDeck = ({ deckId }) => {
             zIndex: "1",
           }}
         >
-          <ReviewMode deckName={deckName} cards={cardList} popOff={popOff} />
+          <ReviewModeShared deckRef={deckRef} cards={cardList} popOff={popOff} uid={user.uid}/>
         </div>
       )}
       <h2> Overall Mastery: {Math.round(averageMastery * 100) / 100}%</h2>

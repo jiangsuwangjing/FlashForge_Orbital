@@ -6,6 +6,10 @@ import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCar
 import ShareDeck from "../components/flashcards/ShareDeck";
 import useGetDeckList from "../hooks/useGetDeckList";
 import useLibraryStore from "../store/libraryStore";
+import useAuthStore from "../store/authStore";
+import { doc, collection } from "firebase/firestore";
+import { db } from "../config/firebase";
+
 
 export default function DeckPage() {
   const { deckId } = useParams();
@@ -14,12 +18,14 @@ export default function DeckPage() {
   const [autoPopup, setAutoPopup] = useState(false);
 
   const { deckList } = useLibraryStore();
-  console.log(deckList)
+  // console.log(deckList)
+  const user = useAuthStore((state) => state.user);
+  const userRef = doc(db, "users", user.uid);
+  const libraryRef = collection(userRef, "library");
+  const deckRef = doc(libraryRef, deckId); 
+
   const currentDeck = deckList.find((deck) => deck.id === deckId);
-
-  // Make sure to check if currentDeck is found
   const deckName = currentDeck ? currentDeck.deckName : "Loading";
-
 
   const handleShowPopup = () => {
     setShowPopup(true);
@@ -34,8 +40,8 @@ export default function DeckPage() {
     setAutoPopup(false);
   };
   return (
-    <div className="flex-1">
-      {showPopup && (
+    <div>
+      {showPopup && deckRef && (
         <div
           style={{
             position: "absolute",
@@ -46,10 +52,10 @@ export default function DeckPage() {
             zIndex: "1",
           }}
         >
-          <Hero deckId={deckId} onClose={handleClosePopup} />
+          <Hero deckRef={deckRef} onClose={handleClosePopup} />
         </div>
       )}
-      {autoPopup && (
+      {autoPopup && deckRef && (
         <div
           style={{
             position: "absolute",
@@ -61,21 +67,31 @@ export default function DeckPage() {
           }}
         >
           <AutoCreateCardFromHighlights
-            deckId={deckId}
+            deckRef={deckRef}
             onClose={handleCloseAutoPopup}
           />
         </div>
       )}
-      <div className="text-3xl font-semibold pb-4">{deckName}</div>
-      <div className="flex justify-between items-center w-full">
-        <div className="text-xl font-semibold">Cards</div>
-        <div className="flex flex-row gap-4">
+      <div style={{ color: "white", marginLeft: "20px" }}>
+        <h1>{deckName}</h1>
+      </div>
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          justifyContent: "space-between",
+          width: "131.3vh",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ fontSize: "18px" }}>Cards</div>
+        <div>
           <button onClick={handleShowPopup}>Create Card</button>
           <button onClick={handleShowAutoPopup}>Automatic Create</button>
         </div>
       </div>
       <Deck deckId={deckId} />
-      <ShareDeck deckId={deckId} />
+      {currentDeck && <ShareDeck deckDoc={currentDeck} /> }
     </div>
   );
 }

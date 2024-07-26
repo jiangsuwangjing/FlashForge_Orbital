@@ -67,7 +67,10 @@ const CreateDeck = () => {
           setNewDeckName={(text) => setNewDeckName(text)}
         />
       )}
-      <button onClick={handleShowPopup} className="w-[180px]">
+      <button
+        onClick={handleShowPopup}
+        style={{ position: "absolute", bottom: "10px", left: "10px" }}
+      >
         Create New Deck
       </button>
     </>

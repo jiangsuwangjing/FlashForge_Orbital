@@ -126,9 +126,8 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
         style={{
           height: "250px",
           width: "200px",
-          backgroundColor: "rgba(0,0,0,0.5)",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
-          color: "white",
+          backgroundColor: "white",
+          color: "black",
           padding: "10px",
           margin: "10px",
           borderRadius: "10px",
@@ -192,4 +191,4 @@ const styles = {
   },
 };
 
-export default FlipCard;
+export default FlipCard

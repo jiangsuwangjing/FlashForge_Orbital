@@ -1,9 +1,10 @@
+// Take the deck ref and user email, retrieve the correct field in the deckDoc
 import { useEffect, useState, useMemo } from "react";
 import { db } from "../config/firebase";
 import { onSnapshot, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import useAuthStore from "../store/authStore";
 
-const useGetCardList = (deckRef) => {
+const useGetSharedCardList = (deckRef, lastReviewed, uid) => {
   const [cardList, setCardList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,8 +12,6 @@ const useGetCardList = (deckRef) => {
   const [sharedTo, setSharedTo] = useState([]);
   const [viewerList, setViewerList] = useState([]);
   const [editorList, setEditorList] = useState([]);
-
-  const user = useAuthStore((state) => state.user);
 
   const cardsRef = useMemo(
     () => (deckRef ? collection(deckRef, "cards") : null),
@@ -25,12 +24,6 @@ const useGetCardList = (deckRef) => {
     const unsubscribeDeck = onSnapshot(
       deckRef,
       (deckDoc) => {
-        const deckData = deckDoc.data();
-        const lastReviewed = deckData.lastReviewed;
-        // setSharedTo(deckData.sharedTo);
-        setViewerList(deckData.viewers);
-        setEditorList(deckData.editors);
-
         let accumulatedMastery = 0;
         const currentTime = Date.now();
         const timeDifferenceInMin = (currentTime - lastReviewed) / (1000 * 60);
@@ -40,12 +33,13 @@ const useGetCardList = (deckRef) => {
           (snapshot) => {
             const cards = snapshot.docs.map((doc) => {
               const cardData = doc.data();
+              const mastery = cardData[uid] ?? 0;
               const decayedMastery = getNewDecayedMastery(
-                cardData.mastery,
+                mastery,
                 timeDifferenceInMin
               );
 
-              cardData.mastery = decayedMastery;
+              cardData[uid] = decayedMastery;
               accumulatedMastery += decayedMastery;
 
               return {
@@ -80,7 +74,7 @@ const useGetCardList = (deckRef) => {
 
 
   const averageDecayedMastery = Math.ceil(totalMastery / cardList.length);
-  return { cardList, loading, error, averageDecayedMastery, viewerList, editorList };
+  return { cardList, loading, error, averageDecayedMastery };
 };
 
 const getNewDecayedMastery = (prevMastery, t) => {
@@ -97,4 +91,4 @@ const getNewDecayedMastery = (prevMastery, t) => {
   return prevMastery * decayRatio;
 }
 
-export default useGetCardList;
+export default useGetSharedCardList;
