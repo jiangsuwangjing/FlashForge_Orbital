@@ -38,7 +38,7 @@ const LibrarySideBar = () => {
       y: event.pageY,
     });
   };
-  const handleDelete = (event) => {
+  const handleEdit = (event) => {
     event.stopPropagation();
     console.log("delete");
   };
@@ -87,19 +87,19 @@ const LibrarySideBar = () => {
               }}
             >
               <ul>
-                <li>
+                <li onClick={(e) => handleEdit(e)}>
                   <div className="flex justify-normal my-2">
                     <Edit />
                     <div className="w-full flex justify-center">Rename</div>
                   </div>
                 </li>
                 <hr className="h-1" />
-                <li onClick={(e) => handleDelete(e)}>
+                {/* <li onClick={(e) => handleDelete(e)}>
                   <div className="flex justify-normal my-2">
                     <Trash />
                     <div className="w-full flex justify-center">Delete</div>
                   </div>
-                </li>
+                </li> */}
               </ul>
             </div>
           )}
