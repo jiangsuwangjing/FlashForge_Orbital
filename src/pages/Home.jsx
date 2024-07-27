@@ -40,7 +40,7 @@ export default function Home() {
               width: "100%",
             }}
           >
-            {deckList.map((deck, index) => (
+            {deckList && deckList.map((deck, index) => (
               <a key={index} href={`/library/owned/${deck.id}`}>
                 <div
                   key={deck.id}

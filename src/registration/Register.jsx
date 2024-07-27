@@ -155,7 +155,7 @@ function Register() {
     <div className="App">
       <div className="login">
         <div className="container">
-          {user ? (
+          {user && loginUser ? (
             <Navigate to="/home" replace={true} />
           ) : (
             <Login

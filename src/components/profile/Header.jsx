@@ -9,8 +9,12 @@ import useUserProfileStore from "../../store/userProfileStore";
 
 import EditProfile from "./EditProfile";
 import { useDisclosure, Box, position } from "@chakra-ui/react";
+
 const handleLogout = async () => {
   await signOut(auth, googleProvider);
+  localStorage.removeItem("user-info");
+  const logoutUser = useAuthStore((state) => state.logout);
+  logoutUser();
 };
 
 function Header() {
