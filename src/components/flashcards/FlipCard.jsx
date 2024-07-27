@@ -132,6 +132,7 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
   }, [contextMenu]);
 
   const content = card[isFlipped ? 1 : 0];
+  console.log(content);
   const truncatedContent = truncate(front, 240, { ellipsis: "..." });
   return (
     <>
@@ -157,6 +158,12 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
               flexDirection: "column",
             }}
           >
+            <audio controls style={{ position: "absolute", top: "10%" }}>
+              <source
+                src={!isFlipped ? frontAudioUrl : backAudioUrl}
+                type="audio/mpeg"
+              />
+            </audio>
             <div
               style={{
                 backgroundColor: "#F5F5F5 ",
@@ -174,13 +181,42 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
               <div className="bg-sky-500 w-full h-5 mt-0 text-sm pl-2 font-semibold">
                 Mastery: {card.mastery}
               </div>
-              <ReactQuill
-                // className="w-full h-full text-center"
-                theme="bubble"
-                value={content}
-                readOnly={true}
-                modules={{ toolbar: false }}
-              />
+              <div className="w-full h-full flex flex-row justify-between items-stretch">
+                <ReactQuill
+                  // className="w-full h-full text-center"
+                  theme="bubble"
+                  value={content}
+                  readOnly={true}
+                  modules={{ toolbar: false }}
+                />
+                {!isFlipped
+                  ? frontImage && (
+                      <img
+                        src={frontImage}
+                        alt="front"
+                        style={{ margin: "10px" }}
+                      />
+                    )
+                  : backImage && (
+                      <img
+                        src={backImage}
+                        alt="back"
+                        style={{ margin: "10px" }}
+                      />
+                    )}
+              </div>
+              <audio
+                controls
+                style={{
+                  bottom: "17%",
+                  backgroundColor: "black",
+                }}
+              >
+                <source
+                  src={!isFlipped ? frontAudioUrl : backAudioUrl}
+                  type="audio/mpeg"
+                />
+              </audio>
             </div>
             <div className="w-1/2 flex justify-evenly py-4">
               <button className="w-1/4 border-white" onClick={handleClose}>
