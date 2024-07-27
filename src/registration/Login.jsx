@@ -31,7 +31,7 @@ export const Login = (props) => {
           <img src={logo} />
         </div>
         <button
-          className="w-[500px] py-3 my-8 border-[1px] border-gray-400 flex justify-center items-center"
+          className="w-[500px] py-3 my-8 border-[1px] border-gray-400 flex justify-center items-center text-white"
           onClick={signInWithGoogle}
         >
           <img src={googleLogo} className="w-6 h-6 mr-3" alt="google logo" />
@@ -39,13 +39,13 @@ export const Login = (props) => {
         </button>
         <div className="flex justify-center items-center flex-1 w-full">
           <hr className="w-full" />
-          <div className="mx-4">or</div>
+          <div className="mx-4 text-gray-400">or</div>
           <hr className="w-full" />
         </div>
         <div className="form">
-          <div className="form-group bg-white">
+          <div className="form-group">
             <input
-              className="w-[500px] py-3 border-[1px] border-gray-400 bg-white rounded-xl h-12 placeholder-gray-800"
+              className="w-[500px] py-3 border-[1px] border-gray-400 bg-black rounded-xl h-12 placeholder-white text-white"
               type="text"
               placeholder="Your email"
               required
@@ -57,7 +57,7 @@ export const Login = (props) => {
           {!hasAccount && (
             <div className="form-group">
               <input
-                className="w-[500px] py-3 border-[1px] border-gray-400 bg-white rounded-xl h-12 placeholder-gray-800"
+                className="w-[500px] py-3 border-[1px] border-gray-400 bg-black rounded-xl h-12 placeholder-white text-white"
                 type="text"
                 placeholder="Username"
                 required
@@ -68,7 +68,7 @@ export const Login = (props) => {
           )}
           <div className="form-group">
             <input
-              className="w-[500px] py-3 border-[1px] border-gray-400 bg-white rounded-xl h-12 placeholder-gray-800"
+              className="w-[500px] py-3 border-[1px] border-gray-400 bg-black rounded-xl h-12 placeholder-white text-white"
               type="password"
               placeholder="Password"
               required
@@ -95,12 +95,12 @@ export const Login = (props) => {
         {hasAccount ? (
           <>
             <button
-              className="w-[500px] py-3 my-4 border-[1px] border-gray-400 bg-black rounded-full h-12 text-white"
+              className="w-[500px] py-3 my-4 border-[1px] border-gray-400 bg-white rounded-full h-12 text-black font-bold"
               onClick={handleLogin}
             >
               Sign in
             </button>
-            <p>
+            <p style={{ color: "white" }}>
               Don't have an account?
               <span
                 onClick={handleSetAccount}
@@ -118,11 +118,11 @@ export const Login = (props) => {
           <>
             <button
               onClick={handleSignup}
-              className="w-[500px] py-3 my-4 border-[1px] border-gray-400 bg-black rounded-full h-12 text-white"
+              className="w-[500px] py-3 my-4 border-[1px] border-gray-400 bg-white rounded-full h-12 text-black font-bold"
             >
-              {" Register"}
+              Register
             </button>
-            <p>
+            <p style={{ color: "white" }}>
               Have an account?
               <span
                 onClick={handleSetAccount}

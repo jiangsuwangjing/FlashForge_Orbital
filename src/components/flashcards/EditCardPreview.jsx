@@ -111,10 +111,12 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
         flexDirection: "column",
         height: "80%",
         width: "40%",
-        color: "black",
+        color: "white",
         borderRadius: "10px",
-        backgroundColor: "white",
+        backgroundColor: "black",
         padding: "20px",
+        borderWidth: "0.5px",
+        borderColor: "gray",
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -182,5 +184,5 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
 const ujin = {
   color: "#38b6ff",
   border: "none",
-  background: "white",
+  background: "black",
 };

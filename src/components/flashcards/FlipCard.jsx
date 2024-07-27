@@ -159,9 +159,9 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
           >
             <div
               style={{
-                backgroundColor: "rgba(0,0,0)",
+                backgroundColor: "lightgray",
                 border: "1px solid rgba(255, 255, 255, 0.5)",
-                color: "white",
+                color: "black",
                 margin: "10px",
                 borderRadius: "10px",
                 boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
@@ -171,7 +171,7 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
               }}
               className="w-1/2 h-1/2"
             >
-              <div className="bg-red-500 w-full h-5 mt-0 text-sm pl-2 font-semibold">
+              <div className="bg-sky-500 w-full h-5 mt-0 text-sm pl-2 font-semibold">
                 Mastery: {card.mastery}
               </div>
               <ReactQuill
@@ -228,9 +228,9 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
         style={{
           height: "250px",
           width: "200px",
-          backgroundColor: "rgba(0,0,0,0.5)",
+          backgroundColor: "lightgray",
           border: "1px solid rgba(255, 255, 255, 0.1)",
-          color: "white",
+          color: "black",
           margin: "10px",
           borderRadius: "10px",
           boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",

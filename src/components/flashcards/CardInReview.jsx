@@ -31,7 +31,7 @@ const CardInReview = ({ text, handleFlip, imageUrl, audioUrl }) => {
           // left: "41.4%",
         }}
         onClick={handleFlip}
-        className="h-1/2 w-1/2 flex flex-col items-center justify-center bg-black text-white "
+        className="h-1/2 w-1/2 flex flex-col items-center justify-center bg-gray-300 text-black "
       >
         {text}
       </div>

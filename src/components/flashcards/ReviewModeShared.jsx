@@ -123,25 +123,37 @@ const ReviewModeShared = ({ deckRef, cards, popOff, uid }) => {
             className="w-1/2 flex justify-center"
           >
             <button
-              style={{ color: "white", fontWeight: "600" }}
+              style={{ color: "white", fontWeight: "600", borderColor: "gray" }}
               onClick={() => handleMasteryLevel(25)}
             >
               Fail
             </button>
             <button
-              style={{ color: "#white", fontWeight: "600" }}
+              style={{
+                color: "#white",
+                fontWeight: "600",
+                borderColor: "gray",
+              }}
               onClick={() => handleMasteryLevel(50)}
             >
               Hard
             </button>
             <button
-              style={{ color: "#white", fontWeight: "600" }}
+              style={{
+                color: "#white",
+                fontWeight: "600",
+                borderColor: "gray",
+              }}
               onClick={() => handleMasteryLevel(75)}
             >
               Good
             </button>
             <button
-              style={{ color: "#white", fontWeight: "600" }}
+              style={{
+                color: "#white",
+                fontWeight: "600",
+                borderColor: "gray",
+              }}
               onClick={() => handleMasteryLevel(100)}
             >
               Easy

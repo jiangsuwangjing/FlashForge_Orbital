@@ -88,7 +88,7 @@ const UnshareDeck = ({
             isActive={userDoc.isViewer}
             as={Button}
             rightIcon={<ChevronDownIcon />}
-            className="bg-white text-black"
+            className="bg-black text-white"
             px={4}
             py={2}
             transition="all 0.2s"
@@ -100,15 +100,15 @@ const UnshareDeck = ({
           >
             {userDoc.isViewer ? "Viewer" : "Editor"}
           </MenuButton>
-          <MenuList className="text-black bg-white">
+          <MenuList className="text-white bg-black">
             <MenuItem
               onClick={() => onChangeStatus(userDoc.uid)}
-              className="bg-white flex justify-center"
+              className="bg-black flex justify-center"
             >
               {userDoc.isViewer ? "Editor" : "Viewer"}
             </MenuItem>
             <MenuDivider />
-            <MenuItem className="bg-white p-0 flex justify-center">
+            <MenuItem className="bg-black p-0 flex justify-center">
               <button
                 style={{
                   color: "#fff",
@@ -118,7 +118,7 @@ const UnshareDeck = ({
                   // fontWeight: "bold",
                   // boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
-                className="p-1 rounded-{25px} bg-sky-500 text-white ml-0 hover:bg-sky-700 my-1"
+                className="p-1 rounded-{25px} bg-sky-500 text-black ml-0 hover:bg-sky-700 my-1"
                 onClick={() => onUnshareDeck(userDoc.uid, userDoc.isViewer)}
               >
                 Unshare

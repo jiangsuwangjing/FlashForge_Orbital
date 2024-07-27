@@ -117,10 +117,12 @@ const CreateCard = ({ deckRef, onClose }) => {
         flexDirection: "column",
         height: "80%",
         width: "40%",
-        color: "black",
+        color: "white",
         borderRadius: "10px",
-        backgroundColor: "white",
+        backgroundColor: "black",
         padding: "20px",
+        borderColor: "gray",
+        borderWidth: "0.5px",
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -202,6 +204,6 @@ const CreateCard = ({ deckRef, onClose }) => {
 const ujin = {
   color: "#38b6ff",
   border: "none",
-  background: "white",
+  background: "black",
 };
 export default CreateCard;
