@@ -52,7 +52,7 @@ const EditProfile = ({ isOpen, onClose }) => {
           bg={"white"}
           boxShadow={"xl"}
           border={"1px solid black"}
-          ml={1200}
+          ml={1000}
           mt={70}
           // h={"400px"}
           flexDirection={"column"}
