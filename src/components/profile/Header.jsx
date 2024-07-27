@@ -59,6 +59,7 @@ function Header() {
             <div
               className="p-2 rounded-full hover:bg-white/5 cursor-pointer transition-all ripple"
               onClick={handleLogout}
+              data-testid="icon"
             >
               <Logout />
             </div>
