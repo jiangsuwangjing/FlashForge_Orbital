@@ -10,7 +10,12 @@ import truncate from "html-truncate";
 const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
   const cardId = card[2];
   const cardRef = doc(deckRef, "cards", cardId);
-  const front = card[0];
+  const [front, setFront] = useState(card[0]);
+  const [back, setBack] = useState(card[1]);
+  const [frontImage, setFrontImage] = useState(card[3]);
+  const [backImage, setBackImage] = useState(card[4]);
+  const [frontAudioUrl, setFrontAudioUrl] = useState(card[5]);
+  const [backAudioUrl, setBackAudioUrl] = useState(card[6]);
   const [popUp, setPopUp] = useState(false);
   const [expand, setExpand] = useState(false);
   const [contextMenu, setContextMenu] = useState({
@@ -36,14 +41,21 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
     setPopUp(false);
   };
   const handleExpand = () => {
-    setExpand(!expand);
+    setExpand(true);
+  };
+  const handleClose = () => {
+    setExpand(false);
+    if (isFlipped == true) {
+      onFlip();
+    }
   };
   const rephraseOption = async (event) => {
     event.stopPropagation();
+    handleClick();
     const input = card[0];
     try {
       const apiUrl = "https://api.openai.com/v1/chat/completions";
-      const apiKey = "rubbish";
+      const apiKey = import.meta.env.VITE_CHATGPT_API_KEY;
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
@@ -60,6 +72,31 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
 
       const response = data.choices[0].message.content;
       console.log(response);
+      setFront(response);
+      try {
+        let frontImageUrl = "";
+        let backImageUrl = "";
+
+        console.log("clicked");
+
+        // Update the existing card document
+        let updateRes = await updateDoc(cardRef, {
+          front: front,
+          back: back,
+          ...(frontImageUrl && { frontImageUrl }), // Conditionally include frontImageUrl
+          ...(backImageUrl && { backImageUrl }), // Conditionally include backImageUrl
+          ...(frontAudioUrl && { frontAudioUrl }),
+          ...(backAudioUrl && { backAudioUrl }),
+          lastReviewed: Date.now(),
+          mastery: 0,
+        });
+
+        console.log(updateRes);
+
+        console.log("Card updated successfully"); // Close the edit form
+      } catch (err) {
+        console.error(err);
+      }
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -72,10 +109,12 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
 
   const deleteOption = async () => {
     try {
-      await deleteDoc(cardRef);
-      await updateDoc(deckRef, {
-        cardIds: arrayRemove(cardId),
+      let deleteHookRes = await deleteDoc(cardRef);
+      let updateHookRes = await updateDoc(deckRef, {
+        cardIds: arrayRsemove(cardId),
       });
+
+      console.log(deleteHookRes, updateHookRes);
 
       console.log(`Card with ID ${cardId} deleted successfully`);
     } catch (error) {
@@ -144,7 +183,7 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
               />
             </div>
             <div className="w-1/2 flex justify-evenly py-4">
-              <button className="w-1/4 border-white" onClick={handleExpand}>
+              <button className="w-1/4 border-white" onClick={handleClose}>
                 Close
               </button>
               <button className="w-1/4 border-white" onClick={onFlip}>
@@ -185,7 +224,7 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
       )}
       <div
         onContextMenu={handleContextMenu}
-        onClick={handleExpand}
+        // onClick={handleExpand}
         style={{
           height: "250px",
           width: "200px",
@@ -202,21 +241,26 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
           whiteSpace: "nowrap",
         }}
       >
-        <div className="bg-red-500 w-full h-5 mt-0 text-sm pl-2 font-semibold">
+        <div
+          className="bg-sky-500 w-full h-5 mt-0 text-sm pl-2 font-semibold"
+          style={{ color: "black" }}
+        >
           Mastery: {card.averageMastery}
         </div>
-        {
-          <ReactQuill
-            value={truncatedContent}
-            readOnly={true}
-            theme="bubble"
-            style={{
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-          />
-        }
+        <div onClick={handleExpand} className="w-full h-full text-center">
+          {
+            <ReactQuill
+              value={truncatedContent}
+              readOnly={true}
+              theme="bubble"
+              style={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            />
+          }
+        </div>
         {contextMenu.visible && (
           <div
             style={{

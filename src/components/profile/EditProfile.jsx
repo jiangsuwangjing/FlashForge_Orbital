@@ -51,33 +51,41 @@ const EditProfile = ({ isOpen, onClose }) => {
         <ModalContent
           bg={"white"}
           boxShadow={"xl"}
-          border={"1px solid gray"}
-          mx={3}
+          border={"1px solid black"}
+          ml={1200}
+          mt={70}
+          // h={"400px"}
+          flexDirection={"column"}
+          flex={1}
         >
           <ModalHeader />
           <ModalCloseButton position="absolute" top={4} right={4} />
-          <ModalBody>
+          <ModalBody h={"full"}>
             {/* Container Flex */}
             <Flex bg={"white"}>
               <Stack
+                h={"full"}
                 spacing={4}
                 w={"full"}
                 maxW={"md"}
-                bg={"white"}
+                bg={"#424242"}
                 p={6}
                 my={0}
+                flex={1}
               >
-                <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
+                {/* <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
                   Edit Profile
-                </Heading>
+                </Heading> */}
                 <FormControl>
-                  <Stack direction={["column", "row"]} spacing={6}>
+                  <Stack direction={["column", "row"]} spacing={30}>
                     <Center>
-                      <Avatar
-                        size="xl"
-                        boxSize="150px"
+                      <img
+                        height={"100px"}
+                        width={"100px"}
                         src={selectedFile || authUser.profilePicURL}
                         border={"2px solid white "}
+                        alt="Profile Pic"
+                        className="w-32 h-32 object-cover rounded-full cursor-pointer"
                       />
                     </Center>
                     <Center w="full">
@@ -95,21 +103,42 @@ const EditProfile = ({ isOpen, onClose }) => {
                 </FormControl>
 
                 <FormControl>
-                  <FormLabel fontSize={"sm"}>Username</FormLabel>
-                  <Input
-                    color={"white"}
-                    placeholder={"Username"}
-                    size={"sm"}
-                    type={"text"}
-                    value={inputs.username || authUser.username}
-                    onChange={(e) =>
-                      setInputs({ ...inputs, username: e.target.value })
-                    }
-                  />
+                  {/* <FormLabel fontSize={"sm"}>Username</FormLabel> */}
+                  <div className="flex flex-row gap-4 items-center">
+                    <Input
+                      style={{
+                        borderRadius: "10px",
+                        marginTop: "10px",
+                        padding: "10px",
+                      }}
+                      bg={"black"}
+                      color={"white"}
+                      placeholder={"Username"}
+                      size={"sm"}
+                      type={"text"}
+                      value={inputs.username || authUser.username}
+                      onChange={(e) =>
+                        setInputs({ ...inputs, username: e.target.value })
+                      }
+                    />
+
+                    <Button
+                      bg={"blue.400"}
+                      color={"white"}
+                      size="sm"
+                      w="full"
+                      _hover={{ bg: "blue.500" }}
+                      onClick={handleEditProfile}
+                      isLoading={isUpdating}
+                      style={{ marginTop: "10px" }}
+                    >
+                      Submit
+                    </Button>
+                  </div>
                 </FormControl>
 
                 <Stack spacing={6} direction={["column", "row"]}>
-                  <Button
+                  {/* <Button
                     bg={"red.400"}
                     color={"white"}
                     w="full"
@@ -118,8 +147,8 @@ const EditProfile = ({ isOpen, onClose }) => {
                     onClick={onClose}
                   >
                     Cancel
-                  </Button>
-                  <Button
+                  </Button> */}
+                  {/* <Button
                     bg={"blue.400"}
                     color={"white"}
                     size="sm"
@@ -129,7 +158,7 @@ const EditProfile = ({ isOpen, onClose }) => {
                     isLoading={isUpdating}
                   >
                     Submit
-                  </Button>
+                  </Button> */}
                 </Stack>
               </Stack>
             </Flex>

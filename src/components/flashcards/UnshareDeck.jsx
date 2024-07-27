@@ -68,7 +68,7 @@ const UnshareDeck = ({
   console.log(userDoc.email);
   return (
     <div className="access-item">
-      <div className="access-avatar"></div>
+      <img className="access-avatar" />
       <div className="access-info">
         <span className="access-email">{userDoc.email}</span>
         <span className="access-role">
@@ -118,7 +118,7 @@ const UnshareDeck = ({
                   // fontWeight: "bold",
                   // boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
-                className="p-1 rounded-{25px} bg-white bg-sky-500 text-white ml-0 hover:bg-sky-700 my-1"
+                className="p-1 rounded-{25px} bg-sky-500 text-white ml-0 hover:bg-sky-700 my-1"
                 onClick={() => onUnshareDeck(userDoc.uid, userDoc.isViewer)}
               >
                 Unshare

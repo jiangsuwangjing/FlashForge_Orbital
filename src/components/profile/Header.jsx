@@ -5,11 +5,16 @@ import { signOut } from "firebase/auth";
 import useAuthStore from "../../store/authStore.js";
 import { Logout } from "../../icons/logout.jsx";
 import { flatMap } from "draft-js/lib/DefaultDraftBlockRenderMap.js";
+import useUserProfileStore from "../../store/userProfileStore";
+
+import EditProfile from "./EditProfile";
+import { useDisclosure, Box, position } from "@chakra-ui/react";
 const handleLogout = async () => {
   await signOut(auth, googleProvider);
 };
 
 function Header() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const user = useAuthStore((state) => state.user);
   let username, profilePicURL;
   if (user) {
@@ -35,21 +40,21 @@ function Header() {
         backdropFilter: "blur(10px)",
       }}
     >
+      {isOpen && <EditProfile isOpen={isOpen} onClose={onClose} />}
       <div className="container mx-4 flex md:mx-auto">
         <div className="flex flex-1 flex-row w-full gap-4 items-center text-white">
           <a href="/home">Home</a>
           <a href="/library">Library</a>
         </div>
         <div className="relative flex flex-row gap-2 items-center">
-          <a href="/profile">
-            <img
-              height={100}
-              width={100}
-              src={profilePicURL}
-              alt="Profile Pic"
-              className="w-12 h-12 object-cover rounded-full cursor-pointer"
-            />
-          </a>
+          <img
+            onClick={onOpen}
+            height={100}
+            width={100}
+            src={profilePicURL}
+            alt="Profile Pic"
+            className="w-12 h-12 object-cover rounded-full cursor-pointer"
+          />
           <a href="/">
             <div
               className="p-2 rounded-full hover:bg-white/5 cursor-pointer transition-all ripple"

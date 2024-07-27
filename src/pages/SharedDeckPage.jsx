@@ -74,7 +74,7 @@ export default function SharedDeckPage({ viewOnly }) {
           alignItems: "center",
         }}
       >
-        <div style={{ fontSize: "18px" }}>Cards</div>
+        <div className="h-10"></div>
         {!viewOnly && (
           <div>
             <button onClick={handleShowPopup}>Create Card</button>

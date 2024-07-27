@@ -130,20 +130,13 @@ const Deck = ({ deckId }) => {
           )}
           {cardList
             .map(
-              ({
+              ({ front, back, id, frontImageUrl, backImageUrl, mastery }) => [
                 front,
                 back,
                 id,
                 frontImageUrl,
                 backImageUrl,
-                averageMastery,
-              }) => [
-                front,
-                back,
-                id,
-                frontImageUrl,
-                backImageUrl,
-                averageMastery,
+                mastery,
               ]
             )
             .map((card, index) => (

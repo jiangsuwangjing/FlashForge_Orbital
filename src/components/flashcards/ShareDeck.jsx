@@ -31,7 +31,8 @@ const getUserProfileByEmail = async (email) => {
     querySnapshot.forEach((doc) => {
       userData = doc.data();
     });
-
+    console.log("User data fetched successfully");
+    console.log(userData);
     return userData;
   } catch (error) {
     console.error("Error fetching user profile:", error);
@@ -43,6 +44,11 @@ const ShareDeck = ({ deckDoc }) => {
   const deckId = deckDoc.id;
   const deckName = deckDoc.deckName;
   const srcUser = useAuthStore((state) => state.user);
+  let username, profilePicURL;
+  if (srcUser) {
+    username = srcUser.username;
+    profilePicURL = srcUser.profilePicURL;
+  }
   const srcDeckRef = doc(db, "users", srcUser.uid, "library", deckId);
   const { cardList, viewerList, editorList } = useGetCardList(srcDeckRef);
 
@@ -318,7 +324,7 @@ const ShareDeck = ({ deckDoc }) => {
                 <div className="access-section">
                   <div className="access-title">People you shared with</div>
                   <div className="access-item">
-                    <div className="access-avatar"></div>
+                    <img className="access-avatar" src={profilePicURL} />
                     <div className="access-info">
                       <span className="access-email">{srcUser.email}</span>
                       <span className="access-role">Owner</span>
