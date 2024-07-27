@@ -44,7 +44,7 @@ const ReviewModeShared = ({ deckRef, cards, popOff, uid }) => {
   const updateMasteryLevel = async (cardId, newMastery) => {
     try {
       const cardDocRef = doc(deckRef, "cards", cardId);
-      await updateDoc(cardDocRef, { [uid] : newMastery });
+      await updateDoc(cardDocRef, { [uid]: newMastery });
       console.log("Mastery level updated successfully.");
     } catch (error) {
       console.log(error.message);
@@ -94,19 +94,21 @@ const ReviewModeShared = ({ deckRef, cards, popOff, uid }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "rgba(255, 255, 255, 1)",
+        backgroundColor: "rgba(0, 0, 0, 0.85)",
       }}
     >
-      <div>
-        <div onClick={handleFlip}>
+      <div className="w-full h-full flex align-center justify-center">
+        <div className="w-full h-full">
           <CardInReview
             text={
               <ReactQuill
+                className="w-full h-full"
                 value={showBack ? currentCard.back : currentCard.front}
                 readOnly={true}
                 theme="bubble"
               />
             }
+            handleFlip={handleFlip}
             imageUrl={
               showBack ? currentCard.backImageUrl : currentCard.frontImageUrl
             }
@@ -116,11 +118,34 @@ const ReviewModeShared = ({ deckRef, cards, popOff, uid }) => {
           />
         </div>
         {showBack && (
-          <div style={{ position: "absolute", bottom: "36%", left: "77.5vh" }}>
-            <button onClick={() => handleMasteryLevel(25)}>Fail</button>
-            <button onClick={() => handleMasteryLevel(50)}>Hard</button>
-            <button onClick={() => handleMasteryLevel(75)}>Good</button>
-            <button onClick={() => handleMasteryLevel(100)}>Easy</button>
+          <div
+            style={{ position: "absolute", bottom: "20%" }}
+            className="w-1/2 flex justify-center"
+          >
+            <button
+              style={{ color: "white", fontWeight: "600" }}
+              onClick={() => handleMasteryLevel(25)}
+            >
+              Fail
+            </button>
+            <button
+              style={{ color: "#white", fontWeight: "600" }}
+              onClick={() => handleMasteryLevel(50)}
+            >
+              Hard
+            </button>
+            <button
+              style={{ color: "#white", fontWeight: "600" }}
+              onClick={() => handleMasteryLevel(75)}
+            >
+              Good
+            </button>
+            <button
+              style={{ color: "#white", fontWeight: "600" }}
+              onClick={() => handleMasteryLevel(100)}
+            >
+              Easy
+            </button>
           </div>
         )}
       </div>

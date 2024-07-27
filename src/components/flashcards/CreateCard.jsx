@@ -138,14 +138,16 @@ const CreateCard = ({ deckRef, onClose }) => {
         </button>
       </div>
       <div style={{ marginBottom: "15px", textAlign: "center" }}>New Card</div>
-      <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <div>Front</div>
         {/* <textarea
           placeholder="front:"
           onChange={(e) => setFront(e.target.value)}
           style={{ height: "100%", backgroundColor: "white", color: "black" }}
         /> */}
+
         <ReactQuill
+          style={{ height: "100%" }}
           value={front}
           onChange={setFront}
           theme="snow"
@@ -155,12 +157,18 @@ const CreateCard = ({ deckRef, onClose }) => {
             },
           }}
         />
-        <input type="file" onChange={handleFrontImageChange} />
-        <div>
-          <div>Front Audio</div>
-          <AudioRecorder onRecordingComplete={addFrontAudioElement} />
+
+        <div className="flex flex-row justify-normal items-center mt-20">
+          <input type="file" onChange={handleFrontImageChange} />
+          <div>
+            <div className="flex flex-row items-center ">
+              <div>Front Audio</div>
+              <AudioRecorder onRecordingComplete={addFrontAudioElement} />
+            </div>
+          </div>
         </div>
       </div>
+
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <div>Back</div>
         {/* <textarea
@@ -178,10 +186,14 @@ const CreateCard = ({ deckRef, onClose }) => {
             },
           }}
         />
-        <input type="file" onChange={handleBackImageChange} />
-        <div>
-          <div>Back Audio</div>
-          <AudioRecorder onRecordingComplete={addBackAudioElement} />
+        <div className="flex flex-row justify-normal items-center mt-20">
+          <input type="file" onChange={handleBackImageChange} />
+          <div>
+            <div className="flex flex-row items-center ">
+              <div>Back Audio</div>
+              <AudioRecorder onRecordingComplete={addBackAudioElement} />
+            </div>
+          </div>
         </div>
       </div>
     </div>

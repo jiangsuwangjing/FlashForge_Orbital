@@ -144,10 +144,14 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
             },
           }}
         />
-        <input type="file" onChange={handleFrontImageChange} />
-        <div>
-          <div>Front Audio</div>
-          <AudioRecorder onRecordingComplete={addFrontAudioElement} />
+        <div className="flex flex-row justify-normal items-center mt-20">
+          <input type="file" onChange={handleFrontImageChange} />
+          <div>
+            <div className="flex flex-row items-center ">
+              <div>Front Audio</div>
+              <AudioRecorder onRecordingComplete={addFrontAudioElement} />
+            </div>
+          </div>
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
@@ -162,10 +166,14 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
             },
           }}
         />
-        <input type="file" onChange={handleBackImageChange} />
-        <div>
-          <div>Back Audio</div>
-          <AudioRecorder onRecordingComplete={addBackAudioElement} />
+        <div className="flex flex-row justify-normal items-center mt-20">
+          <input type="file" onChange={handleBackImageChange} />
+          <div>
+            <div className="flex flex-row items-center ">
+              <div>Back Audio</div>
+              <AudioRecorder onRecordingComplete={addBackAudioElement} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
