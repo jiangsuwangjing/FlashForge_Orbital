@@ -25,8 +25,8 @@ export const Login = (props) => {
     setPassword("");
   };
   return (
-    <div className="base-container min-h-screen">
-      <div className="content flex flex-col items-center">
+    <div className=" min-h-screen flex flex-col">
+      <div className="content flex flex-col items-center relative">
         <div className="h-72 w-72">
           <img src={logo} />
         </div>
@@ -91,59 +91,53 @@ export const Login = (props) => {
         </div>
       </div>
 
-      <Center
-        sx={{
-          flexDirection: "column",
-        }}
-      >
-        <div className="footer">
-          {hasAccount ? (
-            <>
-              <button
-                className="w-[500px] py-3 my-4 border-[1px] border-gray-400 bg-black rounded-full h-12 text-white"
-                onClick={handleLogin}
+      <div className="footer relative">
+        {hasAccount ? (
+          <>
+            <button
+              className="w-[500px] py-3 my-4 border-[1px] border-gray-400 bg-black rounded-full h-12 text-white"
+              onClick={handleLogin}
+            >
+              Sign in
+            </button>
+            <p>
+              Don't have an account?
+              <span
+                onClick={handleSetAccount}
+                style={{
+                  cursor: "pointer",
+                  marginLeft: "5px",
+                  color: "rgb(17, 150, 250)",
+                }}
+              >
+                Register
+              </span>
+            </p>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={handleSignup}
+              className="w-[500px] py-3 my-4 border-[1px] border-gray-400 bg-black rounded-full h-12 text-white"
+            >
+              {" Register"}
+            </button>
+            <p>
+              Have an account?
+              <span
+                onClick={handleSetAccount}
+                style={{
+                  cursor: "pointer",
+                  marginLeft: "5px",
+                  color: "rgb(17, 150, 250)",
+                }}
               >
                 Sign in
-              </button>
-              <p>
-                Don't have an account?
-                <span
-                  onClick={handleSetAccount}
-                  style={{
-                    cursor: "pointer",
-                    marginLeft: "5px",
-                    color: "rgb(17, 150, 250)",
-                  }}
-                >
-                  Register
-                </span>
-              </p>
-            </>
-          ) : (
-            <>
-              <button
-                onClick={handleSignup}
-                className="w-[500px] py-3 my-4 border-[1px] border-gray-400 bg-black rounded-full h-12 text-white"
-              >
-                {" Register"}
-              </button>
-              <p>
-                Have an account?
-                <span
-                  onClick={handleSetAccount}
-                  style={{
-                    cursor: "pointer",
-                    marginLeft: "5px",
-                    color: "rgb(17, 150, 250)",
-                  }}
-                >
-                  Sign in
-                </span>
-              </p>
-            </>
-          )}
-        </div>
-      </Center>
+              </span>
+            </p>
+          </>
+        )}
+      </div>
     </div>
   );
 };
