@@ -23,6 +23,7 @@ const CardInReview = ({ text, handleFlip, imageUrl, audioUrl }) => {
           margin: "10px",
           border: "1px solid rgba(255, 255, 255, 0.5)",
           borderRadius: "10px",
+          backgroundColor: "#F5F5F5",
           // boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
           // cursor: "pointer",
           // userSelect: "none",
@@ -31,7 +32,7 @@ const CardInReview = ({ text, handleFlip, imageUrl, audioUrl }) => {
           // left: "41.4%",
         }}
         onClick={handleFlip}
-        className="h-1/2 w-1/2 flex flex-col items-center justify-center bg-gray-300 text-black "
+        className="h-1/2 w-1/2 flex flex-col items-center justify-center text-black "
       >
         {text}
       </div>

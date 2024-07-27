@@ -159,7 +159,7 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
           >
             <div
               style={{
-                backgroundColor: "lightgray",
+                backgroundColor: "#F5F5F5 ",
                 border: "1px solid rgba(255, 255, 255, 0.5)",
                 color: "black",
                 margin: "10px",
@@ -228,7 +228,7 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
         style={{
           height: "250px",
           width: "200px",
-          backgroundColor: "lightgray",
+          backgroundColor: "#F5F5F5",
           border: "1px solid rgba(255, 255, 255, 0.1)",
           color: "black",
           margin: "10px",
