@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import useAuthStore from "../../store/authStore";
 import useGetCardList from "../../hooks/useGetCardList";
-import ReviewMode from "./ReviewMode";
+import ReviewMode from "../flashcards/ReviewMode";
 import {
   SimpleGrid,
   Box,
@@ -25,7 +25,7 @@ import {
 } from "@chakra-ui/react";
 import "react-quill/dist/quill.snow.css";
 import ShareDeck from "./ShareDeck";
-import FlipCard from "./FlipCard";
+import FlipCard from "../flashcards/FlipCard";
 import { Spinner } from "@chakra-ui/react";
 
 const Deck = ({ deckId }) => {

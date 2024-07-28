@@ -4,9 +4,9 @@ import { updateDoc, getDoc, arrayRemove, arrayUnion } from "firebase/firestore";
 import useAuthStore from "../../store/authStore";
 import { SimpleGrid } from "@chakra-ui/react";
 import "react-quill/dist/quill.snow.css";
-import FlipCard from "./FlipCard";
+import FlipCard from "../flashcards/FlipCard";
 import useGetSharedCardList from "../../hooks/useGetSharedCardList";
-import ReviewModeShared from "./ReviewModeShared";
+import ReviewModeShared from "../flashcards/ReviewModeShared";
 
 const SharedDeck = ({ deckDoc, viewOnly }) => {
   const user = useAuthStore((state) => state.user);

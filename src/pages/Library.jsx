@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "../components/profile/Header";
 import Popup from "../components/flashcards/Popup";
-import LibrarySideBar from "../components/flashcards/LibrarySideBar";
+import LibrarySideBar from "../components/library/LibrarySideBar";
 import CreateDeck from "../components/flashcards/CreateDeck";
 import "../styles/Library.css";
 import { Outlet } from "react-router-dom";

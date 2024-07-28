@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { React, useEffect, useState } from "react";
-import Deck from "../components/flashcards/Deck";
+import Deck from "../components/library/Deck";
 import { Hero } from "../registration/Hero";
 import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCardFromHighlights";
-import ShareDeck from "../components/flashcards/ShareDeck";
+import ShareDeck from "../components/library/ShareDeck";
 import useGetDeckList from "../hooks/useGetDeckList";
 import useLibraryStore from "../store/libraryStore";
 import useAuthStore from "../store/authStore";

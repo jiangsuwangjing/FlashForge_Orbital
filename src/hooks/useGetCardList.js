@@ -10,12 +10,16 @@ import {
 } from "firebase/firestore";
 import useAuthStore from "../store/authStore";
 
+/**
+ * Get all the card information in a deck owned by the current user
+ * @param {*} deckRef The deck reference of the current deck
+ * @returns All the card objects and information, including decayed mastery
+ */
 const useGetCardList = (deckRef) => {
   const [cardList, setCardList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalMastery, setTotalMastery] = useState(0);
-  const [sharedTo, setSharedTo] = useState([]);
   const [viewerList, setViewerList] = useState([]);
   const [editorList, setEditorList] = useState([]);
 

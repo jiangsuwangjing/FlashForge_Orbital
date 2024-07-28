@@ -7,17 +7,19 @@ import "react-quill/dist/quill.snow.css";
 import CardInReview from "./CardInReview";
 
 /**
- * Passing the current deck name and the list of cards to enter the review mode.
- * It's connected to the database but needs some styling and routing.
- * This component rotates through the deck of cards and does not stop.
- * Stopping condition need to be added.
+ * Passing the current deck ID and the list of cards to enter the review mode.
+ * This component rotates through the deck of cards and stops when popOff is called.
+ * During the review mode, the mastery of card is updated. 
+ * After each session, last reviewed and overall mastery of the deck will be updated.
  *
  * Example call:
  * const cards = useGetCardList("fifthdeck").cardList;
- * { cards && <ReviewMode deckName={"fifthdeck"} cards={cards} /> }
+ * { cards && <ReviewMode deckName={currentDeck.id} cards={cards} popOff={popOff}/> }
  *
- * @param {deckName, cards} param0
- * @returns
+ * @param deckId the id of the current deck
+ * @param cards the list of card objects that contain the card information to be displayed
+ * @param popOff the function that manages closing the review mode window and updating parent deck doc
+ * @returns the pop up window of the review mode
  */
 const ReviewMode = ({ deckId, cards, popOff }) => {
   const [cardIds, setCardIds] = useState([]);
