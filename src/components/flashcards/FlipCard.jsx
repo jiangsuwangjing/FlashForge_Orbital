@@ -7,6 +7,8 @@ import { arrayRemove } from "firebase/firestore";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import truncate from "html-truncate";
+import { color } from "@chakra-ui/react";
+
 const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
   const cardId = card[2];
   const cardRef = doc(deckRef, "cards", cardId);
@@ -16,13 +18,28 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
   const [backImage, setBackImage] = useState(card[4]);
   const [frontAudioUrl, setFrontAudioUrl] = useState(card[5]);
   const [backAudioUrl, setBackAudioUrl] = useState(card[6]);
+  const [mastery, setMastery] = useState(card[7]);
   const [popUp, setPopUp] = useState(false);
   const [expand, setExpand] = useState(false);
+  const [content, setContent] = useState(front);
+  const [colour, setColour] = useState("#884EA0")
+  const [truncatedContent, setTruncatedContent] = useState()
   const [contextMenu, setContextMenu] = useState({
     visible: false,
     x: 0,
     y: 0,
   });
+
+  const masteryColours = ["#880808", "#EC7063", "#F7DC6F", "#85C1E9", "#58D68D"]
+  
+
+  useEffect(() => {
+    const truncContent = truncate(front, 240, { ellipsis: "..." });
+    setTruncatedContent(truncContent);
+    setMastery(Math.ceil(card[7]));
+    const colourIndex = Math.floor(mastery / 20);
+    setColour(masteryColours[colourIndex]);
+  }, [card, front, deckRef])
 
   const handleContextMenu = (event) => {
     console.log("right click");
@@ -49,6 +66,7 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
       onFlip();
     }
   };
+
   const rephraseOption = async (event) => {
     event.stopPropagation();
     handleClick();
@@ -101,6 +119,7 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
       console.error("Error sending message:", error);
     }
   };
+
   const editOption = (event) => {
     event.stopPropagation();
     console.log("edit");
@@ -111,7 +130,7 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
     try {
       let deleteHookRes = await deleteDoc(cardRef);
       let updateHookRes = await updateDoc(deckRef, {
-        cardIds: arrayRsemove(cardId),
+        cardIds: arrayRemove(cardId),
       });
 
       console.log(deleteHookRes, updateHookRes);
@@ -131,9 +150,11 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
     };
   }, [contextMenu]);
 
-  const content = card[isFlipped ? 1 : 0];
+  useEffect(() => {
+    setContent(isFlipped ? back : front);
+  }, [isFlipped]);
+  // const content = card[isFlipped ? 1 : 0];
   console.log(content);
-  const truncatedContent = truncate(front, 240, { ellipsis: "..." });
   return (
     <>
       {expand && (
@@ -158,12 +179,30 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
               flexDirection: "column",
             }}
           >
-            <audio controls style={{ position: "absolute", top: "10%" }}>
+            {/* <audio controls style={{ position: "absolute", top: "10%" }}>
               <source
                 src={!isFlipped ? frontAudioUrl : backAudioUrl}
                 type="audio/mpeg"
               />
-            </audio>
+            </audio> */}
+            { !isFlipped 
+                ? frontAudioUrl && (
+                  <audio controls style={{ position: "absolute", bottom: "30%" }}>
+                    <source
+                      src={frontAudioUrl}
+                      type="audio/mpeg"
+                    />
+                  </audio>
+                )
+                : backAudioUrl && (
+                  <audio controls style={{ position: "absolute", bottom: "30%" }}>
+                    <source
+                      src={backAudioUrl}
+                      type="audio/mpeg"
+                    />
+                  </audio>
+                )
+              }
             <div
               style={{
                 backgroundColor: "#F5F5F5 ",
@@ -178,8 +217,8 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
               }}
               className="w-1/2 h-1/2"
             >
-              <div className="bg-sky-500 w-full h-5 mt-0 text-sm pl-2 font-semibold">
-                Mastery: {card.mastery}
+              <div className="w-full h-5 mt-0 text-sm pl-2 font-semibold" style={{backgroundColor: colour}}>
+                Mastery: {mastery}
               </div>
               <div className="w-full h-full flex flex-row justify-between items-stretch">
                 <ReactQuill
@@ -205,6 +244,7 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
                       />
                     )}
               </div>
+              
               <audio
                 controls
                 style={{
@@ -279,9 +319,9 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
       >
         <div
           className="bg-sky-500 w-full h-5 mt-0 text-sm pl-2 font-semibold"
-          style={{ color: "black" }}
+          style={{ backgroundColor: colour }}
         >
-          Mastery: {card.averageMastery}
+          Mastery: {mastery}
         </div>
         <div onClick={handleExpand} className="w-full h-full text-center">
           {

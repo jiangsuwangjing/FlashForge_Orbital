@@ -53,78 +53,15 @@ const ShareDeck = ({ deckDoc }) => {
   const { cardList, viewerList, editorList } = useGetCardList(srcDeckRef);
 
   const [destUserEmail, setDestUserEmail] = useState("");
-  // const [destUser, setDestUser] = useState("")
   const [popShareDeck, setPopShareDeck] = useState(false);
-  // const [destUserList, setDestUserList] = useState([]);
   const [viewers, setViewers] = useState([]);
   const [editors, setEditors] = useState([]);
-
-  // const destUserRef = doc(db, "users", destUser.uid);
 
   useEffect(() => {
     setViewers(viewerList || []);
     setEditors(editorList || []);
   }, [viewerList, editorList]);
 
-  // const onShareDeck = async () => {
-  //   try {
-  //     const destUser = await getUserProfileByEmail(destUserEmail);
-  //     const srcDeckDoc = await getDoc(srcDeckRef);
-  //     const srcDeckData = srcDeckDoc.data();
-
-  //     if (!destUser) {
-  //       alert("Destination user not found.");
-  //       return;
-  //     }
-
-  //     // Add the destination user to the sharedTo array in the source deck
-  //     await updateDoc(srcDeckRef, {
-  //       sharedTo: arrayUnion(destUser.uid),
-  //     });
-
-  //     // setDestUserList([...destUserList, destUser.uid]);
-  //     // Copy the deck to the destination user's library
-  //     const destDeckRef = doc(db, "users", destUser.uid, "shared", deckName);
-  //     await setDoc(destDeckRef, srcDeckData);
-
-  //     const destCardsRef = collection(destDeckRef, "cards");
-
-  //     cardList.forEach(async (card) => {
-  //       const newCardRef = doc(destCardsRef, card.id);
-  //       await setDoc(newCardRef, { ...card, mastery: 0 });
-  //     });
-
-  //     alert("Deck shared successfully.");
-  //   } catch (error) {
-  //     console.error("Error sharing deck:", error);
-  //     alert("An error occurred while sharing the deck.");
-  //   }
-  // };
-
-  // const onSelectViewer = async (uid) => {
-  //   try {
-  //     const destUserRef = doc(db, "users", uid);
-
-  //     await updateDoc(srcDeckRef, {
-  //       viewers: arrayUnion(user),
-  //       editors: arrayRemove(uid)
-  //     });
-
-  //     setViewers([...viewers, uid]);
-  //     setEditors(editors.filter((id) => id !== uid));
-
-  //     await updateDoc(destUserRef, {
-  //       canView: arrayUnion(srcDeckRef),
-  //       canEdit: arrayRemove(srcDeckRef)
-  //     });
-
-  //     console.log("Updated permission to viewer successfully")
-  //     console.log("viewer: " + viewers);
-  //     console.log("editor: " + editors);
-  //   } catch (error) {
-  //     console.error("Error setting viewer:", error);
-  //   }
-  // }
   const onSelectViewer = async (uid) => {
     try {
       const destUserRef = doc(db, "users", uid);
@@ -236,6 +173,7 @@ const ShareDeck = ({ deckDoc }) => {
         deckId: deckId,
         deckName: deckName,
         color: deckDoc.color,
+        profilePicURL: destUser.profilePicURL
       };
 
       await updateDoc(srcDeckRef, {

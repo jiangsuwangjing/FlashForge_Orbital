@@ -31,6 +31,11 @@ const UnshareDeck = ({
 }) => {
   const [destEmail, setDestEmail] = useState("");
   const [destProfilePic, setDestProfilePic] = useState("");
+
+  useEffect(() => {
+    setDestEmail(userDoc.email);
+    setDestProfilePic(userDoc.profilePicURL);
+  }, [userDoc]);
   // const destUserRef = doc(db, "users", userDoc.uid);
 
   // useEffect(() => {
@@ -65,12 +70,12 @@ const UnshareDeck = ({
   //   }
   // };
 
-  console.log(userDoc.email);
+  console.log(userDoc.profilePicURL);
   return (
     <div className="access-item">
-      <img className="access-avatar" />
+      <img className="access-avatar" src={destProfilePic}/>
       <div className="access-info">
-        <span className="access-email">{userDoc.email}</span>
+        <span className="access-email">{destEmail}</span>
         <span className="access-role">
           {userDoc.isViewer ? "Viewer" : "Editor"}
         </span>

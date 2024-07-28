@@ -71,6 +71,8 @@ export default function DeckPage() {
           />
         </div>
       )}
+      {currentDeck && <ShareDeck deckDoc={currentDeck} />}
+
       <div className="container h-5/6">
         <div className="text-3xl font-semibold pb-4">{deckName}</div>
         <div className="flex justify-end items-center w-full h-10">
@@ -84,7 +86,6 @@ export default function DeckPage() {
         </div>
         <Deck deckId={deckId} />
       </div>
-      {currentDeck && <ShareDeck deckDoc={currentDeck} />}
     </div>
   );
 }

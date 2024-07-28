@@ -32,18 +32,6 @@ const Deck = ({ deckId }) => {
   const user = useAuthStore((state) => state.user);
   const deckRef = doc(db, "users", user.uid, "library", deckId);
 
-  // const deckDoc = getDoc(deckRef);
-  // // if (!deckDoc.exists()) {
-  // //   alert('Deck not found');
-  // //   return;
-  // // }
-  // const deckData = deckDoc.data();
-  // let sharedTo = [];
-  // if (deckData.sharedTo) {
-  //   sharedTo = deckData.sharedTo;
-  // }
-  // const ownsThisDeck = !sharedTo.includes(user.uid);
-
   const { cardList, loading, averageDecayedMastery } = useGetCardList(deckRef);
 
   // const totalMastery = cardList.reduce((acc, card) => acc + card.mastery, 0);
@@ -130,12 +118,14 @@ const Deck = ({ deckId }) => {
           )}
           {cardList
             .map(
-              ({ front, back, id, frontImageUrl, backImageUrl, mastery }) => [
+              ({ front, back, id, frontImageUrl, backImageUrl, frontAudioUrl, backAudioUrl, mastery }) => [
                 front,
                 back,
                 id,
                 frontImageUrl,
                 backImageUrl,
+                frontAudioUrl, 
+                backAudioUrl,
                 mastery,
               ]
             )

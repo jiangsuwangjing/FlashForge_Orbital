@@ -25,7 +25,7 @@ export default function Popup(props) {
           type="text"
           value={localInputValue}
           onChange={handleInputChange}
-          className="w-full py-2 text-white outline-none p-2 rounded-md"
+          className="w-full py-2 text-white bg-[#353839] outline-none p-2 rounded-md"
           required
         />
         <div className="flex flex-row gap-4 justify-between">
