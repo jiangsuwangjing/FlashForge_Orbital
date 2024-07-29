@@ -17,6 +17,13 @@ import { storage } from "../../config/firebase";
 import { v4 as uuidv4 } from "uuid";
 import { AudioRecorder } from "react-audio-voice-recorder";
 
+/**
+ * Creates a card manually in a deck
+ * @param deckRef the reference to parent deck
+ * @param deckRef the reference to the parent deck
+ * @param onClose the function that closes the window and updates back end 
+ * @returns a pop up window
+ */
 const CreateCard = ({ deckRef, onClose }) => {
   const user = useAuthStore((state) => state.user);
   const [front, setFront] = useState("");

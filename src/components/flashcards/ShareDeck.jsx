@@ -39,6 +39,11 @@ const getUserProfileByEmail = async (email) => {
   }
 };
 
+/**
+ * The window that manages permissions of deck sharing
+ * @param deckDoc the information of the deck to be shared 
+ * @returns a window
+ */
 const ShareDeck = ({ deckDoc }) => {
   const deckId = deckDoc.id;
   const deckName = deckDoc.deckName

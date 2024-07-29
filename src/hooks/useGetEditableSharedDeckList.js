@@ -4,6 +4,10 @@ import { db } from "../config/firebase";
 import useAuthStore from "../store/authStore";
 import useSharedDeckStore from "../store/sharedDeckStore";
 
+/**
+ * Get the decks that the user has permission to edit
+ * @returns a list of editable decks
+ */
 const useGetEditableSharedDeckList = () => {
   const user = useAuthStore((state) => state.user);
   const userRef = doc(db, "users", user.uid);

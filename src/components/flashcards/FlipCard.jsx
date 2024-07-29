@@ -9,6 +9,14 @@ import axios from "axios";
 import truncate from "html-truncate";
 import { color } from "@chakra-ui/react";
 
+/**
+ * Cards displayed in the decks
+ * @param card  the card document
+ * @param deckRef the reference to parent deck
+ * @param isFlipped the state of which side is showing
+ * @param onFlip changes the side of card 
+ * @returns a windo
+ */
 const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
   const cardId = card[2];
   const cardRef = doc(deckRef, "cards", cardId);

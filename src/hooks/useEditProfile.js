@@ -6,6 +6,10 @@ import { db, storage } from "../config/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import useUserProfileStore from "../store/userProfileStore";
 
+/**
+ * Hook that edits the profile information
+ * @returns edit profile function
+ */
 const useEditProfile = () => {
 	const [isUpdating, setIsUpdating] = useState(false);
 

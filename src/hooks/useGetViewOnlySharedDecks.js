@@ -5,6 +5,10 @@ import useAuthStore from "../store/authStore";
 import useLibraryStore from "../store/libraryStore";
 import useSharedDeckStore from "../store/sharedDeckStore";
 
+/**
+ * Get the decks that the user has permission to view only
+ * @returns a list of view-only decks
+ */
 const useGetViewOnlySharedDeckList = () => {
   const user = useAuthStore((state) => state.user);
   const userRef = doc(db, "users", user.uid);

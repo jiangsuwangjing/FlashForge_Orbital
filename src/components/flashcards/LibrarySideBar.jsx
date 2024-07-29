@@ -4,7 +4,10 @@ import "../../styles/Library.css";
 import useGetViewOnlySharedDeckList from "../../hooks/useGetViewOnlySharedDecks";
 import useGetEditableSharedDeckList from "../../hooks/useGetEditableSharedDeckList";
 
-//Library is a collection containing the docs of decks
+/**
+ * Keeps all the decks in the library
+ * @returns deck buttons
+ */
 const LibrarySideBar = () => {
   const deckList = useGetDeckList();
   const viewOnlySharedDeckList = useGetViewOnlySharedDeckList();

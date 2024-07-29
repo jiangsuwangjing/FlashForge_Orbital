@@ -8,6 +8,12 @@ import FlipCard from "./FlipCard";
 import useGetSharedCardList from "../../hooks/useGetSharedCardList";
 import ReviewModeShared from "./ReviewModeShared";
 
+/**
+ * The deck shared from others
+ * @param deckDoc the document of the deck carrying information
+ * @param viewOnly if the user can only view the deck
+ * @returns A deck page
+ */
 const SharedDeck = ({ deckDoc, viewOnly }) => {
   const user = useAuthStore((state) => state.user);
   // const deckRef = doc(db, "users", user.uid, "shared", deckId);

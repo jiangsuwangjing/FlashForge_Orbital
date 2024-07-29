@@ -19,10 +19,16 @@ const colors = [
   "#ffd1a9",
   "#c9b3ff",
 ];
+
 function getRandomColor() {
   const randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex];
 }
+
+/**
+ * Create a deck in the library
+ * @returns a button
+ */
 const CreateDeck = () => {
   // New Deck States
   const [newDeckName, setNewDeckName] = useState("");

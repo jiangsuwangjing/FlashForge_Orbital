@@ -4,6 +4,11 @@ import { db } from '../config/firebase';
 import useUserProfileStore from '../store/userProfileStore';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
+/**
+ * Hook that retrieves user profile by username
+ * @param {*} username of the target user
+ * @returns user document
+ */
 const useGetUserProfileByUsername = (username) => {
   const [isLoading, setIsLoading] = useState(true);
   const showToast = useShowToast();

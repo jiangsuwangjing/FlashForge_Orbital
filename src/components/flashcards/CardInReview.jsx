@@ -1,5 +1,11 @@
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
+
+/**
+ * The card displayed in review mode
+ * @param {*} cardInfo the information needed to display the card 
+ * @returns a card
+ */
 const CardInReview = ({ text, handleFlip, imageUrl, audioUrl }) => {
   return (
     <div

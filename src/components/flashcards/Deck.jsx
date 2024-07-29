@@ -28,6 +28,11 @@ import ShareDeck from "./ShareDeck";
 import FlipCard from "./FlipCard";
 import { Spinner } from "@chakra-ui/react";
 
+/**
+ * The deck owned by the user
+ * @param deckId the id of the deck to locate the deck 
+ * @returns the deck page
+ */
 const Deck = ({ deckId }) => {
   const user = useAuthStore((state) => state.user);
   const deckRef = doc(db, "users", user.uid, "library", deckId);

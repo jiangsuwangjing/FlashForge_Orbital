@@ -5,7 +5,9 @@ import { db } from '../config/firebase';
 import useAuthStore from '../store/useAuthStore';
 import useLibraryStore from '../store/useLibraryStore';
 
-//Library is a collection containing the docs of decks
+/**
+ * Library shows all the deck buttons
+ */
 const Library = () => {
   // const [deckList, setDeckList] = useState([]);
 

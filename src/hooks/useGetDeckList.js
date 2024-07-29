@@ -4,6 +4,10 @@ import { db } from "../config/firebase";
 import useAuthStore from "../store/authStore";
 import useLibraryStore from "../store/libraryStore";
 
+/**
+ * Get the decks owned by the user
+ * @returns a list of decks
+ */
 const useGetDeckList = () => {
   const user = useAuthStore((state) => state.user);
   const { deckList, setDeckList } = useLibraryStore();

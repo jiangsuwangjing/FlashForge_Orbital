@@ -9,6 +9,13 @@ import { storage } from "../../config/firebase";
 import { v4 as uuidv4 } from "uuid";
 import { AudioRecorder } from "react-audio-voice-recorder";
 
+/**
+ * A window that allows card edits
+ * @param card the current card doc
+ * @param cardRef the card reference
+ * @param onClose manages closing window and storing data
+ * @returns pop up window
+ */
 export default function EditCardPreview({ card, cardRef, onClose }) {
   const user = useAuthStore((state) => state.user);
   // const userRef = doc(db, "users", user.uid);

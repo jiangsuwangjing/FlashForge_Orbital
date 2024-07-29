@@ -1,6 +1,10 @@
 import { useToast } from "@chakra-ui/react";
 import { useCallback } from "react";
 
+/**
+ * Toast from Chakra=ui
+ * @returns a function that allows safe use of toast
+ */
 const useShowToast = () => {
 	const toast = useToast();
 	const showToast = useCallback(

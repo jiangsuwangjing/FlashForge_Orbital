@@ -22,6 +22,14 @@ import { Button } from "@chakra-ui/react";
 import "../../styles/ShareDeck.css";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
+/**
+ * A row of elemnt for each user, showing their information 
+ * and manages permission
+ * @param userDoc document of the shared user 
+ * @param onChangeStatus manage changing permissions
+ * @param onUnshareDeck manage unsharing deck
+ * @returns a row elements specific to a user
+ */
 const UnshareDeck = ({ 
   // deckId, destUid, 
   userDoc, deckRef, onChangeStatus, onUnshareDeck }) => {

@@ -11,6 +11,12 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 
+/**
+ * Automatically create blanks from highlights
+ * @param deckRef the reference to the parent deck
+ * @param onClose the function that closes the window and updates back end 
+ * @returns a pop up window
+ */
 const AutoCreateCardFromHighlights = ({ deckRef, onClose }) => {
   const [editorHtml, setEditorHtml] = useState("");
   const [savedHtml, setSavedHtml] = useState("");
@@ -155,7 +161,7 @@ const AutoCreateCardFromHighlights = ({ deckRef, onClose }) => {
         <div
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
         >
-          <div>Preview</div>
+          <div>Blanks will be automatically created to replace highlighted text!</div>
           {savedHtml && (
             <ReactQuill value={savedHtml} readOnly={true} theme="bubble" />
           )}
