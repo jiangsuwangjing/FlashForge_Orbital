@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { React, useEffect, useState } from "react";
-import Deck from "../components/flashcards/Deck";
+import Deck from "../components/library/Deck";
 import { Hero } from "../registration/Hero";
 import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCardFromHighlights";
-import SharedDeck from "../components/flashcards/SharedDeck";
+import SharedDeck from "../components/library/SharedDeck";
 import useSharedDeckStore from "../store/sharedDeckStore";
 import { doc, collection } from "firebase/firestore";
 
@@ -11,8 +11,8 @@ export default function SharedDeckPage({ viewOnly }) {
   const { deckId } = useParams();
   const { viewOnlyDecksList, editableDecksList } = useSharedDeckStore();
   const deckList = viewOnly ? viewOnlyDecksList : editableDecksList;
-  const deckDoc = deckList.find(deck => deck.deckId === deckId);
-  const deckName = deckDoc ? deckDoc.deckName : "loading"
+  const deckDoc = deckList.find((deck) => deck.deckId === deckId);
+  const deckName = deckDoc ? deckDoc.deckName : "loading";
   const deckRef = deckDoc ? deckDoc.deckRef : "";
 
   const [showPopup, setShowPopup] = useState(false);
@@ -31,7 +31,7 @@ export default function SharedDeckPage({ viewOnly }) {
   };
   return (
     <div>
-      { showPopup && !viewOnly && deckDoc && (
+      {showPopup && !viewOnly && deckDoc && (
         <div
           style={{
             position: "absolute",
@@ -45,7 +45,7 @@ export default function SharedDeckPage({ viewOnly }) {
           <Hero deckRef={deckRef} onClose={handleClosePopup} />
         </div>
       )}
-      { autoPopup && !viewOnly && deckDoc && (
+      {autoPopup && !viewOnly && deckDoc && (
         <div
           style={{
             position: "absolute",
@@ -74,15 +74,15 @@ export default function SharedDeckPage({ viewOnly }) {
           alignItems: "center",
         }}
       >
-        <div style={{ fontSize: "18px" }}>Cards</div>
-        { !viewOnly && 
+        <div className="h-10"></div>
+        {!viewOnly && (
           <div>
             <button onClick={handleShowPopup}>Create Card</button>
             <button onClick={handleShowAutoPopup}>Automatic Create</button>
           </div>
-        }
+        )}
       </div>
-      { deckDoc && <SharedDeck deckDoc={deckDoc} viewOnly={viewOnly}/> }
+      {deckDoc && <SharedDeck deckDoc={deckDoc} viewOnly={viewOnly} />}
     </div>
   );
 }

@@ -3,12 +3,22 @@ import "../../styles/Header.css";
 import { auth, googleProvider } from "../../config/firebase.js";
 import { signOut } from "firebase/auth";
 import useAuthStore from "../../store/authStore.js";
+import { Logout } from "../../icons/logout.jsx";
+import { flatMap } from "draft-js/lib/DefaultDraftBlockRenderMap.js";
+import useUserProfileStore from "../../store/userProfileStore";
+
+import EditProfile from "./EditProfile";
+import { useDisclosure, Box, position } from "@chakra-ui/react";
 
 const handleLogout = async () => {
   await signOut(auth, googleProvider);
+  localStorage.removeItem("user-info");
+  const logoutUser = useAuthStore((state) => state.logout);
+  logoutUser();
 };
 
 function Header() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const user = useAuthStore((state) => state.user);
   let username, profilePicURL;
   if (user) {
@@ -21,35 +31,44 @@ function Header() {
     const subMenu = document.getElementById("subMenu");
     subMenu.classList.toggle("open-menu");
   };
-  const handleLogoutClick = (e) => {
-    e.stopPropagation();
-    console.log("logging out");
+  const handleLogoutClick = () => {
     handleLogout();
   };
   return (
-    <div className="navbar">
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search for cards in your library"
-          className="search-input"
-        />
-      </div>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <a href="/home">Home</a>
-            </li>
-            <li>
-              <a href="/library">Library</a>
-            </li>
-            <li>
-              <a href="#">Community</a>
-            </li>
-          </ul>
-          <img src={profilePicURL} className="user-pic" onClick={toggleMenu} />
-          <div className="sub-menu-wrap" id="subMenu">
+    <header
+      py={12}
+      className="py-3 w-full top-0 fixed z-50"
+      style={{
+        borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+        background: "rgba(0,0,0,0.4)",
+        backdropFilter: "blur(10px)",
+      }}
+    >
+      {isOpen && <EditProfile isOpen={isOpen} onClose={onClose} />}
+      <div className="container mx-4 flex md:mx-auto">
+        <div className="flex flex-1 flex-row w-full gap-4 items-center text-white">
+          <a href="/home">Home</a>
+          <a href="/library">Library</a>
+        </div>
+        <div className="relative flex flex-row gap-2 items-center">
+          <img
+            onClick={onOpen}
+            height={100}
+            width={100}
+            src={profilePicURL}
+            alt="Profile Pic"
+            className="w-12 h-12 object-cover rounded-full cursor-pointer"
+          />
+          <a href="/">
+            <div
+              className="p-2 rounded-full hover:bg-white/5 cursor-pointer transition-all ripple"
+              onClick={handleLogout}
+              data-testid="icon"
+            >
+              <Logout />
+            </div>
+          </a>
+          {/* <div className="sub-menu-wrap" id="subMenu">
             <div className="sub-menu">
               <a href="/profile" className="sub-menu-link">
                 {user && (
@@ -66,18 +85,11 @@ function Header() {
                 <span> </span>
               </a>
             </div>
-          </div>
-        </nav>
-
-        {/* <div className="dropdown">
-          <div className="dropdown-content">
-            <a href="#">My Profile</a>
-            <a href="#">Settings</a>
-            <a href="#">Sign Out</a>
-          </div>
-        </div> */}
+          </div> */}
+        </div>
+        {/* </Flex> */}
       </div>
-    </div>
+    </header>
   );
 }
 

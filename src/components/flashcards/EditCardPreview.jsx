@@ -6,7 +6,7 @@ import { collection, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../config/firebase";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { AudioRecorder } from "react-audio-voice-recorder";
 
 export default function EditCardPreview({ card, cardRef, onClose }) {
@@ -15,7 +15,7 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
   // const libraryRef = collection(userRef, "library");
   // const deckRef = doc(libraryRef, deckName);
   // const cardsRef = collection(deckRef, "cards");
-  
+
   // const cardsRef = collection(deckRef, "cards");
   // const cardId = card[2];
   // const cardRef = doc(cardsRef, cardId)
@@ -24,12 +24,12 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
   const [front, setFront] = useState(card[0]);
   const [back, setBack] = useState(card[1]);
   const [frontImage, setFrontImage] = useState(card[3]);
-  const [backImage, setBackImage] = useState(card[4]); 
+  const [backImage, setBackImage] = useState(card[4]);
   const [frontAudioUrl, setFrontAudioUrl] = useState(card[5]);
   const [backAudioUrl, setBackAudioUrl] = useState(card[6]);
 
   const uploadImage = async (imageFile) => {
-    const storageRef = ref(storage, `cardPics/${user.uid}`);	// the path to the store
+    const storageRef = ref(storage, `cardPics/${user.uid}`); // the path to the store
     const imageRef = ref(storageRef, `${uuidv4()}`);
     await uploadBytes(imageRef, imageFile);
     const imageUrl = await getDownloadURL(imageRef);
@@ -59,7 +59,7 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
   };
 
   const addFrontAudioElement = async (blob) => {
-    console.log("clicked")
+    console.log("clicked");
     const audioUrl = await uploadAudio(blob);
     setFrontAudioUrl(audioUrl);
   };
@@ -71,10 +71,10 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
 
   const onSubmitCard = async () => {
     try {
-      let frontImageUrl = '';
-      let backImageUrl = '';
-      
-      console.log("clicked")
+      let frontImageUrl = "";
+      let backImageUrl = "";
+
+      console.log("clicked");
 
       if (frontImage) {
         frontImageUrl = await uploadImage(frontImage); // Upload image and get the URL
@@ -84,19 +84,20 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
       }
 
       // Update the existing card document
-      await updateDoc(cardRef, {
+      let updateRes = await updateDoc(cardRef, {
         front: front,
         back: back,
         ...(frontImageUrl && { frontImageUrl }), // Conditionally include frontImageUrl
         ...(backImageUrl && { backImageUrl }), // Conditionally include backImageUrl
-        ...(frontAudioUrl && { frontAudioUrl }), 
-        ...(backAudioUrl && { backAudioUrl }), 
-        backAudioUrl: backAudioUrl,
+        ...(frontAudioUrl && { frontAudioUrl }),
+        ...(backAudioUrl && { backAudioUrl }),
         lastReviewed: Date.now(),
-        mastery: 0
+        mastery: 0,
       });
 
-      console.log('Card updated successfully');
+      console.log(updateRes);
+
+      console.log("Card updated successfully");
       onClose(); // Close the edit form
     } catch (err) {
       console.error(err);
@@ -110,10 +111,12 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
         flexDirection: "column",
         height: "80%",
         width: "40%",
-        color: "black",
+        color: "white",
         borderRadius: "10px",
-        backgroundColor: "white",
+        backgroundColor: "black",
         padding: "20px",
+        borderWidth: "0.5px",
+        borderColor: "gray",
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -143,10 +146,14 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
             },
           }}
         />
-        <input type="file" onChange={handleFrontImageChange} />
-        <div>
-          <div>Front Audio</div>
-          <AudioRecorder onRecordingComplete={addFrontAudioElement} />
+        <div className="flex flex-row justify-normal items-center mt-20">
+          <input type="file" onChange={handleFrontImageChange} />
+          <div>
+            <div className="flex flex-row items-center ">
+              <div>Front Audio</div>
+              <AudioRecorder onRecordingComplete={addFrontAudioElement} />
+            </div>
+          </div>
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
@@ -161,10 +168,14 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
             },
           }}
         />
-        <input type="file" onChange={handleBackImageChange} />
-        <div>
-          <div>Back Audio</div>
-          <AudioRecorder onRecordingComplete={addBackAudioElement} />
+        <div className="flex flex-row justify-normal items-center mt-20">
+          <input type="file" onChange={handleBackImageChange} />
+          <div>
+            <div className="flex flex-row items-center ">
+              <div>Back Audio</div>
+              <AudioRecorder onRecordingComplete={addBackAudioElement} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -173,5 +184,5 @@ export default function EditCardPreview({ card, cardRef, onClose }) {
 const ujin = {
   color: "#38b6ff",
   border: "none",
-  background: "white",
+  background: "black",
 };

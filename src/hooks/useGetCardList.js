@@ -1,14 +1,25 @@
 import { useEffect, useState, useMemo } from "react";
 import { db } from "../config/firebase";
-import { onSnapshot, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import {
+  onSnapshot,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import useAuthStore from "../store/authStore";
 
+/**
+ * Get all the card information in a deck owned by the current user
+ * @param {*} deckRef The deck reference of the current deck
+ * @returns All the card objects and information, including decayed mastery
+ */
 const useGetCardList = (deckRef) => {
   const [cardList, setCardList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalMastery, setTotalMastery] = useState(0);
-  const [sharedTo, setSharedTo] = useState([]);
   const [viewerList, setViewerList] = useState([]);
   const [editorList, setEditorList] = useState([]);
 
@@ -78,9 +89,15 @@ const useGetCardList = (deckRef) => {
     return () => unsubscribeDeck();
   }, []);
 
-
   const averageDecayedMastery = Math.ceil(totalMastery / cardList.length);
-  return { cardList, loading, error, averageDecayedMastery, viewerList, editorList };
+  return {
+    cardList,
+    loading,
+    error,
+    averageDecayedMastery,
+    viewerList,
+    editorList,
+  };
 };
 
 const getNewDecayedMastery = (prevMastery, t) => {
@@ -90,11 +107,12 @@ const getNewDecayedMastery = (prevMastery, t) => {
   const a2 = 1.791e-7;
 
   const part1 = mu1 * Math.exp(-a1 * t);
-  const part2 = mu1 * mu2 * (Math.exp(-a2 * t) - Math.exp(-a1 * t)) / (mu1 - mu2);
+  const part2 =
+    (mu1 * mu2 * (Math.exp(-a2 * t) - Math.exp(-a1 * t))) / (mu1 - mu2);
 
   const decayRatio = part1 + part2;
 
   return prevMastery * decayRatio;
-}
+};
 
 export default useGetCardList;

@@ -4,6 +4,13 @@ import { db } from "../config/firebase";
 import { onSnapshot, collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import useAuthStore from "../store/authStore";
 
+/**
+ * This function returns the card objects from the desk given the correct information.
+ * @param {*} deckRef The deckRef to the shared deck, can be retrieved from deck list
+ * @param {*} lastReviewed The last time deck was reviewed, can be retrieve from deck
+ * @param {*} uid The user id of current user, have been retrieved in useAuthStore
+ * @returns A list of card objects in the deck.]
+ */
 const useGetSharedCardList = (deckRef, lastReviewed, uid) => {
   const [cardList, setCardList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -39,7 +46,7 @@ const useGetSharedCardList = (deckRef, lastReviewed, uid) => {
                 timeDifferenceInMin
               );
 
-              cardData[uid] = decayedMastery;
+              cardData.mastery = decayedMastery;
               accumulatedMastery += decayedMastery;
 
               return {

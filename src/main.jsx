@@ -28,11 +28,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/library/viewonly/:deckId",
-        element: <SharedDeckPage viewOnly={true}/>,
+        element: <SharedDeckPage viewOnly={true} />,
       },
       {
         path: "/library/editable/:deckId",
-        element: <SharedDeckPage viewOnly={false}/>,
+        element: <SharedDeckPage viewOnly={false} />,
       },
     ],
   },

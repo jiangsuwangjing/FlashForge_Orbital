@@ -1,15 +1,14 @@
 import { useParams } from "react-router-dom";
 import { React, useEffect, useState } from "react";
-import Deck from "../components/flashcards/Deck";
+import Deck from "../components/library/Deck";
 import { Hero } from "../registration/Hero";
 import AutoCreateCardFromHighlights from "../components/flashcards/AutoCreateCardFromHighlights";
-import ShareDeck from "../components/flashcards/ShareDeck";
+import ShareDeck from "../components/library/ShareDeck";
 import useGetDeckList from "../hooks/useGetDeckList";
 import useLibraryStore from "../store/libraryStore";
 import useAuthStore from "../store/authStore";
 import { doc, collection } from "firebase/firestore";
 import { db } from "../config/firebase";
-
 
 export default function DeckPage() {
   const { deckId } = useParams();
@@ -22,7 +21,7 @@ export default function DeckPage() {
   const user = useAuthStore((state) => state.user);
   const userRef = doc(db, "users", user.uid);
   const libraryRef = collection(userRef, "library");
-  const deckRef = doc(libraryRef, deckId); 
+  const deckRef = doc(libraryRef, deckId);
 
   const currentDeck = deckList.find((deck) => deck.id === deckId);
   const deckName = currentDeck ? currentDeck.deckName : "Loading";
@@ -40,7 +39,7 @@ export default function DeckPage() {
     setAutoPopup(false);
   };
   return (
-    <div>
+    <div className="flex-1 w-full">
       {showPopup && deckRef && (
         <div
           style={{
@@ -72,26 +71,21 @@ export default function DeckPage() {
           />
         </div>
       )}
-      <div style={{ color: "white", marginLeft: "20px" }}>
-        <h1>{deckName}</h1>
-      </div>
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          justifyContent: "space-between",
-          width: "131.3vh",
-          alignItems: "center",
-        }}
-      >
-        <div style={{ fontSize: "18px" }}>Cards</div>
-        <div>
-          <button onClick={handleShowPopup}>Create Card</button>
-          <button onClick={handleShowAutoPopup}>Automatic Create</button>
+
+      <div className="container h-5/6">
+        <div className="text-3xl font-semibold pb-4">{deckName}</div>
+        <div className="h-10">
+          {/* <div className="ml-64"></div> */}
+          <div className="flex flex-row justify-end gap-4 mr-auto">
+            {currentDeck && <ShareDeck deckDoc={currentDeck} />}
+            <button onClick={handleShowPopup}>Create Card</button>
+            <button onClick={handleShowAutoPopup}>Automatic Create</button>
+          </div>
+        </div>
+        <div className="mt-4">
+          <Deck deckId={deckId} />
         </div>
       </div>
-      <Deck deckId={deckId} />
-      {currentDeck && <ShareDeck deckDoc={currentDeck} /> }
     </div>
   );
 }

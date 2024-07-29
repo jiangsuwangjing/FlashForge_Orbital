@@ -1,14 +1,20 @@
 import React from "react";
 import { useState } from "react";
-import { doc, collection, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import {
+  doc,
+  collection,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import { db, auth } from "../../config/firebase";
 import useAuthStore from "../../store/authStore";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../config/firebase";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { AudioRecorder } from "react-audio-voice-recorder";
 
 const CreateCard = ({ deckRef, onClose }) => {
@@ -17,17 +23,17 @@ const CreateCard = ({ deckRef, onClose }) => {
   const [back, setBack] = useState("");
   const [frontImage, setFrontImage] = useState(null); // State to store the selected image
   const [backImage, setBackImage] = useState(null); // State to store the selected image
-  const [frontAudioUrl, setFrontAudioUrl] = useState('');
-  const [backAudioUrl, setBackAudioUrl] = useState('');
+  const [frontAudioUrl, setFrontAudioUrl] = useState("");
+  const [backAudioUrl, setBackAudioUrl] = useState("");
   // get referece to the deck
   // const userRef = doc(db, "users", user.uid);
   // const libraryRef = collection(userRef, "library");
   // const deckRef = doc(libraryRef, deckId);
   const cardsRef = collection(deckRef, "cards");
-  
+
   // Image Handling
   const uploadImage = async (imageFile) => {
-    const storageRef = ref(storage, `cardPics/${user.uid}`);	// the path to the store
+    const storageRef = ref(storage, `cardPics/${user.uid}`); // the path to the store
     const imageRef = ref(storageRef, `${uuidv4()}`);
     await uploadBytes(imageRef, imageFile);
     const imageUrl = await getDownloadURL(imageRef);
@@ -56,7 +62,7 @@ const CreateCard = ({ deckRef, onClose }) => {
   };
 
   const addFrontAudioElement = async (blob) => {
-    console.log("clicked")
+    console.log("clicked");
     const audioUrl = await uploadAudio(blob);
     setFrontAudioUrl(audioUrl);
   };
@@ -66,11 +72,10 @@ const CreateCard = ({ deckRef, onClose }) => {
     setBackAudioUrl(audioUrl);
   };
 
-
   const onSubmitCard = async () => {
     try {
-      let frontImageUrl = '';
-      let backImageUrl = '';
+      let frontImageUrl = "";
+      let backImageUrl = "";
 
       if (frontImage) {
         frontImageUrl = await uploadImage(frontImage); // Upload image and get the URL
@@ -87,19 +92,19 @@ const CreateCard = ({ deckRef, onClose }) => {
         back: back,
         frontImageUrl: frontImageUrl, // Store the image URL
         backImageUrl: backImageUrl,
-        frontAudioUrl: frontAudioUrl, 
+        frontAudioUrl: frontAudioUrl,
         backAudioUrl: backAudioUrl,
         mastery: 0,
         userId: user.uid,
-        lastReviewed: Date.now()
+        lastReviewed: Date.now(),
       });
 
       // Update the parent deck document to include the new card ID
       await updateDoc(deckRef, {
-        cardIds: arrayUnion(newCardRef.id)
+        cardIds: arrayUnion(newCardRef.id),
       });
-    
-      console.log('New card created successfully')
+
+      console.log("New card created successfully");
     } catch (err) {
       console.error(err);
     }
@@ -112,10 +117,12 @@ const CreateCard = ({ deckRef, onClose }) => {
         flexDirection: "column",
         height: "80%",
         width: "40%",
-        color: "black",
+        color: "white",
         borderRadius: "10px",
-        backgroundColor: "white",
+        backgroundColor: "black",
         padding: "20px",
+        borderColor: "gray",
+        borderWidth: "0.5px",
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -133,14 +140,16 @@ const CreateCard = ({ deckRef, onClose }) => {
         </button>
       </div>
       <div style={{ marginBottom: "15px", textAlign: "center" }}>New Card</div>
-      <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <div>Front</div>
         {/* <textarea
           placeholder="front:"
           onChange={(e) => setFront(e.target.value)}
           style={{ height: "100%", backgroundColor: "white", color: "black" }}
         /> */}
+
         <ReactQuill
+          style={{ height: "100%" }}
           value={front}
           onChange={setFront}
           theme="snow"
@@ -150,12 +159,23 @@ const CreateCard = ({ deckRef, onClose }) => {
             },
           }}
         />
-        <input type="file" onChange={handleFrontImageChange} />
-        <div>
-          <div>Front Audio</div>
-          <AudioRecorder onRecordingComplete={addFrontAudioElement} />
+
+        <div className="flex flex-row justify-normal items-center mt-20">
+          <div className="flex flex-row items-center space-x-2">
+            <div>Image:</div>
+            <input type="file" onChange={handleFrontImageChange} />
+          </div>
+          {/* <div>Image</div>
+          <input type="file" onChange={handleFrontImageChange} /> */}
+          <div>
+            <div className="flex flex-row items-center space-x-2">
+              <div>Audio</div>
+              <AudioRecorder onRecordingComplete={addFrontAudioElement} />
+            </div>
+          </div>
         </div>
       </div>
+      <div></div>
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <div>Back</div>
         {/* <textarea
@@ -173,10 +193,17 @@ const CreateCard = ({ deckRef, onClose }) => {
             },
           }}
         />
-        <input type="file" onChange={handleBackImageChange} />
-        <div>
-          <div>Back Audio</div>
-          <AudioRecorder onRecordingComplete={addBackAudioElement} />
+        <div className="flex flex-row justify-normal items-center mt-20">
+          <div className="flex flex-row items-center space-x-2">
+            <div>Image:</div>
+            <input type="file" className="color" onChange={handleBackImageChange} />
+          </div>
+          <div>
+            <div className="flex flex-row items-center space-x-2">
+              <div>Audio:</div>
+              <AudioRecorder onRecordingComplete={addBackAudioElement} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -185,6 +212,6 @@ const CreateCard = ({ deckRef, onClose }) => {
 const ujin = {
   color: "#38b6ff",
   border: "none",
-  background: "white",
+  background: "black",
 };
 export default CreateCard;

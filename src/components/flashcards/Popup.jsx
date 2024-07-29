@@ -16,24 +16,33 @@ export default function Popup(props) {
   };
   return (
     <div className="popup">
-      <div className="popup-inner">
-        <h2>Enter a deck name</h2>
-        <form>
-          <input
-            type="text"
-            required
-            value={localInputValue}
-            onChange={handleInputChange}
-            style={{ backgroundColor: "white" }}
-          />
-          <div className="popup-buttons">
-            <button onClick={handleClose}>Close</button>
-            <button type="submit" onClick={handleAdd}>
-              Add
-            </button>
-          </div>
-        </form>
-      </div>
+      <form
+        className="w-80 flex flex-col gap-4 bg-black py-5 px-6 rounded-xl"
+        onSubmit={handleAdd}
+      >
+        <div className="text-lg font-semibold">Enter a deck name</div>
+        <input
+          type="text"
+          value={localInputValue}
+          onChange={handleInputChange}
+          className="w-full py-2 text-white bg-[#353839] outline-none p-2 rounded-md"
+          required
+        />
+        <div className="flex flex-row gap-4 justify-between">
+          <button
+            className="flex-1 bg-transparent underline"
+            onClick={handleClose}
+          >
+            Close
+          </button>
+          <button
+            className="flex-1 bg-[#0070ff] hover:bg[#0056b3]"
+            type="submit"
+          >
+            Add
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

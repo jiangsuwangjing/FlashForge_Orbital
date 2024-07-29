@@ -115,9 +115,9 @@ const AutoCreateCardFromHighlights = ({ deckRef, onClose }) => {
           flexDirection: "column",
           height: "80%",
           width: "40%",
-          color: "black",
+          color: "white",
           borderRadius: "10px",
-          backgroundColor: "white",
+          backgroundColor: "black",
           padding: "20px",
         }}
       >
@@ -156,14 +156,9 @@ const AutoCreateCardFromHighlights = ({ deckRef, onClose }) => {
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
         >
           <div>Preview</div>
-          {savedHtml &&
-            <ReactQuill
-              value={savedHtml}
-              readOnly={true}
-              theme="bubble"
-            />
-          }
-          
+          {savedHtml && (
+            <ReactQuill value={savedHtml} readOnly={true} theme="bubble" />
+          )}
 
           {/* <textarea
           placeholder="back:"
@@ -178,6 +173,6 @@ const AutoCreateCardFromHighlights = ({ deckRef, onClose }) => {
 const ujin = {
   color: "#38b6ff",
   border: "none",
-  background: "white",
+  background: "black",
 };
 export default AutoCreateCardFromHighlights;

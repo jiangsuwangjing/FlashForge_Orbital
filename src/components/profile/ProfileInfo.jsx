@@ -38,6 +38,7 @@ const ProfileInfo = () => {
           alt="As a programmer logo"
           maxWidth="150px"
           maxHeight="150px"
+          borderRadius="full"
         />
       </AvatarGroup>
 
