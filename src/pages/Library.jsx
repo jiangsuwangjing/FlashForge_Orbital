@@ -32,7 +32,7 @@ export default function Library() {
       <Header />
       <div style={{ paddingTop: "90px", height: "100vh" }}>
         <div className="container mx-4 md:mx-auto h-full w-full">
-          <div className="flex flex-row gap-4 h-full">
+          <div className="flex flex-row gap-4 h-full" style={{ width: "100%" }}>
             <div className="flex flex-col gap-4 mb-10">
               <div className="text-xl font-semibold">Library</div>
               <CreateDeck />

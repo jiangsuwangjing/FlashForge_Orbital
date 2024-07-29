@@ -39,7 +39,7 @@ export default function DeckPage() {
     setAutoPopup(false);
   };
   return (
-    <div classname="flex-1 w-full">
+    <div className="flex-1 w-full">
       {showPopup && deckRef && (
         <div
           style={{
@@ -71,20 +71,20 @@ export default function DeckPage() {
           />
         </div>
       )}
-      {currentDeck && <ShareDeck deckDoc={currentDeck} />}
 
       <div className="container h-5/6">
         <div className="text-3xl font-semibold pb-4">{deckName}</div>
-        <div className="flex justify-end items-center w-full h-10">
-          <div
-            className="flex flex-row gap-4"
-            style={{ position: "absolute", right: "18%" }}
-          >
+        <div className="h-10">
+          {/* <div className="ml-64"></div> */}
+          <div className="flex flex-row justify-end gap-4 mr-auto">
+            {currentDeck && <ShareDeck deckDoc={currentDeck} />}
             <button onClick={handleShowPopup}>Create Card</button>
             <button onClick={handleShowAutoPopup}>Automatic Create</button>
           </div>
         </div>
-        <Deck deckId={deckId} />
+        <div className="mt-4">
+          <Deck deckId={deckId} />
+        </div>
       </div>
     </div>
   );

@@ -173,7 +173,7 @@ const ShareDeck = ({ deckDoc }) => {
         deckId: deckId,
         deckName: deckName,
         color: deckDoc.color,
-        profilePicURL: destUser.profilePicURL
+        profilePicURL: destUser.profilePicURL,
       };
 
       await updateDoc(srcDeckRef, {
@@ -321,7 +321,11 @@ const ShareDeck = ({ deckDoc }) => {
           </div>
         </div>
       )}
-      <button ref={buttonRef} onClick={handlePop}>
+      <button
+        ref={buttonRef}
+        onClick={handlePop}
+        className="bg-sky-500 hover:bg-sky-700 text-black"
+      >
         Share Deck
       </button>
       {/* <ul>

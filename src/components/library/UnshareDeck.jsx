@@ -73,7 +73,7 @@ const UnshareDeck = ({
   console.log(userDoc.profilePicURL);
   return (
     <div className="access-item">
-      <img className="access-avatar" src={destProfilePic}/>
+      <img className="access-avatar" src={destProfilePic} />
       <div className="access-info">
         <span className="access-email">{destEmail}</span>
         <span className="access-role">
@@ -113,17 +113,17 @@ const UnshareDeck = ({
               {userDoc.isViewer ? "Editor" : "Viewer"}
             </MenuItem>
             <MenuDivider />
-            <MenuItem className="bg-white p-0 flex justify-center">
+            <MenuItem className="bg-white p-0 flex justify-center hover:bg-red-700">
               <button
                 style={{
-                  color: "#fff",
+                  color: "black",
                   // border: "none",
                   borderRadius: "8px",
                   // fontSize: "16px",
                   // fontWeight: "bold",
                   // boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
-                className="p-1 rounded-{25px} bg-red-500 text-black ml-0 hover:bg-red-700 my-1"
+                className="p-1 rounded-{25px} bg-transparent border-[0px] text-black ml-0 my-1"
                 onClick={() => onUnshareDeck(userDoc.uid, userDoc.isViewer)}
               >
                 Unshare

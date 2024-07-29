@@ -128,38 +128,64 @@ const SharedDeck = ({ deckDoc, viewOnly }) => {
             zIndex: "1",
           }}
         >
-          <ReviewModeShared
-            deckRef={deckRef}
-            cards={cardList}
-            popOff={popOff}
-            uid={user.uid}
-          />
+          <ReviewModeShared deckId={deckId} cards={cardList} popOff={popOff} />
         </div>
       )}
-      <h2> Overall Mastery: {Math.round(averageMastery * 100) / 100}%</h2>
-      <div style={{ display: "flex", flexDirection: "column", height: "50vh" }}>
-        <div style={{ overflowY: "auto", flexGrow: 1, padding: "10px" }}>
-          <SimpleGrid columns={5}>
-            {cardList
-              .map(({ front, back, id, frontImageUrl, backImageUrl }) => [
+      <h2 className="text-2xl font-bold text-white-800 mb-4">
+        {" "}
+        Overall Mastery: {Math.round(averageMastery * 100) / 100}%
+      </h2>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div
+          style={{
+            overflowY: "auto",
+            flexGrow: 1,
+            padding: "15px",
+            height: "60vh",
+            width: "100%",
+          }}
+          className="flex flex-row flex-wrap"
+        >
+          {cardList.length == 0 && (
+            <div className="flex items-start justify-start w-full">
+              <h2 className="text-2xl font-bold text-white-800 mb-4 text-center algin-middle">
+                Create Your First Card!
+              </h2>
+            </div>
+          )}
+          {cardList
+            .map(
+              ({
                 front,
                 back,
                 id,
                 frontImageUrl,
                 backImageUrl,
-              ])
-              .map((card, index) => (
-                <>
-                  <FlipCard
-                    card={card}
-                    deckRef={deckRef}
-                    key={index}
-                    isFlipped={!!flippedCards[index]}
-                    onFlip={() => handleFlip(index)}
-                  />
-                </>
-              ))}
-          </SimpleGrid>
+                frontAudioUrl,
+                backAudioUrl,
+                mastery,
+              }) => [
+                front,
+                back,
+                id,
+                frontImageUrl,
+                backImageUrl,
+                frontAudioUrl,
+                backAudioUrl,
+                mastery,
+              ]
+            )
+            .map((card, index) => (
+              <>
+                <FlipCard
+                  card={card}
+                  deckRef={deckRef}
+                  key={index}
+                  isFlipped={!!flippedCards[index]}
+                  onFlip={() => handleFlip(index)}
+                />
+              </>
+            ))}
         </div>
         <button
           onClick={popOn}

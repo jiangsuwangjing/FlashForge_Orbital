@@ -97,7 +97,10 @@ const Deck = ({ deckId }) => {
           <ReviewMode deckId={deckId} cards={cardList} popOff={popOff} />
         </div>
       )}
-      <h2> Overall Mastery: {Math.round(averageMastery * 100) / 100}%</h2>
+      <h2 className="text-2xl font-bold text-white-800 mb-4">
+        {" "}
+        Overall Mastery: {Math.round(averageMastery * 100) / 100}%
+      </h2>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <div
           style={{
@@ -118,13 +121,22 @@ const Deck = ({ deckId }) => {
           )}
           {cardList
             .map(
-              ({ front, back, id, frontImageUrl, backImageUrl, frontAudioUrl, backAudioUrl, mastery }) => [
+              ({
                 front,
                 back,
                 id,
                 frontImageUrl,
                 backImageUrl,
-                frontAudioUrl, 
+                frontAudioUrl,
+                backAudioUrl,
+                mastery,
+              }) => [
+                front,
+                back,
+                id,
+                frontImageUrl,
+                backImageUrl,
+                frontAudioUrl,
                 backAudioUrl,
                 mastery,
               ]
