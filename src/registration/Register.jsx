@@ -135,9 +135,9 @@ function Register() {
           await setDoc(userRef, userDoc);
 
           const library = collection(userRef, "library");
-          await setDoc(doc(library, "initDoc"), {
-            initialData: "This is an initial document"
-          })
+          // await setDoc(doc(library, "initDoc"), {
+          //   initialData: "This is an initial document"
+          // })
           localStorage.setItem("user-info", JSON.stringify(userDoc));
           loginUser(userDoc);
           console.log("User data added to Firestore and collection created for user");
