@@ -213,7 +213,7 @@ const ShareDeck = ({ deckDoc }) => {
     setPopShareDeck(!popShareDeck);
   };
   return (
-    <div>
+    <div> 
       {popShareDeck && (
         <div
           style={{
@@ -340,7 +340,7 @@ const ShareDeck = ({ deckDoc }) => {
             />
           ))}
       </ul> */}
-    </div>
+    </div> 
   );
 };
 

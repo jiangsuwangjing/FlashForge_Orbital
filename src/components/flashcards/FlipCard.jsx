@@ -23,7 +23,8 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
   const [expand, setExpand] = useState(false);
   const [content, setContent] = useState(front);
   const [colour, setColour] = useState("#884EA0")
-  const [truncatedContent, setTruncatedContent] = useState()
+  const [truncatedContent, setTruncatedContent] = useState("")
+  const [response, setResponse] = useState("");
   const [contextMenu, setContextMenu] = useState({
     visible: false,
     x: 0,
@@ -34,12 +35,21 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
   
 
   useEffect(() => {
-    const truncContent = truncate(front, 240, { ellipsis: "..." });
-    setTruncatedContent(truncContent);
+    setFront(card[0]);
+    setBack(card[1]);
+    setFrontImage(card[3]);
+    setBackImage(card[4]);
+    setFrontAudioUrl(card[5]);
+    setBackAudioUrl(card[6]);
     setMastery(Math.ceil(card[7]));
     const colourIndex = Math.floor(mastery / 20);
     setColour(masteryColours[colourIndex]);
-  }, [card, front, deckRef])
+  }, [card, deckRef])
+
+  useEffect(() => {
+    const truncContent = truncate(front, 240, { ellipsis: "..." });
+    setTruncatedContent(truncContent);
+  }, [card, front]);
 
   const handleContextMenu = (event) => {
     console.log("right click");
@@ -91,6 +101,7 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
       const response = data.choices[0].message.content;
       console.log(response);
       setFront(response);
+      
       try {
         let frontImageUrl = "";
         let backImageUrl = "";
@@ -98,8 +109,9 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
         console.log("clicked");
 
         // Update the existing card document
-        let updateRes = await updateDoc(cardRef, {
-          front: front,
+        // let updateRes = 
+        await updateDoc(cardRef, {
+          front: response,
           back: back,
           ...(frontImageUrl && { frontImageUrl }), // Conditionally include frontImageUrl
           ...(backImageUrl && { backImageUrl }), // Conditionally include backImageUrl
@@ -109,9 +121,9 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
           mastery: 0,
         });
 
-        console.log(updateRes);
+        // console.log(updateRes);
 
-        console.log("Card updated successfully"); // Close the edit form
+        console.log("Rephrased card updated successfully"); // Close the edit form
       } catch (err) {
         console.error(err);
       }
@@ -154,7 +166,6 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
     setContent(isFlipped ? back : front);
   }, [isFlipped]);
   // const content = card[isFlipped ? 1 : 0];
-  console.log(content);
   return (
     <>
       {expand && (
@@ -359,7 +370,7 @@ const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
               }}
             >
               <li style={styles.li} onClick={(e) => rephraseOption(e)}>
-                Rephrase
+                Rephrase with AI
               </li>
               <li onClick={(e) => editOption(e)} style={styles.li}>
                 Edit

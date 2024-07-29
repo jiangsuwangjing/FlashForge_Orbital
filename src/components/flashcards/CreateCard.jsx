@@ -161,16 +161,21 @@ const CreateCard = ({ deckRef, onClose }) => {
         />
 
         <div className="flex flex-row justify-normal items-center mt-20">
-          <input type="file" onChange={handleFrontImageChange} />
+          <div className="flex flex-row items-center space-x-2">
+            <div>Image:</div>
+            <input type="file" onChange={handleFrontImageChange} />
+          </div>
+          {/* <div>Image</div>
+          <input type="file" onChange={handleFrontImageChange} /> */}
           <div>
-            <div className="flex flex-row items-center ">
-              <div>Front Audio</div>
+            <div className="flex flex-row items-center space-x-2">
+              <div>Audio</div>
               <AudioRecorder onRecordingComplete={addFrontAudioElement} />
             </div>
           </div>
         </div>
       </div>
-
+      <div></div>
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <div>Back</div>
         {/* <textarea
@@ -189,10 +194,13 @@ const CreateCard = ({ deckRef, onClose }) => {
           }}
         />
         <div className="flex flex-row justify-normal items-center mt-20">
-          <input type="file" onChange={handleBackImageChange} />
+          <div className="flex flex-row items-center space-x-2">
+            <div>Image:</div>
+            <input type="file" className="color" onChange={handleBackImageChange} />
+          </div>
           <div>
-            <div className="flex flex-row items-center ">
-              <div>Back Audio</div>
+            <div className="flex flex-row items-center space-x-2">
+              <div>Audio:</div>
               <AudioRecorder onRecordingComplete={addBackAudioElement} />
             </div>
           </div>

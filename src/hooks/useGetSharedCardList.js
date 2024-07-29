@@ -46,7 +46,7 @@ const useGetSharedCardList = (deckRef, lastReviewed, uid) => {
                 timeDifferenceInMin
               );
 
-              cardData[uid] = decayedMastery;
+              cardData.mastery = decayedMastery;
               accumulatedMastery += decayedMastery;
 
               return {

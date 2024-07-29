@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import "../../styles/App.css";
-import { updateDoc, getDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { updateDoc, getDoc, arrayRemove, arrayUnion, doc } from "firebase/firestore";
 import useAuthStore from "../../store/authStore";
 import { SimpleGrid } from "@chakra-ui/react";
 import "react-quill/dist/quill.snow.css";
 import FlipCard from "../flashcards/FlipCard";
 import useGetSharedCardList from "../../hooks/useGetSharedCardList";
 import ReviewModeShared from "../flashcards/ReviewModeShared";
+import { db } from "../../config/firebase";
 
 const SharedDeck = ({ deckDoc, viewOnly }) => {
   const user = useAuthStore((state) => state.user);
@@ -14,6 +15,7 @@ const SharedDeck = ({ deckDoc, viewOnly }) => {
   const deckRef = deckDoc.deckRef;
   const lastReviewed = deckDoc.lastReviewed;
   const uid = user.uid;
+  const currentUserRef = doc(db, "users", uid);
 
   const { cardList, loading, averageDecayedMastery } = useGetSharedCardList(
     deckRef,
@@ -28,25 +30,29 @@ const SharedDeck = ({ deckDoc, viewOnly }) => {
     if (!isNaN(averageDecayedMastery)) {
       setAverageMastery(averageDecayedMastery);
     }
-  }, [averageDecayedMastery]);
+  }, [averageDecayedMastery, cardList]);
 
   const updateSharedUserMap = async (newOverallMastery) => {
     try {
       const deckDoc = await getDoc(deckRef);
+      // const userDoc = await getDoc(currentUserRef);
       if (!deckDoc.exists()) {
         console.error("Document not found");
         return;
       }
       const deckData = deckDoc.data();
       console.log(deckData);
-      const sharedList = viewOnly ? deckData.viewers : deckData.editors;
 
+      const sharedList = viewOnly ? deckData.viewers : deckData.editors;
       // Find the index of the map that contains the email key
       const userInfo = sharedList.find((user) => user.uid === uid);
 
       if (viewOnly) {
         await updateDoc(deckRef, {
           viewers: arrayRemove(userInfo),
+        });
+        await updateDoc(currentUserRef, {
+          canView: arrayRemove(userInfo),
         });
 
         userInfo.lastReviewed = Date.now();
@@ -55,9 +61,15 @@ const SharedDeck = ({ deckDoc, viewOnly }) => {
         await updateDoc(deckRef, {
           viewers: arrayUnion(userInfo),
         });
+        await updateDoc(currentUserRef, {
+          canView: arrayUnion(userInfo),
+        });
       } else {
         await updateDoc(deckRef, {
           editors: arrayRemove(userInfo),
+        });
+        await updateDoc(currentUserRef, {
+          canEdit: arrayRemove(userInfo),
         });
 
         userInfo.lastReviewed = Date.now();
@@ -66,6 +78,11 @@ const SharedDeck = ({ deckDoc, viewOnly }) => {
         await updateDoc(deckRef, {
           editors: arrayUnion(userInfo),
         });
+        await updateDoc(currentUserRef, {
+          canEdit: arrayUnion(userInfo),
+        });
+
+        console.log("Back end shared info updated")
       }
 
       // if (mapIndex === -1) {

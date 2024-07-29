@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/Login.css";
 import logo from "../assets/logo.png";
+import logo_black from "../assets/logo_black.png"
 import googleLogo from "../assets/googleIcon.png";
 import { Center } from "@chakra-ui/react";
 
@@ -28,7 +29,7 @@ export const Login = (props) => {
     <div className=" min-h-screen flex flex-col">
       <div className="content flex flex-col items-center relative">
         <div className="h-72 w-72">
-          <img src={logo} />
+          <img src={logo_black} />
         </div>
         <button
           className="w-[500px] py-3 my-8 border-[1px] border-gray-400 flex justify-center items-center text-white"
