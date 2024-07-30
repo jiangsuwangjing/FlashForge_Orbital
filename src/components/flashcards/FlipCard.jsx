@@ -15,7 +15,7 @@ import { color } from "@chakra-ui/react";
  * @param deckRef the reference to parent deck
  * @param isFlipped the state of which side is showing
  * @param onFlip changes the side of card 
- * @returns a windo
+ * @returns a window
  */
 const FlipCard = ({ card, deckRef, isFlipped, onFlip }) => {
   const cardId = card[2];

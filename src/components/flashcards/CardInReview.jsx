@@ -17,9 +17,11 @@ const CardInReview = ({ text, handleFlip, imageUrl, audioUrl }) => {
         height: "100%",
       }}
     >
-      <audio controls style={{ position: "absolute", top: "17%" }}>
+      { audioUrl &&
+       <audio controls style={{ position: "absolute", top: "18%" }}>
         <source src={audioUrl} type="audio/mpeg" />
       </audio>
+      }
       <div className="h-1/2 w-1/2 items-center flex flex-row justify-stretch items-stretch">
         <div
           style={{
