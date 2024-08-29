@@ -9,15 +9,15 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 // flashforge
-// const firebaseConfig = {
-//   apiKey: "AIzaSyAotbDh-yYGzxyNsFrmzrGMxgtjL8guNL8",
-//   authDomain: "flashforge-f292c.firebaseapp.com",
-//   projectId: "flashforge-f292c",
-//   storageBucket: "flashforge-f292c.appspot.com",
-//   messagingSenderId: "463837186358",
-//   appId: "1:463837186358:web:aa4441776e480247c5cb97",
-//   measurementId: "G-ZWM2ZSQVGC"
-// };
+const firebaseConfig = {
+  apiKey: "AIzaSyAotbDh-yYGzxyNsFrmzrGMxgtjL8guNL8",
+  authDomain: "flashforge-f292c.firebaseapp.com",
+  projectId: "flashforge-f292c",
+  storageBucket: "flashforge-f292c.appspot.com",
+  messagingSenderId: "463837186358",
+  appId: "1:463837186358:web:aa4441776e480247c5cb97",
+  measurementId: "G-ZWM2ZSQVGC"
+};
 
 // flashforge-backup
 // const firebaseConfig = {
@@ -30,14 +30,14 @@ import { getStorage } from "firebase/storage";
 // };
 
 // flashforge-canada
-const firebaseConfig = {
-  apiKey: "AIzaSyC56c_5tHEdjXDYLrfwrN9qvzc8dWK4PUM",
-  authDomain: "flashforge-canada.firebaseapp.com",
-  projectId: "flashforge-canada",
-  storageBucket: "flashforge-canada.appspot.com",
-  messagingSenderId: "808884936307",
-  appId: "1:808884936307:web:1557b54abbc90955691406"
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyC56c_5tHEdjXDYLrfwrN9qvzc8dWK4PUM",
+//   authDomain: "flashforge-canada.firebaseapp.com",
+//   projectId: "flashforge-canada",
+//   storageBucket: "flashforge-canada.appspot.com",
+//   messagingSenderId: "808884936307",
+//   appId: "1:808884936307:web:1557b54abbc90955691406"
+// };
 
 // const firebaseConfig = {
 //   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
